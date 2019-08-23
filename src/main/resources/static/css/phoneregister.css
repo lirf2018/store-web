@@ -1,0 +1,54 @@
+.m-cell{
+	margin: 0px 0px;
+    padding: 0px 0px;
+    border: none;
+    color: #CECECE;
+    margin: 0px 10px;
+}
+
+.cell-left,.cell-right{
+	border-bottom: 1px solid #CECECE;
+	font-size: .25rem;
+}
+
+.register-before>.m-cell:after{
+	border: none;
+}
+
+.register-btn{
+	margin: 0px 10px;
+}
+
+.register-before{
+	color: grey;
+	font-size: .25rem;
+	margin-left: 10px;
+	padding: 10px;
+}
+
+.register-before input{
+	-webkit-appearance:checkbox
+}
+
+.agreement-detail{
+	color: #cd1144;
+	font-size: .25rem;
+	font-weight: normal;
+	text-decoration:underline;
+}
+
+.agreement-info{
+	color: grey;
+	height: 350px;
+	overflow-y:auto;
+	text-align: left;
+}
+
+
+
+
+
+
+
+
+

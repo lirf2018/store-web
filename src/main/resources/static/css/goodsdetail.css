@@ -1,0 +1,241 @@
+.shopcart-count{
+	color: white;
+	font-size: .1rem;
+	border: 1px solid white;
+	height: .42rem;
+	width: .42rem;
+	text-align: center;
+	line-height: .35rem;
+	border-radius: 50%;
+	position: absolute;
+	top: .1rem;
+	right: .1rem;
+	background: #cd1144;
+}
+
+.m-cell{
+	margin: 0px 0px;
+    padding: 0px 0px;
+    border: none;
+    color: #CECECE;
+    margin: 0px 0px;
+}
+
+.cell-left,.cell-right{
+	border: none;
+	font-size: .25rem;
+}
+
+.goods-name{
+	background-color: white;
+	padding: 10px 10px 0px 10px;
+	color: #505050;
+	font-size: .25rem;
+}
+
+.goods-info{
+	display: -moz-box; /* 低版本firefox */
+	display:-webkit-box;/* IOS 6-,safari 3.1-6 */
+	display: -ms-flexbox; /* IE10  */
+	display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+	display: -moz-flex; /* 较低版本firefox */
+	display: flex; /*IE11,  Chrome29+, FireFox 20+ */
+	width: 100%;
+	background-color: white;
+	line-height: .35rem;
+	padding: 10px 10px;
+	justify-content:center;
+    align-items:center;
+    color: #505050;
+}
+.goods-info>div:first-child{
+	float: left;
+	width: 65%;
+	vertical-align: middle;
+	font-size: .25rem;
+}
+
+.sale-price{
+	color: #cd1144;
+	font-weight: 800;
+}
+
+.price-yuanjia{
+	text-decoration: line-through;
+	color: #505050;
+	font-weight: 500;
+	font-size: .25rem;
+	padding-left: 10px;
+}
+
+.goods-info>div:last-child{
+	float: right;
+	width: 30%;
+	text-align: right;
+}
+
+.add-btn button{
+	width: 100%;
+	height: 100%;
+	border: none;
+	color: #505050;
+}
+.add-btn input{
+	border: none;
+	width: 100%;
+	text-align: center;
+	height: 100%;
+	color: #505050;
+	font-size: .3rem;
+	
+}
+
+.add-btn>span{
+	display: block;
+	height: 35px;
+	width: 35px;
+	line-height: 35px;
+	text-align: center;
+	font-size: 18px;
+	border: 1px solid #ddd;
+}
+
+.buy-rule-detail{
+	color: #505050;
+	background-color: white;
+	padding: 10px 10px;
+	display: none;
+}
+
+.icon-turnnext,.icon-down {
+  margin-left: .05rem;
+  margin-right: -0.08rem;
+  display: block;
+  font-family: 'YDUI-INLAY';
+  font-size: 0.34rem;
+  color: #C9C9C9;
+}
+
+.goods-detail,.buy-rule,.buy-count,.goods-spec{
+	margin-top: 10px;
+}
+
+.img-items{
+	background-color: white;
+}
+
+
+.img-items>div>img{
+	width: 100%;
+	height: 1.5rem;
+}
+
+.spec-info{
+	display: -moz-box; /* 低版本firefox */
+	display:-webkit-box;/* IOS 6-,safari 3.1-6 */
+	display: -ms-flexbox; /* IE10  */
+	display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+	display: -moz-flex; /* 较低版本firefox */
+	display: flex; /*IE11,  Chrome29+, FireFox 20+ */
+	width: 100%;
+	background-color: white;
+	line-height: .45rem;
+	padding: 10px 10px;
+	justify-content:center;
+    align-items:center;
+    color: #505050;
+}
+
+.spec-info-img{
+	float: left;
+	width: 30%;
+}
+.spec-info-img>img{
+	width: 100%;
+	height: auto;
+}
+
+.spec-info-detail{
+	float: right;
+	width: 70%;
+	padding-left: 13px;
+}
+
+.close-X{
+	color:  #505050;
+	font-size: .3rem;
+	text-align: right;
+	padding-right: 10px;
+}
+
+.spec{
+	overflow-y: scroll;
+	padding: 0px 10px;
+	padding-top: 3px;
+	height: 5.6rem;
+}
+.spec-item{
+	margin-bottom: 5px;	
+	font-size: .25rem;
+	color: #505050;
+}
+
+.spec-current-not{
+	border: 1px solid #505050;
+	float: left;
+	padding: 8px 15px;
+	border-radius: .15rem;
+	margin: 5px 8px;
+}
+
+.spec-current{
+	border: 1px solid #cd1144;
+	float: left;
+	padding: 8px 15px;
+	border-radius: .15rem;
+	margin: 5px 8px;
+}
+
+
+.spec-buy-count{
+	margin-top: 0px;
+}
+
+.btn-block{
+	margin-top: 3px;
+}
+
+
+.btn-buy-stype2>div{
+	float: left;
+	width: 50%;	
+}
+
+.spec-btn{
+	color: red;
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+}
+
+.btn-mybtn5{
+	background: #DD463B;
+    font-size: 0.43rem;
+    font-weight: bold;
+    color: #FFF;
+}
+
+
+.buy-btn{
+	width: 100%;
+	display: flex;
+	z-index: 100;
+	position: absolute;
+	bottom: 0px;
+	background-color: white;
+}
+
+.buy-btn div{
+	float: left;
+	width: 50%;
+}

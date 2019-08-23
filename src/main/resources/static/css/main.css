@@ -1,0 +1,233 @@
+body{
+	color: #333333;
+	font-weight: bold;
+}
+
+.btn-search{
+	color: #CCCCCC;
+	text-align: center;
+	width: 100%;
+	padding: 5px 0;
+	margin: 5px 0 ;
+}
+
+.btn-search>div{
+	border: 1px solid #CCCCCC;
+	width: 75%;
+	padding: 8px 0;
+	margin:0 auto;
+	border-radius: 0.5rem;
+}
+
+
+.store-msg{
+	letter-spacing:1px;
+	color: #333333;
+	font-size: .28rem;
+	display: flex;
+	padding: 10px;
+}
+
+.store-msg>span{
+	display: block;
+}
+
+.store-msg>span:first-child{
+	float: left;
+	width: 10%;
+	padding-left: 5px;
+}
+.store-msg>span:first-child>img{
+	width: 0.85rem;
+	height: 0.85rem;
+}
+.store-msg>span:nth-child(2){
+	float: left;
+	width: 80%;
+	text-align: left;
+	white-space: nowrap; 
+	overflow: hidden; 
+	text-overflow: ellipsis;
+	line-height: 0.85rem;
+	padding-left: 5px;
+}
+.store-msg>span:last-child{
+	float: center;
+	width: 10%;
+	text-align: right;
+	line-height: 0.85rem;
+	padding-right: 10px;
+	font-size: 0.38rem;
+}
+
+
+.navigation{
+	padding-bottom: 10px;
+	letter-spacing:1px;
+	display: flex;
+	width: 100%;
+	text-align: center;
+	font-size: .20rem;
+	margin-bottom: 10px;
+}
+
+.navigation img{
+	border-radius: 50%;
+	width: 1.12rem;
+	height: 1.12rem;
+}
+
+.navigation>div{
+	float: left;
+	width: 16.6%;
+}
+
+
+.activity{
+	letter-spacing:1px;
+	text-align: center;
+	display: flex;
+	clear: left;
+}
+
+.activity-left{
+	float: left;
+	width: 40%;
+	background-image: url(../img/activity.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    margin: 1.25rem 0;
+    vertical-align: middle;
+}
+.activity-left>div{
+	text-align: left;
+	position: relative;
+	padding-left: .15rem;
+	padding-bottom: 3px;
+	top: 1.85rem;
+}
+
+.activity-right{
+	float: left;
+	width: 60%;
+}
+.activity-right>div{
+	float: left;
+	width: 50%;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+.activity-right>div>div:first-child{
+	padding-bottom: 5px;
+}
+.activity-right img{
+	height: 1.5rem;
+	width: 1.8rem;
+}
+
+
+.catogrey{
+	letter-spacing:1px;
+	text-align: center;	
+	padding: 10px 0;
+}
+.catogrey-title{
+	font-size: .40rem;
+}
+
+.catogrey-detail li{
+	width: 25%;
+	margin: 10px 0;
+	float: left;
+}
+.catogrey img{
+	height: 1.25rem;
+	width: 1.25rem;
+	border-radius: 50%;
+}
+
+.catogrey span{
+	display: block;
+	padding-top: 5px;
+}
+
+
+.info-news{
+	letter-spacing:1px;
+	text-align: center;	
+	padding: 10px 0;
+}
+.info-news-title{
+	font-size: .40rem;
+}
+
+.info-news-detail li{
+	width: 20%;
+	margin: 10px 0;
+	float: left;
+}
+.info-news img{
+	height: 1.25rem;
+	width: 1.25rem;
+	border-radius: 50%;
+}
+
+.info-news span{
+	display: block;
+	padding-top: 5px;
+}
+
+
+.recommend{
+	padding: 10px 0;
+	width: 100%;
+}
+
+.recommend>div:first-child{
+	margin: 10px 10px;
+	
+}
+.icon-like{
+	color: #cd1144;
+	font-size: .49rem;
+}
+
+.icon-like-span{
+	font-size: .40rem;
+	padding-left: 5px;
+	line-height: .49rem;
+	letter-spacing:0px;
+	
+}
+
+.recommend img{
+	height: auto;
+	width: 100%;
+}
+
+.btn-danger{
+	color: white;
+	background-color: ce1446;
+	line-height: .25rem;
+	height:.57rem;
+	width: 1.2rem;
+	margin-right: 10px;
+}
+
+
+.new-goods{
+	padding: 10px 0;
+	width: 100%;
+}
+
+.new-goods>div:first-child{
+	margin: 10px 10px;
+}
+
+.foot-msg{
+	color: gainsboro;
+	width: 100%;
+	text-align: center;
+	font-size: .26rem;
+}

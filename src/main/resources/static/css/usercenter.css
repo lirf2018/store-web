@@ -1,0 +1,89 @@
+.user-info{
+	background-color: #cd1144;
+	color: white;
+	border: none;
+	padding: 25px 0;
+	text-align: center;
+	font-size: .28rem;
+}
+
+.user-phone img{
+	height: 2.2rem;
+	width: 2.2rem;
+	border-radius: 100%;
+}
+
+.nichen{
+	padding: 10px 0;
+}
+
+
+.user-msg{
+	background-color: white;
+	border-bottom: 1px solid #EEEDF3;
+	padding: 15px 0;
+	overflow: hidden;
+	font-size: .3rem;
+	text-align: center;
+}
+
+.user-msg>div{
+	float: left;
+	width: 33.33%;
+	text-align: center;
+}
+
+.user-msg>div>span{
+	display: block;
+}
+
+.user-msg>div:not(:last-child){
+	border-right: 1px solid #DDDDDD;
+}
+
+.user-msg>div>span:first-child{
+	padding-bottom: 10px;
+}
+
+.m-cell{
+	padding: 0px 0px;
+	margin: 0px 0px;
+	border: none;
+}
+
+.cell-left, .cell-right{
+	border: none;
+}
+
+.m-cell-order{
+	background-color: white;
+	border-bottom: 1px solid #EEEDF3;
+	text-align: center;
+}
+.m-cell-order>div{
+	float: left;
+	width: 20%;
+	border-bottom: 1px solid #EEEDF3;
+	background-color: white;
+	padding: 10px 10px;
+	position: relative;
+}
+
+.m-cell-order img{
+	width: 1.1rem;
+	height: 1.1rem;
+	border-radius: 50%;
+	
+}
+
+.badge-count{
+	background-color: #cd1144;
+	color: white;
+	border-radius: 50%;
+	height: .55rem;
+	width: .55rem;
+	line-height: .55rem;
+	position: absolute;
+	right: .1rem;
+	top: .1rem;
+}

@@ -1,0 +1,17 @@
+.detail-title{
+	border-bottom: 1px dashed black;
+	margin: 10px 0 5px 0;
+	color: #555;
+	font-size: .28rem;
+	padding: 0 10px 5px 10px;
+}
+
+.detail-title>span:last-child{
+	display: block;
+	float: right;
+	
+}
+
+.cell-input{
+	height: .5rem;
+}

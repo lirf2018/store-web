@@ -1,0 +1,22 @@
+.scrolltab-title{
+	font-size: .28rem;
+}
+
+.category-item{
+	text-align: center;
+	float: left;
+	width: 50%;
+}
+
+.category-item-img{
+	padding: 5px 0;
+}
+.category-item img{
+	height: 1.95rem;
+	width: 1.95rem;
+}
+
+.list-title{
+	font-weight: 500;
+	color: #1F2324;
+}

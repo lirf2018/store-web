@@ -1,0 +1,30 @@
+.m-cell{
+	margin-bottom: 0;
+	padding-bottom: 15px;
+}
+.cell-left{
+	font-size: .25rem;
+	border-bottom: 1px solid #7C7A7B;
+	display: block;
+	line-height: 1.0rem;
+}
+.cell-right{
+	text-align: left;
+	display: block;
+	font-size: .25rem;
+	border-bottom: 1px solid #7C7A7B;
+	margin-right: 10px;
+	line-height: 10px;
+	line-height: 1.0rem;
+}
+.cell-right a{
+	float: right;
+	margin-right:15px ;
+	vertical-align: middle;
+	margin-top: 0.13rem;
+}
+.m-cell{
+	border: 1px solid #7C7A7B;
+	margin:10px 10px 0px 10px ;
+	border-radius: 2% ;
+}

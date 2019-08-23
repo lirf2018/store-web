@@ -1,0 +1,160 @@
+body{
+	font-family: ff-tisa-web-pro-1,ff-tisa-web-pro-2,"Lucida Grande","Hiragino Sans GB","Hiragino Sans GB W3";
+}
+
+.bannel{
+	padding-top: 0px;
+	top: 0;
+	font-weight: bold;
+}
+
+.bannel>span{
+	display: block;
+	width: 100%;
+	vertical-align: middle;
+}
+
+.bannel>span>img{
+	display: block;
+	width: 100%;
+	vertical-align: middle;
+}
+
+
+.menber-vip-num{
+	text-align: right;
+	width: auto;
+	position: relative;
+	top: -3.65rem;
+	right: 0.95rem;
+}
+
+.vip-qrcode2-img img{
+	height: 180px;
+	width: 180px;
+}
+.menber-vip-num>span:first-child{
+	font-size: .40rem;
+	font-weight: bold;
+}
+.menber-vip-num>span:last-child{
+	font-size: .40rem;
+	color: red;
+	font-size: .30rem;
+}
+
+
+.vip-qrcode1{
+    position: relative;
+    top: -2.25rem;
+    left: 0.95rem;
+}
+
+.vip-qrcode1 img{
+	width: 5.1rem;
+	height: 60px;
+}
+
+.vip-qrcode2{
+	height: 45px;
+	width: 45px;
+	position: relative;
+	left: 5.95rem;
+	top: -2.90rem;
+}
+
+.vip-qrcode2-img{
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+}
+.qrcode2-img{
+	padding: 10px 0;
+	margin: 5px 0;
+}
+
+.vip-qrcode2-img>div:not(:first-child){
+	padding: 7px 0;
+	background: #CCC;
+}
+.vip-qrcode2-img>div:nth-child(2){
+	border-top: 1px solid black;
+}
+
+
+.menber-info{
+	background: white;
+	margin-top: -2.65rem;
+}
+
+.menber-info>div{
+	float: left;
+	width: 33.3%;
+	border: 8px 0px;
+	background: white;
+	text-align: center;
+	margin-bottom: 5px;
+	font-weight: bold;
+    letter-spacing: 0.9px;
+    line-height: 26px;
+    font-size: .35rem;
+}
+.menber-info>div>span{
+	display: block;
+	margin: 8px 0;
+}
+.menber-info>div>span:first-child{
+	margin-bottom: 0;
+}
+.menber-info>div>span:last-child{
+	margin-top: 0;
+}
+
+.menber-info>div>span:first-child{
+	color: #454545;
+	
+}
+
+.menber-info>div>span:last-child{
+	color: #FFA13F;
+}
+
+
+.cont_warp{
+	width: 100%;
+	text-align: center;
+	vertical-align: middle;
+	color: #333;
+}
+.cont_warp>a{
+	display: block;
+	float: left;
+	width: 50%;
+	padding: .3rem 0;
+	background: white;
+	border: 1px solid #D0D0D0;
+	font-size: .25rem;
+}
+
+.cont_warp>a img{
+	width: 68px;
+	height: 50px;
+}
+
+.cont_warp_clear{
+	width: 100%;
+	line-height: 60px;
+}
+
+.tabbar-fixed{
+	height: 60px;
+	padding-top: 8px;
+}
+.tabbar-fixed img{
+	width: 60px;
+	height: 35px;
+}
+.tabbar-txt{
+	padding-top: 5px;
+}
+

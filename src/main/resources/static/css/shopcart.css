@@ -1,0 +1,176 @@
+.cell-right{
+	font-size: .25rem;
+	border-bottom: none;
+	-webkit-box-pack: start;
+  	-webkit-justify-content: flex-start ;
+  	-ms-flex-pack: start;
+  	justify-content: flex-start ;
+}
+
+.shop-list{
+	background-color: white;
+	margin-bottom: 15px;
+	position: relative;
+}
+
+.shop-name{
+	border-bottom: 1px solid #CECECE;
+	padding-top: 10px;
+	padding-bottom: 2px;
+	padding-left: 10px;
+}
+.shop-name>div:first-child{
+	width: 70%;
+	float: left;
+}
+.shop-name>div:nth-child(2){
+	width: 20%;
+	float: left;
+}
+.shop-name>div:nth-child(3){
+	float: right;
+	width: 10%;
+	line-height: .55rem;
+	font-size: .4rem;
+}
+
+.shop-name span{
+	padding-left: 8px;
+}
+
+
+.cell-right-shop-name{
+	min-height: .55rem;
+	text-align: left;
+	padding-left: 0;
+	margin-left: 0;
+	width: auto;
+}
+
+.goods-list{
+	padding: 0 10px;
+}
+
+.goods-item{
+	padding: 7px 0;
+}
+
+.goods-check{
+	float: left;
+	width: 10%;
+	line-height: 2.4rem;
+}
+
+.goods-img{
+	float: left;
+	width: 30%;
+	position: relative;
+}
+.goods-img>div{
+	width: 100%;
+	padding-right: 10px;
+}
+
+.goods-img img{
+	width: 100%;
+	padding: 5px 0;
+	height: 2.4rem;
+	
+}
+
+.goods-mes{
+	float: right;
+	width: 60%;
+	color: #505050;
+    font-size: .26rem;
+    text-align: justify;
+    font-weight: 800;
+    padding-right: 10px;
+    position: relative;
+    height: 2.4rem;
+    padding-top: 5px;
+}
+
+.goods-title{
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	position: relative;
+}
+
+.goods-spec{
+	padding: 1px 0;
+	font-weight: normal;
+	color: #505050;
+	font-size: .18rem;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.goods-mes-item{
+	width: 100%;
+	position:absolute; 
+	bottom:.1rem;
+	vertical-align: middle;
+	padding-top: ;
+}
+.goods-mes-item>div:first-child{
+	float: left;
+	vertical-align: middle;
+	line-height: .8rem;
+}
+.goods-mes-item>div:last-child{
+	float: right;
+}
+
+.goods-price{
+	font-size: .3rem;
+    color: #EB5211;
+}
+
+.goods-del-price{
+    padding-left: .06rem;
+    font-size: .2rem;
+    margin-left: .02rem;
+    position: relative;
+    color: #8C8C8C;
+}
+
+.item-count{
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+	z-index: 999;
+	height: 1.25rem;
+	color: white;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 1.25rem;
+	font-weight: bold;
+	font-size: .45rem;
+}
+
+.item-count-money{
+	float: left;
+	width: 65%;
+	height: 100%;
+	background-color: #2F2F2F;
+}
+.item-count-money span{
+}
+
+.tem-count-topay{
+	float: left;
+	width: 35%;
+	height: 100%;
+	background-color: #cd1144;
+}
+
+
+
+

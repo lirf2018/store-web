@@ -1,0 +1,144 @@
+.navbar-item{
+	color: white;
+	font-size: .3rem;
+	font-weight: 700;
+}
+
+.addr-setting input{
+	-webkit-appearance:checkbox
+}
+
+
+
+.itemt-detail{
+	margin-top:20px ;
+	background-color: white;
+	color: grey;
+}
+
+.item-list>div:first-child{
+	margin-top: 0px;
+}
+
+.itemt-detail>div{
+	padding: 10px 5px;
+	margin: 0px 10px;
+}
+
+.user-info>span:last-child{
+	padding-left: 15px;
+}
+
+.addr-setting{
+	border-top: 1px solid #EEEDF3;
+	position: relative;
+}
+
+.addr-setting>div:first-child{
+	float: left;
+	width: 50%;
+}
+.addr-setting>div:last-child{
+	float: right;
+	width: 50%;
+	text-align: right;
+}
+
+.addr-setting span{
+	padding-left: 15px;
+}
+
+
+/** addr */
+.m-cell{
+	border: none;
+	width: 100%;
+	margin: 0px 0px;
+}
+
+.cell-right,.cell-left{
+	border: none;
+}
+
+
+.addr-div{
+	color: grey;
+	text-align: center;
+	width: 100%;
+	background-color: white;
+}
+
+.addr-item{
+	padding: 10px 10px;
+	font-size: .25rem;
+}
+.addr-item label{
+	border: 1px solid #EEEDF3;
+	border-radius: 3%;
+	display: block;
+	width: 95%;
+	margin: 0 auto;	
+}
+.addr-item input{
+	border: none;
+	width: 100%;
+	height: .85rem;
+	padding-left: 10px;
+	text-align: left;
+}
+
+
+.addr-title{
+	background-color: #EEEDF3;
+	width: 100%;
+	height: 50px;
+}
+.addr-title>span{
+	display: block;
+	padding: 0px 10px;
+	line-height: 50px;
+}
+
+.addr-title>span:first-child{
+	float: left;
+	width: 80%;
+	text-align: left;
+}
+.addr-title>span:last-child{
+	float: right;
+	text-align: right;
+	padding-right: 10px;
+}
+
+.addr-area>label{
+	display: block;
+	position: relative;
+	height: .85rem;
+}
+.addr-area>label>div:first-child{
+	float: left;
+	text-align: left;
+}
+.addr-area>label>div:last-child{
+	float: right;
+	width: 10%;
+	line-height: .88rem;
+	text-align: right;
+	padding-right: 10px;
+}
+
+.addr-area>label>div:first-child>span{
+	height: .85rem;
+	width: 100%;
+	color: grey;
+	border: none;
+	line-height: .85rem;
+	padding-left: 10px;
+}
+
+
+.div-save>a{
+	width: 95%;
+	height: auto;
+	line-height: 1rem;
+}
