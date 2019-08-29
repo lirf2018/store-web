@@ -51,32 +51,4 @@ public class VerifySign {
         return false;
     }
 
-    public static void main(String[] args) {
-        JSONObject obj = new JSONObject();
-        obj.put("name", "496");
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("b", "sad");
-        obj.put("listr", map);
-
-        List<Map<String, Object>> listmap = new ArrayList<>();
-        Map<String, Object> lmaps1 = new HashMap<String, Object>();
-        lmaps1.put("dd", "枯叶df");
-        Map<String, Object> lmaps2 = new HashMap<String, Object>();
-        lmaps2.put("dd", "枯叶df");
-        listmap.add(lmaps1);
-        listmap.add(lmaps2);
-
-        obj.put("lmaps", listmap);
-
-        List<String> listString = new ArrayList<>();
-        listString.add("工枯叶");
-        listString.add("工枯叶1");
-        obj.put("listString", listString);
-        System.out.println(obj);
-
-        ReceiveJsonBean bean = new ReceiveJsonBean();
-        bean.setData(obj);
-        checkSign(bean, "d");
-
-    }
 }

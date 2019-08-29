@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class ImageUtil {
 
-    private Logger LOG = org.apache.log4j.Logger.getLogger(ImageUtil.class);
+    private Logger LOG = Logger.getLogger(ImageUtil.class);
     private volatile static ImageUtil imageUtil;
 
     public static ImageUtil getInstance() {

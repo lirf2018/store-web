@@ -13,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/")
 public class MainController {
 
-
     @RequestMapping("mainPage")
     public ModelAndView mainPage() {
         ModelAndView modelAndView = new ModelAndView();

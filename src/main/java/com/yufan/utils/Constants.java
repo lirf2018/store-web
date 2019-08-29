@@ -21,8 +21,33 @@ public class Constants {
 
     /**
      * 订单状态
+     * //0	待付款
+     * //1	已付款
+     * //3	已失败
+     * //4	待发货
+     * //5	待收货
+     * //6	已完成
+     * //7	已取消
+     * //8	已删除
+     * //9	退款中
+     * //10	已退款
+     * //11	处理中
+     * //12	还货中
+     * //13	已还货
      */
-    public static Integer ORDER_STATUS_FINISH = 3;//已完成
+    public static Integer ORDER_STATUS_DFK = 0;
+    public static Integer ORDER_STATUS_YFK = 1;
+    public static Integer ORDER_STATUS_YSB = 3;
+    public static Integer ORDER_STATUS_DFH = 4;
+    public static Integer ORDER_STATUS_DSH = 5;
+    public static Integer ORDER_STATUS_YWC = 6;
+    public static Integer ORDER_STATUS_YQX = 7;
+    public static Integer ORDER_STATUS_YSC = 8;
+    public static Integer ORDER_STATUS_TKZ = 9;
+    public static Integer ORDER_STATUS_YTK = 10;
+    public static Integer ORDER_STATUS_CLZ = 11;
+    public static Integer ORDER_STATUS_HHZ = 12;
+    public static Integer ORDER_STATUS_YHH = 13;
 
     /**
      * 数据状态
@@ -60,4 +85,19 @@ public class Constants {
      * 参数paramCode
      */
     public static String PARAM_CODE_LIMIT_WAY = "limit_way";//限购方式
+
+    /**
+     * 网易短信参数
+     */
+    public static String APP_SECRET_WY = "";
+    public static String APP_KEY_WY = "";
+    public static String SENDTEMPLATE_URL_WY = "";
+    public static String SENDCODE_URL_WY = "";
+
+    /**
+     * 阿里云
+     */
+    public static String ACCESSKEYID_ALIPAY = "";
+    public static String ACCESSKEYSECRET_ALIPAY = "";
+
 }
