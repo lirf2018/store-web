@@ -1,4 +1,4 @@
-package com.yufan.utils;
+package com.yufan.common.utils;
 
 import org.apache.log4j.Logger;
 
@@ -19,6 +19,7 @@ public class HelpCommon {
      * @param map
      * @return
      */
+    @SuppressWarnings("rawtypes")
     public static String getSign(MyMap map) {
 
         StringBuffer strs = new StringBuffer();

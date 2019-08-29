@@ -100,4 +100,11 @@ public class Constants {
     public static String ACCESSKEYID_ALIPAY = "";
     public static String ACCESSKEYSECRET_ALIPAY = "";
 
+
+    /**
+     * 接口业务类型
+     */
+    public static String INFO_URL = "http://192.168.2.99:8082/test";
+    public static String INFO_MAIN = "main";
+
 }

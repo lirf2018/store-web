@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <base th:href="@{/}">
+    <link rel="stylesheet" href="./css/ydui.css?rev=@@hash"/>
+    <link rel="stylesheet" href="css/commondemo.css"/>
+    <link rel="stylesheet" href="css/main.css" />
+    <style>
+        body{
+            background-color: white;
+            font-family: ff-tisa-web-pro-1,ff-tisa-web-pro-2,"Lucida Grande","Hiragino Sans GB","Hiragino Sans GB W3";
+        }
+        .navigation>div{
+            float: left;
+            width: 20%;
+        }
+        .icon-turnnext{
+            text-align: right;
+            position: absolute;
+            right: 5px;
+            font-size: .40rem;
+            line-height: .49rem;
+        }
+    </style>
+</head>
+<body>
+<section class="g-flexview">
+    <a href="search-page.html">
+        <div class="btn-search">
+            <div><i class="icon-search"></i>万千商品, 正品保证</div>
+        </div>
+    </a>
+    <section class="g-scrollview">
+        <div class="m-slider" data-ydui-slider="{autoplay: 3000}"><!-- 参数在这里 -->
+            <div class="slider-wrapper">
+                <div class="slider-item">
+                    <a href="#">
+                        <img src="img/appbanner-11.jpg">
+                    </a>
+                </div>
+                <div class="slider-item">
+                    <a href="#">
+                        <img src="img/appbanner-11.jpg">
+                    </a>
+                </div>
+                <div class="slider-item">
+                    <a href="#">
+                        <img src="img/appbanner-11.jpg">
+                    </a>
+                </div>
+            </div>
+            <div class="slider-pagination"></div><!-- 分页标识 -->
+        </div>
+        <!--<div class="store-msg">
+            <span><img src="img/vo.png"></span>
+            <span>【广州内衣服饰】跨年送福,送优惠券送优惠券送优惠券送优惠券送优惠券,试试你的新一年的手气好不好</span>
+            <span><i class="cell-arrow"></i></span>
+        </div>-->
+
+        <div class="navigation">
+            <div>
+                <div align="center"><a href="goods-list.html"><img src="img/catogrey1.png"></a></div>
+                <div>全部商品</div>
+            </div>
+            <div>
+                <div align="center"><img src="img/catogrey2.png"></div>
+                <div>商城分类</div>
+            </div>
+            <div>
+                <div align="center"><img src="img/catogrey3.png"></div>
+                <div>会员中心</div>
+            </div>
+          <!--  <div>
+                <div align="center"><img src="img/catogrey4.png"></div>
+                <div>卡券中心</div>
+            </div>-->
+            <div>
+                <div align="center"><img src="img/catogrey5.png"></div>
+                <div>服务中心</div>
+            </div>
+            <div>
+                <div align="center"><img src="img/catogrey6.png"></div>
+                <div>门店</div>
+            </div>
+        </div>
+
+        <div class="activity">
+            <div class="activity-left">
+                <div>距活动结束</div>
+                <div>
+                    <span>00</span>
+                    <span>:</span>
+                    <span>00</span>
+                    <span>:</span>
+                    <span>50</span>
+                </div>
+            </div>
+            <div class="activity-right">
+                <div>
+                    <div align="center"><a href="goods-detail.html"><img src="img/b1.jpg"></a></div>
+                    <div><span>￥99.00</span></div>
+                </div>
+                <div>
+                    <div align="center"><a href="goods-detail.html"><img src="img/b1.jpg"></a></div>
+                    <div><span>￥99.00</span></div>
+                </div>
+                <div>
+                    <div align="center"><a href="goods-detail.html"><img src="img/b1.jpg"></a></div>
+                    <div><span>￥99.00</span></div>
+                </div>
+                <div>
+                    <div align="center"><a href="goods-detail.html"><img src="img/b1.jpg"></a></div>
+                    <div><span>￥99.00</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="new-goods">
+            <div class="recommend">
+                <div><i class="icon-like"></i><span class="icon-like-span">热销</span><a href="#"><i class="icon-turnnext"></i></a></div>
+                <a><img src="img/appbanner-11.jpg" /></a>
+            </div>
+            <div class="m-list list-theme1">
+                <a href="goods-detail.html" class="list-item">
+                    <div class="list-img">
+                        <img src="img/goods01.png">
+                    </div>
+                    <div class="list-mes">
+                        <h3 class="list-title">superman短袖t恤日潮牌男士日韩夏装水洗做旧修身个性短袖t恤衣服220X220</h3>
+                        <div class="list-mes-item">
+                            <div>
+                                <span class="list-price"><em>¥</em>34.45</span>
+                                <span class="list-del-price">¥545.65</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="list-item">
+                    <div class="list-img">
+                        <img src="img/goods01.png">
+                    </div>
+                    <div class="list-mes">
+                        <h3 class="list-title">superman短袖t恤日潮牌男士日韩夏装水洗做旧修身个性短袖t恤衣服220X220</h3>
+                        <div class="list-mes-item">
+                            <div>
+                                <span class="list-price"><em>¥</em>34.45</span>
+                                <span class="list-del-price">¥545.65</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="list-item">
+                    <div class="list-img">
+                        <img src="img/goods01.png">
+                    </div>
+                    <div class="list-mes">
+                        <h3 class="list-title">superman短袖t恤日潮牌男士日韩夏装水洗做旧修身个性短袖t恤衣服220X220</h3>
+                        <div class="list-mes-item">
+                            <div>
+                                <span class="list-price"><em>¥</em>34.45</span>
+                                <span class="list-del-price">¥545.65</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="list-item">
+                    <div class="list-img">
+                        <img src="img/goods01.png">
+                    </div>
+                    <div class="list-mes">
+                        <h3 class="list-title">superman短袖t恤日潮牌男士日韩夏装水洗做旧修身个性短袖t恤衣服220X220</h3>
+                        <div class="list-mes-item">
+                            <div>
+                                <span class="list-price"><em>¥</em>34.45</span>
+                                <span class="list-del-price">¥545.65</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="recommend"><a><img src="img/appbanner-11.jpg" /></a> </div>
+        <div class="recommend">
+            <div class="title"><i class="icon-like"></i><span class="icon-like-span">好物推荐</span><a href="#"><i class="icon-turnnext"></i></a></div>
+            <a><img src="img/appbanner-11.jpg" /></a>
+        </div>
+        <div class="m-list list-theme4">
+            <a href="#" class="list-item">
+                <div class="list-img">
+                    <img src="img/goods02.png">
+                </div>
+                <div class="list-mes">
+                    <h3 class="list-title">2016夏装新款时尚潮流短袖T恤男纯棉V领日系青ss少年韩版夏季上衣服</h3>
+                    <div class="list-mes-item">
+                        <div>
+                            <span class="list-price"><em>¥</em>34.7</span>
+                            <span class="list-del-price">¥45.65</span>
+                        </div>
+                        <div><button type="button" class="btn-block btn-danger">购买</button></div>
+                    </div>
+                </div>
+            </a>
+            <a href="goods-detail.html" class="list-item">
+                <div class="list-img">
+                    <img src="img/goods01.png">
+                </div>
+                <div class="list-mes">
+                    <h3 class="list-title">2016夏装新款时尚潮流短袖T恤男纯棉V领日系青少年韩版夏季上衣服220X220</h3>
+                    <div class="list-mes-item">
+                        <div>
+                            <span class="list-price"><em>¥</em>34.7</span>
+                            <span class="list-del-price">¥45.65</span>
+                        </div>
+                        <div><button type="button" class="btn-block btn-danger">购买</button></div>
+                    </div>
+                </div>
+            </a>
+            <a href="goods-detail.html" class="list-item">
+                <div class="list-img">
+                    <img src="img/goods03.png">
+                </div>
+                <div class="list-mes">
+                    <h3 class="list-title">2016夏装新款时尚潮流短袖T恤男纯棉V领日系青少年韩版夏季上衣服</h3>
+                    <div class="list-mes-item">
+                        <div>
+                            <span class="list-price"><em>¥</em>34.7</span>
+                            <span class="list-del-price">¥45.65</span>
+                        </div>
+                        <div><button type="button" class="btn-block btn-danger">购买</button></div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="recommend"><a><img src="img/appbanner-11.jpg" /></a> </div>
+        <div class="new-goods">
+            <div class="recommend">
+                <div><i class="icon-like"></i><span class="icon-like-span">新品上架</span><a href="#"><i class="icon-turnnext"></i></a></div>
+                <a><img src="img/appbanner-11.jpg" /></a>
+            </div>
+            <div class="m-list list-theme1">
+                <a href="goods-detail.html" class="list-item">
+                    <div class="list-img">
+                        <img src="img/goods01.png">
+                    </div>
+                    <div class="list-mes">
+                        <h3 class="list-title">superman短袖t恤日潮牌男士日韩夏装ss水洗做旧修身个性短袖t恤衣服220X220</h3>
+                        <div class="list-mes-item">
+                            <div>
+                                <span class="list-price"><em>¥</em>34.45</span>
+                                <span class="list-del-price">¥545.65</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="list-item">
+                    <div class="list-img">
+                        <img src="img/goods01.png">
+                    </div>
+                    <div class="list-mes">
+                        <h3 class="list-title">superman短袖t恤日潮牌男士日韩夏装水洗做旧修身个性短袖t恤衣服220X220</h3>
+                        <div class="list-mes-item">
+                            <div>
+                                <span class="list-price"><em>¥</em>34.45</span>
+                                <span class="list-del-price">¥545.65</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="list-item">
+                    <div class="list-img">
+                        <img src="img/goods01.png">
+                    </div>
+                    <div class="list-mes">
+                        <h3 class="list-title">superman短袖t恤日潮牌男士日韩夏装水洗做旧修身个性短袖t恤衣服220X220</h3>
+                        <div class="list-mes-item">
+                            <div>
+                                <span class="list-price"><em>¥</em>34.45</span>
+                                <span class="list-del-price">¥545.65</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="list-item">
+                    <div class="list-img">
+                        <img src="img/goods01.png">
+                    </div>
+                    <div class="list-mes">
+                        <h3 class="list-title">superman短袖t恤日潮牌男士日韩夏装水洗做旧修身个性短袖t恤衣服220X220</h3>
+                        <div class="list-mes-item">
+                            <div>
+                                <span class="list-price"><em>¥</em>34.45</span>
+                                <span class="list-del-price">¥545.65</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="foot-msg">亲爱的, 下面没有东西啦~</div>
+        <div class="cont_warp_clear">
+            &nbsp;
+        </div>
+        <footer class="m-tabbar tabbar-fixed">
+            <a href="main.html" class="tabbar-item foor-activate">
+                <div class="tabbar-icon">
+                    <i class="icon-home"></i>
+                </div>
+                <div class="tabbar-txt">首页</div>
+            </a>
+            <a href="category.html" class="tabbar-item">
+                <div class="tabbar-icon">
+                    <i class="icon-catogrey"></i>
+                </div>
+                <div class="tabbar-txt">分类</div>
+            </a>
+            <a href="shop-cart.html" class="tabbar-item">
+                <div class="tabbar-icon">
+                    <i class="icon-shopcart"></i>
+                </div>
+                <div class="tabbar-txt">购物车</div>
+            </a>
+            <a href="user-center.html" class="tabbar-item">
+                <div class="tabbar-icon">
+                    <i class="icon-ucenter"></i>
+                </div>
+                <div class="tabbar-txt">我的</div>
+            </a>
+        </footer>
+    </section>
+</section>
+</body>
+<script type="text/javascript" src="js/layer.js" ></script>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+<script src="./js/ydui.flexible.js"></script>
+<script src="./js/ydui.js"></script>
+<script>
+    (function ($) {
+        var activityCount = $(".activity-right>div");
+        if(activityCount.length == 2){
+            $(".activity-left").css("margin",".35rem 0");
+            $(".activity-left>div").css("top","1.25rem");
+        }
+    })(jQuery);
+</script>
+</html>

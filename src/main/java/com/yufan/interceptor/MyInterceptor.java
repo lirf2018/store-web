@@ -1,8 +1,6 @@
 package com.yufan.interceptor;
 
-import com.yufan.pojo.TbAdmin;
 import org.apache.log4j.Logger;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,20 +20,19 @@ public class MyInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 //        System.out.println("preHandle:请求前调用" + request.getRequestURL());
-        TbAdmin user = (TbAdmin) request.getSession().getAttribute("user");
         if (request.getRequestURL().indexOf("sweetalert") > -1) {
 //            LOG.info("不拦截sweetalert");
             return true;
         }
-        if (user == null) {
-            LOG.info("未登录,拦截");
-            PrintWriter pw = response.getWriter();
-            response.setContentType("text/html;charset=UTF-8");
-            pw.print("<script language=javascript>alert('会话结束');</script>");
-            pw.print("<script language=javascript>this.parent.parent.location = '" + request.getContextPath() + "/login/userLoginPage'</script>");
-//            response.sendRedirect(request.getContextPath() + "/login/userLoginPage");
-            return false;
-        }
+//        if (user == null) {
+//            LOG.info("未登录,拦截");
+//            PrintWriter pw = response.getWriter();
+//            response.setContentType("text/html;charset=UTF-8");
+//            pw.print("<script language=javascript>alert('会话结束');</script>");
+//            pw.print("<script language=javascript>this.parent.parent.location = '" + request.getContextPath() + "/login/userLoginPage'</script>");
+////            response.sendRedirect(request.getContextPath() + "/login/userLoginPage");
+//            return false;
+//        }
         return true;
     }
 

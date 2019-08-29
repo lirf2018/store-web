@@ -7,7 +7,6 @@ package com.yufan.utils;
  */
 public enum OutCode {
 
-
     fail("0", "操作失败"),
     success("1", "操作成功"),
     delete_fail("2", "删除失败"),

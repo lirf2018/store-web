@@ -1,5 +1,8 @@
 package com.yufan.utils;
 
+import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Random;
 
 /**
@@ -99,11 +102,8 @@ public class CommonMethod {
                         aChar = '\f';
 
                     outBuffer.append(aChar);
-
                 }
-
             } else
-
                 outBuffer.append(aChar);
 
         }
@@ -119,4 +119,25 @@ public class CommonMethod {
         int r = random.nextInt(899) + 100;//随机三位数
         return new StringBuffer().append(addWord).append(time).append(r).toString();
     }
+
+    /**
+     * 调用接口
+     *
+     * @return
+     */
+    public static JSONObject infoResult(JSONObject data, String reqType) {
+        try {
+            JSONObject out = new JSONObject();
+            out.put("req_type", reqType);
+            out.put("data", data);
+            String result = HttpsRequest.httpsPost(Constants.INFO_URL, out.toString());
+            if (StringUtils.isNotEmpty(result)) {
+                return JSONObject.parseObject(result);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
