@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>闲菜详情</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <base th:href="@{/}">
+    <link rel="stylesheet" href="css/ydui.css?rev=@@hash"/>
+    <link rel="stylesheet" href="css/demo.css" />
+    <link rel="stylesheet" href="css/commondemo.css"/>
+    <link rel="stylesheet" href="css/sencod-goods-detail.css" />
+    <style>
+        body{
+            background-color: white;
+            font-family: ff-tisa-web-pro-1,ff-tisa-web-pro-2,"Lucida Grande","Hiragino Sans GB","Hiragino Sans GB W3";
+        }
+    </style>
+</head>
+<body>
+<section class="g-flexview">
+
+    <header class="m-navbar">
+        <a class="navbar-item"><i class="back-ico" onclick="javascript:history.go(-1)"></i></a>
+        <div class="navbar-center"><span class="navbar-title">闲菜详情</span></div>
+    </header>
+    <div class="header-height"></div>
+    <section class="g-scrollview">
+        <div class="goods-detail">
+            <div class="price">
+                <span class="currency">￥</span>
+                <span class="sale-price" th:text="${now_price}"></span>&nbsp;&nbsp;
+                <span class="true-price"><span>￥</span><span th:text="${true_price}"></span></span>&nbsp;
+                <span class="about-price" th:if="${about_price == 0}">不议价</span>
+            </div>
+            <div class="goods-only-no">
+                <span>商品唯一编号：</span>
+                <span th:text="${goods_shop_code}"></span>
+            </div>
+            <div class="goods-name">
+                <h2><span class="goods-new" th:if="${new_info == 0}">【全新】</span><span th:text="${goods_name}"></span></h2>
+            </div>
+            <div class="goods-info" th:text="${goods_info}" th:if="${goods_info != ''}">
+
+            </div>
+            <div class="goods-info-img">
+                <div class="goods-imfo-img" th:if="${img4 != ''}"> <img th:src="${img4}"> </div>
+                <div class="goods-imfo-img" th:if="${img3 != ''}"> <img th:src="${img3}"> </div>
+                <div class="goods-imfo-img" th:if="${img2 != ''}"> <img th:src="${img2}"> </div>
+                <div class="goods-imfo-img" th:if="${img1 != ''}"> <img th:src="${img1}"> </div>
+            </div>
+            <div class="weixin" align="center">
+                <div align="center" class="reminding">温馨提示：添加微信了解商品详细信息(长按图片识别添加)</div>
+                <div align="center" class="my-weixin">微信: wx512164882</div>
+                <div class="weixin-img" align="center">
+                    <img src="img/wx51216.jpg" />
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+</body>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+</html>

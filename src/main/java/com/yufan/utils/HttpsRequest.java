@@ -109,7 +109,7 @@ public class HttpsRequest {
                 result = readHttpResponse(httpResponse);
             }
             LOG.info("返回耗时：" + (System.currentTimeMillis() - st));
-            LOG.info("返回结果：" + jsonParam);
+            LOG.info("返回结果：" + result);
             return result;
         } catch (Exception e) {
             e.printStackTrace();

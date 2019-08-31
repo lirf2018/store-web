@@ -1,0 +1,63 @@
+
+
+.goods-detail{
+	padding: 20px 10px 0px 10px;
+}
+.goods-only-no{
+	margin: 10px 0;
+}
+.currency,.sale-price{
+	color: #cd1144;
+	font-weight: bold;
+}
+.sale-price{
+	font-size: .35rem;
+}
+.true-price{
+	text-decoration:line-through;
+	color: grey;
+	font-size: .23rem;
+}
+.about-price{
+	color: grey;
+	font-size: .21rem;
+}
+
+.goods-name{
+	padding: 10px 0px;
+	line-height: .40rem;
+}
+.goods-new{
+	color: #cd1144;
+	font-weight: bold;
+	padding-right: 15px;
+}
+.goods-info img, .weixin img,.goods-info-img img{
+	width: 100%;
+	height: auto;
+}
+.sale-user-info{
+	margin-top: 10px;
+}
+.weixin{
+	width: 100%;
+	text-align: center;
+	margin-top: 15px;
+	text-align: center;
+}
+.reminding{
+	margin-bottom: 8px;
+	color: #cd1144;
+	font-size: .25rem;
+}
+.my-weixin{
+	color: #cd1144;
+	font-size: .28rem;
+}
+.weixin-img{
+	width: 100%;
+	width: 5rem;
+	height: 5rem;
+	text-align: center;
+	margin: 0px auto;
+}

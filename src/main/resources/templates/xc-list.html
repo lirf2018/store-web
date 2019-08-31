@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>闲菜列表</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <base th:href="@{/}">
+    <link rel="stylesheet" href="./css/ydui.css?rev=@@hash"/>
+    <link rel="stylesheet" href="css/commondemo.css"/>
+    <link rel="stylesheet" href="css/sencond-goods.css" />
+</head>
+<body>
+<section class="g-flexview">
+    <header class="navbar-search">
+        <div class="search-btn">
+            <div>
+                <a></a>
+            </div>
+            <div>
+                <input type="text" placeholder="输入搜索内容" id="goodsName" th:value="${goodsName}"/>
+            </div>
+            <div>
+                <span>搜索</span>
+            </div>
+        </div>
+    </header>
+    <div class="header-height"></div>
+    <section class="g-scrollview">
+        <section class="g-scrollview" id="J_List">
+            <div id="J_ListContent" class="m-list list-theme1"></div>
+        </section>
+    </section>
+</section>
+<!--<div id="testhtmssl" style="display: none;">
+    <div class="sencod-goods" onclick="goodsDetail(this)">
+        <div class="sencod-goods-detail">
+            <div><img src="img/b1.jpg"></div>
+            <div class="goods-name">
+                <span><h3 class="goods-title">2016夏装新衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服</h3></span>
+            </div>
+            <div class="price">
+                <div>
+                    <span class="currency">￥</span>
+                    <span class="sale-price">23.30</span>
+                </div>
+                <div>5人想要</div>
+            </div>
+        </div>
+    </div>
+    <div class="sencod-goods" onclick="goodsDetail(this)">
+        <div class="sencod-goods-detail">
+            <div><img src="img/aa.jpg"></div>
+            <div class="goods-name">
+                <span><h3 class="goods-title">2016夏装新款时尚潮流上衣服上衣服上衣服上衣服上衣服上衣服上衣服</h3></span>
+            </div>
+            <div class="price">
+                <div>
+                    <span class="currency">￥</span>
+                    <span class="sale-price">23.30</span>
+                </div>
+                <div>5人想要</div>
+            </div>
+        </div>
+    </div>
+</div>-->
+</body>
+<script type="text/javascript" src="js/layer.js" ></script>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+<script src="js/ydui.js"></script>
+<script src="js/ydui.flexible.js"></script>
+<script src="js/ydui.js"></script>
+<script>
+    !function () {
+
+        // 根据实际情况自定义获取数据方法
+        var page = 1;var pageSize = 20;
+        var loadMore = function (callback) {
+            $.ajax({
+                url: "xc/xcPageData",
+                type: 'POST',
+                data: {
+                    "currePage":page,
+                    "goodsName":$("#goodsName").val()
+                },// 要提交的表单 ,
+                async: false,
+                cache: false,
+                dataType: "json",
+                success: function (ret) {
+                    typeof callback == 'function' && callback(ret);
+                }
+            });
+        };
+
+        $('#J_List').infiniteScroll({
+            binder: '#J_List',
+            pageSize: pageSize,
+            initLoad: true,
+            loadingHtml: '<img src="img/loading10.svg"/>',
+            //doneTxt:'没有更多数据了',
+            loadListFn: function () {
+                var def = $.Deferred();
+                loadMore(function (ret) {
+
+                    var goodsList = ret.data.goods_list;
+                    for (var i = 0; i < goodsList.length; i++) {
+                        var goodsId = goodsList[i].goods_id;
+                        var goodsName = goodsList[i].goods_name;
+                        var goodsImg = goodsList[i].goods_img;
+                        var salePrice = goodsList[i].now_price;
+                        var readCount = goodsList[i].read_num;
+                        var html = "<div class='sencod-goods' onclick='goodsDetail(" + goodsId + ")'>" +
+                            "<div class='sencod-goods-detail'>" +
+                            "<div><img src='" + goodsImg + "'></div>" +
+                            "<div class='goods-name'>"+
+                            "<span><h3 class='goods-title'>"+goodsName+"</h3></span>"+
+                            "</div>"+
+                            "<div class='price'>"+
+                            "<div>"+
+                            "<span class='currency'>￥</span>"+
+                            "<span class='sale-price'>"+salePrice+"</span>"+
+                            "</div>"+
+                            "<div>"+readCount+"人想要</div>"+
+                            "</div>"+
+                            "</div>"+
+                            "</div>";
+                            $('#J_ListContent').append(html);
+                    }
+                    /* 获取数据，并插入页面后，调用resole，并传入当前获取的记录列表集合 */
+                    var hasNext =  ret.has_next;
+                    def.resolve(hasNext);
+                    ++page;
+                });
+                return def.promise();
+            }
+        });
+
+    }();
+    
+    function searchData() {
+        
+    }
+
+    function goodsDetail(id){
+        window.location.href = "xc/xcDetailPage?id="+id;
+    };
+</script>
+</html>

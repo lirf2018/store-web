@@ -40,6 +40,8 @@ public class RequestMethod {
             String urlName = url + "?" + param;//
             URL U = new URL(urlName);
             URLConnection connection = U.openConnection();
+            connection.setConnectTimeout(60*1000);
+            connection.setReadTimeout(60*1000);
             connection.connect();
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
@@ -68,7 +70,8 @@ public class RequestMethod {
             HttpURLConnection httpUrlConn = (HttpURLConnection) url.openConnection();
             httpUrlConn.setDoInput(true);
             httpUrlConn.setRequestMethod("GET");
-
+            httpUrlConn.setConnectTimeout(60*1000);
+            httpUrlConn.setReadTimeout(60*1000);
             // 获取输入流
             InputStream inputStream = httpUrlConn.getInputStream();
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "utf-8");
@@ -108,6 +111,8 @@ public class RequestMethod {
             // 打开和URL之间的连接
             URLConnection connection = realUrl.openConnection();
             connection.setDoOutput(true);
+            connection.setConnectTimeout(60*1000);
+            connection.setReadTimeout(60*1000);
             // 建立实际的连接
             connection.connect();
             out = new PrintWriter(connection.getOutputStream());
@@ -158,6 +163,8 @@ public class RequestMethod {
             // 发送POST请求必须设置如下两行
             conn.setDoOutput(true);
             conn.setDoInput(true);
+            conn.setConnectTimeout(60*1000);
+            conn.setReadTimeout(60*1000);
             // 获取URLConnection对象对应的输出流
             out = new PrintWriter(new OutputStreamWriter(conn.getOutputStream(), "utf-8"));
             // 发送请求参数
@@ -201,6 +208,9 @@ public class RequestMethod {
     public static String httpPost(String httpUrl, String httpJson) {
 
         try {
+            long st = System.currentTimeMillis();
+            LOG.info("----请求地址："+httpUrl);
+            LOG.info("----请求参数："+httpJson);
             URL url = new URL(httpUrl);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url
                     .openConnection();
@@ -209,6 +219,8 @@ public class RequestMethod {
             httpURLConnection.setRequestProperty("contentType", "UTF-8");
             httpURLConnection.setDoOutput(true);
             httpURLConnection.setDoInput(true);
+            httpURLConnection.setConnectTimeout(60*1000);
+            httpURLConnection.setReadTimeout(60*1000);
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.connect();
 
@@ -226,7 +238,8 @@ public class RequestMethod {
                     result.append(line);
                 }
             }
-
+            LOG.info("返回耗时：" + (System.currentTimeMillis() - st));
+            LOG.info("返回结果：" + result);
             return result.toString();
         } catch (Exception e) {
         }

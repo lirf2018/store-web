@@ -110,6 +110,20 @@ public class CommonMethod {
         return outBuffer.toString();
     }
 
+
+    /**
+     * 处理结果参数
+     * @param code
+     * @return
+     */
+    public static JSONObject packagMsg(String code) {
+        JSONObject json = new JSONObject();
+        json.put("code", code);
+        json.put("msg", OutCode.getMsg(code));
+        return json;
+    }
+
+
     /**
      * 生成订单号，最长支持20位
      */
@@ -130,7 +144,7 @@ public class CommonMethod {
             JSONObject out = new JSONObject();
             out.put("req_type", reqType);
             out.put("data", data);
-            String result = HttpsRequest.httpsPost(Constants.INFO_URL, out.toString());
+            String result = RequestMethod.httpPost(Constants.INFO_URL, out.toString());
             if (StringUtils.isNotEmpty(result)) {
                 return JSONObject.parseObject(result);
             }
