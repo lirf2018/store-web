@@ -107,7 +107,7 @@ public class Constants {
     public static String INFO_URL = "http://127.0.0.1:8082/test";
     public static String INFO_MAIN = "main";
     public static String XC_LIST = "query_xc_list";//闲菜商品列表
-    public static String XC_DETAIL = "query_xc_list";//闲菜商品详情
+    public static String XC_DETAIL = "query_xc_detail";//闲菜商品详情
 
 
 }

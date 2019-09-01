@@ -14,27 +14,29 @@
     <link rel="stylesheet" href="css/sencond-goods.css" />
 </head>
 <body>
-<section class="g-flexview">
-    <header class="navbar-search">
-        <div class="search-btn">
-            <div>
-                <a></a>
+<form action="xc/xcPage" method="post" id="myForm">
+    <section class="g-flexview">
+        <header class="navbar-search">
+            <div class="search-btn">
+                <div>
+                    <a></a>
+                </div>
+                <div>
+                    <input type="text" placeholder="输入搜索内容" id="goodsName" name="goodsName" th:value="${goodsName}"/>
+                </div>
+                <div>
+                    <span onclick="searchData()">搜索</span>
+                </div>
             </div>
-            <div>
-                <input type="text" placeholder="输入搜索内容" id="goodsName" th:value="${goodsName}"/>
-            </div>
-            <div>
-                <span>搜索</span>
-            </div>
-        </div>
-    </header>
-    <div class="header-height"></div>
-    <section class="g-scrollview">
-        <section class="g-scrollview" id="J_List">
-            <div id="J_ListContent" class="m-list list-theme1"></div>
+        </header>
+        <div class="header-height"></div>
+        <section class="g-scrollview">
+            <section class="g-scrollview" id="J_List">
+                <div id="J_ListContent" class="m-list list-theme1"></div>
+            </section>
         </section>
     </section>
-</section>
+</form>
 <!--<div id="testhtmssl" style="display: none;">
     <div class="sencod-goods" onclick="goodsDetail(this)">
         <div class="sencod-goods-detail">
@@ -104,8 +106,8 @@
             loadListFn: function () {
                 var def = $.Deferred();
                 loadMore(function (ret) {
-
-                    var goodsList = ret.data.goods_list;
+                    var data = ret.data;
+                    var goodsList = data.goods_list;
                     for (var i = 0; i < goodsList.length; i++) {
                         var goodsId = goodsList[i].goods_id;
                         var goodsName = goodsList[i].goods_name;
@@ -127,10 +129,10 @@
                             "</div>"+
                             "</div>"+
                             "</div>";
-                            $('#J_ListContent').append(html);
+                        $('#J_ListContent').append(html);
                     }
                     /* 获取数据，并插入页面后，调用resole，并传入当前获取的记录列表集合 */
-                    var hasNext =  ret.has_next;
+                    var hasNext =  data.has_next;
                     def.resolve(hasNext);
                     ++page;
                 });
@@ -139,9 +141,9 @@
         });
 
     }();
-    
+
     function searchData() {
-        
+        $("#myForm").submit();
     }
 
     function goodsDetail(id){

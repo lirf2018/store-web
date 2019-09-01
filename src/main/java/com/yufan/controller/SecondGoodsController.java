@@ -35,7 +35,9 @@ public class SecondGoodsController {
         //if (null != result) {
         // modelAndView.addObject("data", result.getJSONObject("data"));
         //}
-
+        JSONObject data = new JSONObject();
+        data.put("curre_page", 1);
+        data.put("goods_name", goodsName);
         modelAndView.addObject("goodsName", goodsName);
         modelAndView.setViewName("xc-list");
         return modelAndView;
@@ -83,10 +85,20 @@ public class SecondGoodsController {
     public ModelAndView toXiancaiDetailPage(HttpServletRequest request, HttpServletResponse response, Integer id) {
         ModelAndView modelAndView = new ModelAndView();
         JSONObject data = new JSONObject();
-        data.put("id",id);
+        data.put("id", id);
         JSONObject result = CommonMethod.infoResult(data, Constants.XC_DETAIL);
         if (null != result) {
-            modelAndView.addObject("data", result.getJSONObject("data"));
+            JSONObject resultData = result.getJSONObject("data");
+            modelAndView.addObject("goods_id", resultData.getInteger("goods_id"));
+            modelAndView.addObject("goods_name", resultData.getString("goods_name"));
+            modelAndView.addObject("goods_img", resultData.getString("goods_img"));
+            modelAndView.addObject("true_price", resultData.getBigDecimal("true_price"));
+            modelAndView.addObject("now_price", resultData.getBigDecimal("now_price"));
+            modelAndView.addObject("new_info", resultData.getInteger("new_info"));
+            modelAndView.addObject("is_post", resultData.getInteger("is_post"));
+            modelAndView.addObject("about_price", resultData.getInteger("about_price"));
+            modelAndView.addObject("goods_info", resultData.getString("goods_info"));
+            modelAndView.addObject("goods_shop_code", resultData.getString("goods_shop_code"));
         }
         modelAndView.setViewName("xc-detail");
         return modelAndView;
