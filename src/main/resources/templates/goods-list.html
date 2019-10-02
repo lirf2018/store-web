@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品列表</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+	<base th:href="@{/}">
+    <link rel="stylesheet" href="./css/ydui.css?rev=@@hash"/>
+    <script src="./js/ydui.flexible.js"></script>
+    <link rel="stylesheet" href="css/commondemo.css"/>
+    <link rel="stylesheet" href="css/goodslist.css" />
+</head>
+<body>
+<section class="g-flexview">
+	<header class="navbar-search">
+        <div class="search-btn">
+        	<div>
+        		<a href="javascript:history.go(-1)" ><i class="icon-turnback"></i></a>
+        	</div>
+        	<div>
+        		<input type="text" placeholder="输入搜索内容"/>
+        	</div>
+        	<div>
+        		<span><a href="#">搜索</a></span>
+        	</div>
+        </div>
+	</header>
+	<div class="header-height"></div>
+    <section class="g-scrollview">
+    	<section class="g-scrollview" id="J_List">
+        	<div id="J_ListContent" class="m-list list-theme1"></div>
+    	</section>
+    </section>
+</section>
+<div id="testhtml" style="display: none;">
+	<div class="goods-list">
+		<div class="goods-item" onclick="toDetail()">
+	        <div class="goods-img">
+	            <div align="center"><img src="img/goods02.png"></div>
+	        </div>
+	        <div class="goods-mes">
+	            <h3 class="goods-title">2016夏装新款时尚潮流短袖T恤男纯棉V领日系青少年韩版夏季上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服</h3>
+	            <div class="goods-mes-item">
+	                <div>
+	                    <span class="goods-price"><em>¥</em>34.7</span>
+	                    <span class="list-del-price">¥45.65</span>
+	                </div>
+			        <div>
+			            <span class="sale-count">已售 10 </span>
+			        </div>		                	
+	            </div>
+	        </div>
+	         <div style="clear: both;"></div>
+        </div>
+	</div>
+	<div class="goods-list">
+		<div class="goods-item" onclick="toDetail()">
+	        <div class="goods-img">
+	            <div align="center"><img src="img/goods02.png"></div>
+	        </div>
+	        <div class="goods-mes">
+	            <h3 class="goods-title">2016夏装新款时尚潮流短袖T恤男纯棉V领日系青少年韩版夏季上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服上衣服</h3>
+	            <div class="goods-spec">规格:64G+绿色+大陆板64G+绿色+大陆板64G+绿色+大陆板</div>
+	            <div class="goods-mes-item">
+	                <div>
+	                    <span class="goods-price"><em>¥</em>34.7</span>
+	                    <span class="list-del-price">¥45.65</span>
+	                </div>
+			        <div>
+			           <span class="sale-count">已售 10 </span>
+			        </div>		                	
+	            </div>
+	        </div>
+	         <div style="clear: both;"></div>
+        </div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="js/layer.js" ></script>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+<script src="js/ydui.js"></script>
+<script>
+	var html = $("#testhtml").html();
+</script>
+<script src="js/ydui.js"></script>
+<script>
+    !function () {
+
+        // 根据实际情况自定义获取数据方法
+        var page = 1, pageSize = 20;
+        var loadMore = function (callback) {
+           $.ajax({
+                url: 'goods/loadGoodsList',
+                dataType: 'json',
+                data: {
+                    page: page,
+                    pagesize: pageSize
+                },
+                success: function (ret) {
+                    typeof callback == 'function' && callback(ret);
+                }
+            });
+        };
+
+        $('#J_List').infiniteScroll({
+            binder: '#J_List',
+            pageSize: pageSize,
+            initLoad: true,
+            loadingHtml: '<img src="img/loading10.svg"/>',
+            //doneTxt:'没有更多数据了',
+            loadListFn: function () {
+                var def = $.Deferred();
+                loadMore(function (ret) {
+
+                	var code = ret.code;
+                	var data = ret.data;
+
+					var hasNext =  false;
+                	if(code==1){
+						var goodsList = data.goods_list;
+						hasNext = data.has_next;
+						for (var i = 0; i < goodsList.length; i++) {
+							var goodsName = goodsList[i].goods_name;
+							var sellCount = goodsList[i].sell_count;
+							var nowMoney = goodsList[i].now_money;
+							var trueMoney = goodsList[i].true_money;
+							var skuNowMoney = goodsList[i].sku_now_money;
+							var goodsId = goodsList[i].goods_id;
+							var title = goodsList[i].title;
+							var single = goodsList[i].is_single;
+							var goodsImg = goodsList[i].goods_img;
+
+							var html = "";
+							if(single == 0){
+								 html="<div class='goods-list'>\n" +
+									"<div class='goods-item' onclick='toDetail("+goodsId+")'>\n" +
+									"<div class='goods-img'>\n" +
+									"<div align='center'><img src='"+goodsImg+"'></div>\n" +
+									"</div>\n" +
+									"<div class='goods-mes'>\n" +
+									"<h3 class='goods-title'>"+goodsName+"</h3>\n" +
+									"<div class='goods-mes-item'>\n" +
+									"<div>\n" +
+									"<span class='goods-price'><em>¥</em>"+skuNowMoney+"</span>\n" +
+									"<span class='list-del-price'> </span>\n" +
+									"</div>\n" +
+									"<div>\n" +
+									"<span class='sale-count'>已售 "+sellCount+" </span>\n" +
+									"</div>\t\t                \t\n" +
+									"</div>\n" +
+									"</div>\n" +
+									"<div style='clear: both;'></div>\n" +
+									"</div>\n" +
+									"</div>";
+							}else{
+								 html="<div class='goods-list'>\n" +
+									"<div class='goods-item' onclick='toDetail("+goodsId+")'>\n" +
+									"<div class='goods-img'>\n" +
+									"<div align='center'><img src='"+goodsImg+"'></div>\n" +
+									"</div>\n" +
+									"<div class='goods-mes'>\n" +
+									"<h3 class='goods-title'>"+goodsName+"</h3>\n" +
+									"<div class='goods-mes-item'>\n" +
+									"<div>\n" +
+									"<span class='goods-price'><em>¥</em>"+nowMoney+"</span>\n" +
+									"<span class='list-del-price'>¥"+trueMoney+"</span>\n" +
+									"</div>\n" +
+									"<div>\n" +
+									"<span class='sale-count'>已售 "+sellCount+" </span>\n" +
+									"</div>\t\t                \t\n" +
+									"</div>\n" +
+									"</div>\n" +
+									"<div style='clear: both;'></div>\n" +
+									"</div>\n" +
+									"</div>";
+							}
+							$('#J_ListContent').append(html);
+						}
+					}
+
+                  /* 获取数据，并插入页面后，调用resole，并传入当前获取的记录列表集合 */
+                  def.resolve(hasNext);
+                  ++page;
+                });
+
+                return def.promise();
+            }
+        });
+        
+    }();
+    
+   function toDetail(goodsId){
+       window.location.href = "goods/goodsDetail?goodsId="+goodsId
+   };
+</script>
+</html>

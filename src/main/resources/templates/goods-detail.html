@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品详情</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+	<base th:href="@{/}">
+	<link rel="stylesheet" href="css/ydui.css?rev=@@hash"/>
+    <link rel="stylesheet" href="css/demo.css"/>
+    <link rel="stylesheet" href="css/category.css" />
+    <script src="js/ydui.flexible.js"></script>
+    <link rel="stylesheet" href="css/commondemo.css"/>
+    <link rel="stylesheet" href="css/goodsdetail.css" />
+    
+</head>
+<body>
+<section class="g-flexview">
+    <header class="m-navbar">
+        <a href="javascript:history.go(-1)" class="navbar-item"><i class="back-ico"></i></a>
+        <div class="navbar-center"><span class="navbar-title">商品详情</span></div>
+        <div class="navbar-item navbar-right"><a href="shop-cart.html"><i class="icon-shopcart-outline"><div class="shopcart-count">10</div></i></a></div>
+    </header>
+	<div class="header-height"></div>
+    <section class="g-scrollview">
+		<div class="goods-bannel">
+			<div class="m-slider" data-ydui-slider="{autoplay: 3000}"><!-- 参数在这里 -->
+			    <div class="slider-wrapper">
+			        <div class="slider-item" th:each="imgs:${data.banner_img_list}">
+			            <img th:src="${imgs.img_url}">
+			        </div>
+			    </div>
+			    <div class="slider-pagination"></div><!-- 分页标识 -->
+			</div>
+		</div>
+		<div class="goods-name">
+			<div><span th:text="${data.goods_name}"></span></div>
+		</div>
+		<div class="goods-info">
+			<div class="goods-price">
+				<span class="sale-price">￥<span th:text="${data.now_money}"></span></span>
+				<span class="price-yuanjia">￥<span th:text="${data.true_money}"></span></span>
+			</div>
+			<div>
+				<div>已售<span th:text="${data.sell_count}"></span>个</div>
+				<div>库存<span th:text="${data.goods_num}"></span>个</div>
+			</div>
+		</div>
+		<div class="buy-count">
+			<div class="m-cell">
+				<div class="cell-item">
+			        <div class="cell-left">购买数量</div>
+			        <div class="cell-right add-btn" >
+			        	<span><button>-</button></span>
+			        	<span><input readonly="readonly" type="number" value="1" /></span>
+			        	<span><button>+</button></span>
+			        </div>
+			    </div>
+			</div>
+		</div>
+		<div class="buy-rule">
+			<div class="m-cell">
+			    <div class="cell-item">
+			        <div class="cell-left">订购须知</div>
+			        <div class="cell-right" ><i class="icon-turnnext" id="need-know"></i></div>
+			    </div>
+			</div>
+			<div class="buy-rule-detail">
+                <p>发货说明：</p>
+                <p>根据付款先后顺序发货，付款后48小时内发出，周末正常发货； 注：部分海外直邮的产品因从境外发货会稍有延迟。任何个人购买的商品只要是从海外入境到国内，都需要提供购买者的个人身份证，可享受到个人商品进口的行邮税优惠购买进口商品必须填写真实姓名和身份证号</p>
+                <p>我们承诺：</p>
+                <p>傻鸟哥平台所优选的产品都由供货商直接提供，有正规的资质和协议，请放心购买！</p>
+                <p>有时因厂家会在没有任何提前通知的情况下更改产品包装、产地或者一些附件，本司不能确保客户收到的货物与商城图片、产地、附件说明完全一致。只能确保为原厂正货！并且保证与当时市场上同样主流新品一致。若本商城没有及时更新，请大家谅解！</p>
+                <p>权利声明：</p>
+                <p>傻鸟商城上的所有商品信息、客户评价、商品咨询、网友讨论等内容，是傻鸟哥重要的经营资源，未经许可，禁止非法转载使用。</p>
+                <p>注：本站商品信息均来自于合作方，其真实性、准确性和合法性由信息拥有者（合作方）负责。本站不提供任何保证，并不承担任何法律责任。</p>
+                <p>退换货说明:</p>
+                <p>• 请务必首先致电我们的客户服务部门（0755-66689901），告知所遇到的问题，然后根据我们客户服务代表的指示进行退换货；</p>
+                <p>• 退换货时请提供所有需要退换的产品，哪怕其已经破损或被打开；</p>
+                <p>• 为了您的便利，请在致电我们客户服务部门时，告知您购买产品的订单号；</p>
+                <p>• 收到货物时即发现产品破损；</p>
+                <p>• 与顾客在网站上订购的产品不同；</p>
+                <p>• 收到货物时即发现产品已过期；</p>
+                <p>我们只受理从本网站销售的产品的退换货。凡是从本网站以外渠道购买的产品，请联系原购买地协商退换货。</p>
+                <p>请提供相关订单号与您的电子邮件地址以及电话号码以获取最快的服务。</p>
+                <p>鉴于银行体系以及邮政体系的内部流程，我们完成退款操作后，该款项大致需要15-30天左右的时间才能到达您的银行卡里或寄达您手中。对此我们深表歉意。但由于这其间的所有环节都不是 我们所能够控制的，还请您谅解。</p>
+                <p>价格说明：</p>
+                <p>傻鸟哥价格："鸟哥优选商城" 商品的销售价，是您最终决定是否购买商品的依据。</p>
+                <p>异常问题：商品促销信息以商品详情页“促销”栏中的信息为准；商品的具体售价以订单结算页价格为准；如您发现活动商品售价或促销信息有异常，建议购买前先联系销售商咨询。</p>
+            </div>
+		</div>
+		<div class="goods-detail">
+			<div>
+				<div class="goods-detail-info-title" align="center">商品图文详情</div>
+				<div style="border: 1px solid white" class="goods-detail-info" th:utext="${data.intro}"></div>
+			</div>
+			<div class="img-items">
+				<div th:each="goodsInfoImg:${data.goods_img_list}"><img th:src="${goodsInfoImg.img_url}"></div>
+				<div style="height: .9rem; width: 100%;background-color: white;"></div>
+			</div>
+		</div>
+    </section>
+</section>
+<div class="buy-btn" >
+	<div><a href="javasscript:" class="btn-block btn-mybtn5">加入购物车</a></div>
+	<div><a href="javasscript:" class="btn-block btn-mybtn4">立即购买</a></div>
+</div>
+
+<script src="js/jquery-1.10.1.min.js"></script>
+<script src="js/ydui.js"></script>
+<script type="text/javascript" src="js/layer.js" ></script>
+<script>
+		$(".buy-rule").on("click",function(){
+			var cssDivDetail = $(".buy-rule-detail").css("display");
+			if(cssDivDetail == "none"){
+				$(".buy-rule-detail").css("display","inline-block");
+				$("#need-know").attr("class","icon-down");
+			}else{
+				$(".buy-rule-detail").css("display","none");
+				$("#need-know").attr("class","icon-turnnext");
+			}
+		})
+		
+</script>
+</body>
+</html>
