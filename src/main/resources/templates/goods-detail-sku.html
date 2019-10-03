@@ -41,7 +41,7 @@
 		</div>
 		<div class="goods-info">
 			<div class="goods-price">
-				<span class="sale-price">￥<span th:text="${data.sku_low_money}"></span></span>
+				<span class="sale-price"><span th:text="${data.sku_low_money}"></span></span>
 				<span class="price-yuanjia"></span>
 			</div>
 			<div>
@@ -122,8 +122,8 @@
 			<div class="spec-info-img" align="center"><img src="img/goods02.png"></div>
 			<div class="spec-info-detail">
 				<div class="close-X"><i class="icon-x"></i></div>
-				<div class="sale-price"><span>￥300-3000</span><span class="price-yuanjia">￥33.3</span></div>
-				<div>库存<span class="spec-store">32</span>个</div>
+				<div class="sale-price"><span th:text="${data.sku_low_money}"></span><span class="price-yuanjia"></span></div>
+				<div>库存<span class="spec-store" th:text="${data.goods_num}"></span>个</div>
 				<div class="chose-spec-name">选择规格</div>
 			</div>
 		</div>
@@ -186,7 +186,60 @@
 		      $(".layui-m-layer *").css("box-sizing","inherit");
 		      initClick();
 		      isChoseSpec();
+		      initChoseData();
 		});
+
+		//初始化选择数据
+		function initChoseData() {
+			objUl = $(".spec-item>ul");
+			//设置页面已选择规格
+			//商品规格
+			var specCode = "";
+			var specName = "";
+
+			objUl = $(".spec-item>ul");
+			var selectCount = 0;
+			//规格总数
+			objUl.each(function(){
+				//校验是否所有规格都已选择
+				var objLi = $(this).children("li");
+				objLi.each(function(){
+					if($(this).attr("class") == "spec-current"){
+						//值
+						specCode = specCode + $(this).attr("data-spec-code")+";";
+						specName = specName + $(this).attr("data-spec-name")+";";
+						selectCount = selectCount+1;
+					}
+				})
+			})
+			//
+			var specStore = [[${data.goods_num}]];
+			var salePrice = [[${data.sku_low_money}]];
+			var choseSpecName = "已选: "+specName;
+			$(".chose-spec-name").html();//弹窗已选规格
+			if(selectCount == 0){
+				choseSpecName = "选择规格";
+			}else if(objUl.length == selectCount){
+				//设置库存价格等
+				var goodsSkuList = [[${data.goods_sku_list}]];
+				for (var i = 0; i < goodsSkuList.length; i++) {
+					var propCode = goodsSkuList[i].prop_code;
+					var money = goodsSkuList[i].now_money;
+					var skuNum = goodsSkuList[i].sku_num;
+					if (specCode == propCode) {
+						specStore = skuNum;
+						salePrice = "￥" + money;
+						break;
+					}
+				}
+			}
+
+			$(".sale-price>span:first-child").html(salePrice);//售价
+			$(".spec-store").html(specStore);//库存
+			$(".chose-spec-name").html(choseSpecName);
+		}
+
+		//点击选中事件
 		function initClick(){
 			//选择规格
 			$(".spec-name-detail>li").on("click",function(){
@@ -196,15 +249,15 @@
 					
 				}else{
 					var parent = $(this).parent();//得到父级
-					$(this).parent().children("li").attr("class","spec-current-not");
+                    parent.children("li").attr("class","spec-current-not");
 					$(this).attr("class","spec-current");
 				}
+				initChoseData();
 				
-				//设置页面已选择规格
-				//商品规格
-				var specCode = "";
-				var specName = "";
-				
+			});
+			
+			//关闭规格窗口
+			$(".close-X>i").on("click",function(){
 				objUl = $(".spec-item>ul");
 				var selectCount = 0;
 				//规格总数
@@ -214,25 +267,21 @@
 					objLi.each(function(){
 						if($(this).attr("class") == "spec-current"){
 							//值
-							specCode = specCode + $(this).attr("data-spec-code")+";";
-							specName = specName + $(this).attr("data-spec-name")+";";
 							selectCount = selectCount+1;
 						}
 					})
-				})
-				//
-				$(".spec-store").html(100);//库存
-				$(".chose-spec-name").html("已选: "+specName);//弹窗已选规格
-				if(selectCount == 0){
-					$(".chose-spec-name").html("选择规格");
+				});
+				if(objUl.length != selectCount){
+					layer.open({
+						content: '请选择商品规格！'
+						,skin: 'msg'
+						,time: 2 //2秒后自动关闭
+					});
+					return;
 				}
-			});
-			
-			//关闭规格窗口
-			$(".close-X>i").on("click",function(){
 				layer.closeAll();
 			});
-			
+
 			//购买数量
 			$(".add-btn>span:first-child").on("click",function(){
 				var num = $(".add-btn>span:nth-child(2) input").val();
@@ -246,8 +295,8 @@
 				var num = $(".add-btn>span:nth-child(2) input").val();
 				$(".add-btn>span:nth-child(2) input").val(++num);
 			});
-			
-			
+
+
 			//规格确认
 			$(".spec-btn").on("click",function(){
 				//商品规格
@@ -281,19 +330,7 @@
 				//页面
 				$(".spec-show").html(specName);//页面已选规格
 				$(".spec-show").attr("data-value",specCode);
-				//设置库存价格等
-				var goodsSkuList = [[${data.goods_sku_list}]];
-				for (var i = 0; i < goodsSkuList.length; i++) {
-					var propCode = goodsSkuList[i].prop_code;
-					var money = goodsSkuList[i].now_money;
-					var skuNum = goodsSkuList[i].sku_num;
-					if(specCode == propCode){
 
-						break;
-					}
-
-				}
-				
 				layer.closeAll();
 			});
 		}
