@@ -7,6 +7,16 @@
   	justify-content: flex-start ;
 }
 
+.cart-img{
+	background-color: white;
+	color: grey;
+	font-size: 18px;
+}
+
+.cart-img img{
+	width: 100%;
+}
+
 .shop-list{
 	background-color: white;
 	margin-bottom: 15px;
@@ -117,7 +127,6 @@
 	position:absolute; 
 	bottom:.1rem;
 	vertical-align: middle;
-	padding-top: ;
 }
 .goods-mes-item>div:first-child{
 	float: left;

@@ -107,8 +107,13 @@ public class Constants {
     public static String INFO_URL = "http://127.0.0.1:8082/test";
     public static String INFO_MAIN = "main";
     public static String QUERY_LEVEL_CATEGORY_LIST = "query_level_category_list";//查询一级分类和类目
-    public static String QUERY_QUERY_GOODS_LIST = "query_goods_list";//查询商品列表
-    public static String QUERY_QUERY_GOODS_DETAIL = "query_goods_detail";//查询商品详情
+    public static String QUERY_GOODS_LIST = "query_goods_list";//查询商品列表
+    public static String QUERY_GOODS_DETAIL = "query_goods_detail";//查询商品详情
+    public static String ADD_ORDER_CART = "add_order_cart";//增加购物车
+    public static String QUERY_ORDER_CART = "query_order_cart";//购物车列表
+    public static String DELETE_ORDER_CART = "delete_order_cart";//删除购物车
+    public static String QUERY_USER_CENTER = "query_user_center";//用户中心
+
 
 
 }

@@ -20,9 +20,9 @@
 <body>
 <section class="g-flexview">
     <header class="m-navbar">
-        <a href="javascript:history.go(-1)" class="navbar-item"><i class="back-ico"></i></a>
+        <a class="navbar-item"><i class="back-ico" onclick="javascript:history.go(-1)"></i></a>
         <div class="navbar-center"><span class="navbar-title">商品详情</span></div>
-        <div class="navbar-item navbar-right"><a href="shop-cart.html"><i class="icon-shopcart-outline"><div class="shopcart-count">10</div></i></a></div>
+        <div class="navbar-item navbar-right"><a href="shop-cart.html"><i class="icon-shopcart-outline"><div class="shopcart-count" th:text="${data.cart_goods_count}"></div></i></a></div>
     </header>
 	<div class="header-height"></div>
     <section class="g-scrollview">
@@ -52,13 +52,13 @@
 		<div class="buy-count">
 			<div class="m-cell">
 				<div class="cell-item">
-			        <div class="cell-left">购买数量</div>
-			        <div class="cell-right add-btn" >
-			        	<span><button>-</button></span>
-			        	<span><input readonly="readonly" type="number" value="1" /></span>
-			        	<span><button>+</button></span>
-			        </div>
-			    </div>
+					<div class="cell-left">购买数量</div>
+					<div class="cell-right add-btn" >
+						<span><button onclick="reduceNum()">-</button></span>
+						<span><input readonly="readonly" type="number" value="1" /></span>
+						<span><button onclick="addNum()">+</button></span>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="buy-rule">
@@ -105,14 +105,15 @@
     </section>
 </section>
 <div class="buy-btn" >
-	<div><a href="javasscript:" class="btn-block btn-mybtn5">加入购物车</a></div>
-	<div><a href="javasscript:" class="btn-block btn-mybtn4">立即购买</a></div>
+	<div><a href="javascript:addData()" class="btn-block btn-mybtn5">加入购物车</a></div>
+	<div><a href="javascript:" class="btn-block btn-mybtn4">立即购买</a></div>
 </div>
 
 <script src="js/jquery-1.10.1.min.js"></script>
 <script src="js/ydui.js"></script>
 <script type="text/javascript" src="js/layer.js" ></script>
-<script>
+<script type="text/javascript" src="js/common.js" ></script>
+<script th:inline="javascript">
 		$(".buy-rule").on("click",function(){
 			var cssDivDetail = $(".buy-rule-detail").css("display");
 			if(cssDivDetail == "none"){
@@ -123,7 +124,62 @@
 				$("#need-know").attr("class","icon-turnnext");
 			}
 		})
-		
+
+		//增加或者减少数量
+		function addNum() {
+			var num = $(".add-btn>span:nth-child(2) input").val();
+			$(".add-btn>span:nth-child(2) input").val(++num);
+		}
+		function reduceNum() {
+			var num = $(".add-btn>span:nth-child(2) input").val();
+			if(num<=1){
+				$(".add-btn>span:nth-child(2) input").val(1);
+			}else{
+				$(".add-btn>span:nth-child(2) input").val(--num);
+			}
+		}
+
+		//增加数据
+		function addData() {
+
+			var goodsId = [[${data.goods_id}]];
+			var userId = "1";
+			var goodsCount = $(".add-btn>span:nth-child(2) input").val();
+			var goodsSpec = "";
+
+			//校验
+			var goodsNum = [[${data.goods_num}]];//库存
+			if (goodsCount > goodsNum) {
+				showDialog("库存不足")
+				return;
+			}
+
+
+			var data = {
+				"goodsId":goodsId,
+				"userId":userId,
+				"goodsCount":goodsCount,
+				"goodsSpec":goodsSpec
+			}
+			//上传完得到id 或者路径 标志上传成功
+			$.ajax({
+				url: "order/addShopCart",
+				type: 'POST',
+				data: data,// 要提交的表单 ,
+				async: false,
+				cache: false,
+				dataType: "json",
+				success: function (data) {
+					var code = data.code;
+					var msg = data.msg;
+					showDialog(msg)
+					if (code == 1) {
+						var cartGoodsCount = data.data.cart_goods_count;
+						$(".shopcart-count").html(cartGoodsCount);
+					}
+				}
+			});
+		}
 </script>
 </body>
 </html>

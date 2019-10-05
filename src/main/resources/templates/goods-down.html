@@ -3,44 +3,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>分类</title>
+    <title>商品详情</title>
     <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
     <meta content="yes" name="apple-mobile-web-app-capable"/>
     <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
     <meta content="telephone=no" name="format-detection"/>
-	<base th:href="@{/}">
+    <base th:href="@{/}">
     <link rel="stylesheet" href="css/ydui.css?rev=@@hash"/>
     <link rel="stylesheet" href="css/demo.css"/>
     <link rel="stylesheet" href="css/category.css" />
     <script src="js/ydui.flexible.js"></script>
     <link rel="stylesheet" href="css/commondemo.css"/>
-	<style>
-		body{
-			background-color: white;
-		}
-	</style>
-    
+    <link rel="stylesheet" href="css/goodsdetail.css" />
+
 </head>
 <body>
 <section class="g-flexview">
     <header class="m-navbar">
         <a class="navbar-item"><i class="back-ico" onclick="javascript:history.go(-1)"></i></a>
-        <div class="navbar-center"><span class="navbar-title">分类</span></div>
-        <div class="navbar-item navbar-right"><a href="shop-cart.html"><i class="icon-shopcart-outline"></i></a></div>
+        <div class="navbar-center"><span class="navbar-title">商品详情</span></div>
+        <div class="navbar-item navbar-right"></div>
     </header>
-	<div class="header-height"></div>
-	
+    <div class="header-height"></div>
     <section class="g-scrollview">
-			<ul class="category-list" th:each="level:${data.level_list}" th:if="${#lists.size(level.category_list)}>0">
-				<div class="category-title" th:text="${level.level_name}"></div>
-				<div class="category-detail">
-					<li th:each="item:${level.category_list}" th:text="${item.category_name}" th:data-category-id="${item.category_id}" th:data-category-code="${item.category_code}"></li>
-				</div>
-			</ul>
-		<div style="width: 100%;padding-bottom: 30px;"></div>
+        <div align="center" style="padding-top: 30px"><img width="80px" src="img/war.png"></div>
+        <div align="center" style="color: gray;font-size: 18px;">商品已下架或者不存在</div>
+        <div align="center" style="color: gray;font-size: 18px;padding-top: 50px"><a href="/goods/goodsList">～～查看商品列表～～</a></div>
     </section>
 </section>
+
 <script src="js/jquery-1.10.1.min.js"></script>
 <script src="js/ydui.js"></script>
+<script type="text/javascript" src="js/layer.js" ></script>
+<script type="text/javascript" src="js/common.js" ></script>
 </body>
 </html>

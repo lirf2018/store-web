@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购物车</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <base th:href="@{/}">
+    <link rel="stylesheet" href="./css/ydui.css?rev=@@hash"/>
+    <script src="js/ydui.flexible.js"></script>
+    <link rel="stylesheet" href="css/commondemo.css"/>
+    <link rel="stylesheet" href="css/shopcart.css" />
+    <style>
+        body{
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+<section class="g-flexview">
+
+    <header class="m-navbar">
+        <a class="navbar-item"><i class="back-ico" onclick="javascript:history.go(-1)"></i></a>
+        <div class="navbar-center"><span class="navbar-title">购物车</span></div>
+    </header>
+    <div class="header-height"></div>
+    <section class="g-scrollview">
+        <div class="cart-img" th:if="${data.cart_goods_count == 0}">
+            <div align="center"><a href="/goods/goodsList"><img src="img/cart.png"></a></div>
+            <div align="center"><a href="/goods/goodsList">～～去添加商品～～</a></div>
+            <div style="height: 15px"></div>
+        </div>
+        <div class="shop-list" th:each="item:${data.cart_list}" th:if="${#lists.size(item.cart_detail_list) > 0}">
+            <div class="shop-name">
+                <div>
+                    <label class="cell-right cell-right-shop-name">
+                        <input type="checkbox" th:value="${item.shop_id}" th:name="${'checkboxParent'+item.shop_id}" th:onclick="'javascript:choseShopGoodsParent(\'' + ${item.shop_id} + '\');'"/>
+                        <i class="cell-checkbox-icon"></i>
+                        <span th:text="${item.shop_name}"></span>
+                    </label>
+                </div>
+                <div>&nbsp;</div>
+                <div><i class="icon-delete" th:onclick="'javascript:deletShopCartGoods(\''+${item.shop_id}+'\');'" ></i></div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="goods-list">
+                <div class="goods-item" th:each="itemGoods:${item.cart_detail_list}">
+                    <div class="goods-check">
+                        <div>
+                            <label class="cell-right">
+                                <input type="checkbox" th:value="${itemGoods.cart_id}" th:name="${'checkboxSun'+item.shop_id}" th:onclick="'javascript:choseShopGoodsSun(\''+${item.shop_id}+'\');'" />
+                                <i class="cell-checkbox-icon"></i>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="goods-img">
+                        <div align="center"><img th:src="${itemGoods.goods_img}"></div>
+                    </div>
+                    <div class="goods-mes">
+                        <h3 class="goods-title" th:text="${itemGoods.goods_name}"  th:onclick="'javascript:goodsDetail(\'' + ${itemGoods.goods_id} + '\');'"></h3>
+                        <div class="goods-spec" th:text="${itemGoods.goods_spec_name_str}"  th:onclick="'javascript:goodsDetail(\'' + ${itemGoods.goods_id} + '\');'"></div>
+                        <div class="goods-mes-item">
+                            <div>
+
+                                <input type="hidden" th:id="${'cart-id'+itemGoods.cart_id}" th:value="${itemGoods.cart_id}">
+                                <input type="hidden" th:id="${'goods_price'+itemGoods.cart_id}" th:value="${itemGoods.goods_price}">
+                                <input type="hidden" th:id="${'goods_name'+itemGoods.cart_id}" th:value="${itemGoods.goods_name}">
+
+                                <span class="goods-price"><em>¥</em><span th:text="${itemGoods.goods_price}"></span></span>
+                            </div>
+                            <div class="demo-spinner demo-small-pitch">
+					            <!--<span class="m-spinner" data-ydui-spinner="{input: '.J_Input', add: '.J_Add', minus: '.J_Del'}">-->
+					            <span class="m-spinner">
+					                <a th:href="'javascript:updateOrderCart(0,\'' + ${itemGoods.cart_id} + '\');'" class="J_Del"></a>
+					                <input th:name="${'goods_count'+itemGoods.cart_id}"  readonly type="text" class="J_Input" placeholder="" th:value="${itemGoods.goods_count}" th:id="${'goodsCount-'+itemGoods.cart_id}"/>
+					                <a th:href="'javascript:updateOrderCart(1,\'' + ${itemGoods.cart_id} + '\');'" class="J_Add"></a>
+					            </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!--失效商品列表-->
+        <div class="shop-list" data-type="0" th:if="${#lists.size(data.out_time_cart_list) > 0}">
+            <div class="shop-name">
+                <div>
+                    <label class="cell-right cell-right-shop-name">
+                        <input type="checkbox" value="" name="checkboxOutTimeParent" onclick="choseOutTimeGoodsParent()"/>
+                        <i class="cell-checkbox-icon"></i>
+                        <span>失效商品</span>
+                    </label>
+                </div>
+                <div>&nbsp;</div>
+                <div><i class="icon-delete" onclick="deleteOutTimeGoods()"></i></div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="goods-list">
+                <div class="goods-item" th:each="item:${data.out_time_cart_list}">
+                    <div class="goods-check">
+                        <div>
+                            <label class="cell-right">
+                                <input type="checkbox" th:value="${item.cart_id}" name="checkboxOutTimeSun" onclick="choseOutTimeGoodsSun()"/>
+                                <i class="cell-checkbox-icon"></i>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="goods-img">
+                        <div align="center"><img th:src="${item.goods_img}"></div>
+                    </div>
+                    <div class="goods-mes">
+                        <h3 class="goods-title" th:text="${item.goods_name}"  th:onclick="'javascript:goodsDetail(\'' + ${item.goods_id} + '\');'"></h3>
+                        <div class="goods-mes-item">
+                            <div>
+                                <span class="goods-price"><em>¥</em><span th:text="${item.goods_price}"></span></span>
+                            </div>
+                            <div class="demo-spinner demo-small-pitch"></div>
+                        </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+        </div>
+        <div style="height: 1.26rem;width: 100%;"></div>
+        <div class="item-count">
+            <div class="item-count-money">
+                <span>合计:</span>
+                <span>￥</span>
+                <span class="all-price-count">0.00</span>
+            </div>
+            <div class="tem-count-topay">
+                <span><a href="order-submit.html">去结算</a></span>
+            </div>
+        </div>
+    </section>
+</section>
+</body>
+<script type="text/javascript" src="js/layer.js" ></script>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+<script type="text/javascript" src="js/ydui.js" ></script>
+<script type="text/javascript" src="js/common.js" ></script>
+<script th:inline="javascript">
+    function updateOrderCart(type,cartId) {
+        var count = $("#goodsCount-"+cartId).val();
+       if(type == 1){
+           //加
+           count = Number(count)+1;
+           $("#goodsCount-" + cartId).val(count);
+           submitOrderCart(cartId, count);
+       } else {
+           if (count == 1) {
+               return;
+           }
+           count = Number(count)-1;
+           //减
+           $("#goodsCount-"+cartId).val(count);
+           submitOrderCart(cartId, count);
+       }
+        priceCount();
+    }
+    
+    function submitOrderCart(cartId,count) {
+        //上传完得到id 或者路径 标志上传成功
+        $.ajax({
+            url: "order/updateShopCart",
+            type: 'POST',
+            data: {
+                "cartId":cartId,
+                "count":count
+            },// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+
+            }
+        });
+    }
+
+    //选择商品(全选或者取消)
+    function choseShopGoodsParent(shopId) {
+        var shopCartGoodsObj = $("input[name='checkboxParent"+shopId+"']");
+        if(shopCartGoodsObj.prop('checked')){
+            //alert("选择全部")  子项全部选择
+            $("input[name='checkboxSun"+shopId+"']").prop("checked", true);
+        }else{
+            //alert("取消选择")  子项全部取消
+            $("input[name='checkboxSun"+shopId+"']").prop("checked", false);
+        }
+        priceCount();
+    }
+    //选择子项
+    function choseShopGoodsSun(shopId) {
+        var shopCartGoodsObj = $("input[name='checkboxSun"+shopId+"']");
+        var count = 0;
+        shopCartGoodsObj.each(function () {
+            if($(this).prop('checked')){
+                count = count + 1;
+            }
+        });
+
+        if(count == shopCartGoodsObj.length){
+            $("input[name='checkboxParent"+shopId+"']").prop("checked", true);
+        }else{
+            $("input[name='checkboxParent"+shopId+"']").prop("checked", false);
+        }
+        priceCount();
+    }
+
+    //初始化价格总和
+    function priceCount() {
+        var priceAll = 0.00;
+        var cartList = [[${data.cart_list}]];
+        for (var i = 0; i < cartList.length; i++) {
+            var shopId = cartList[i].shop_id;
+            //获取选中的商品
+            var shopCartGoodsObj = $("input[name='checkboxSun" + shopId + "']");
+            shopCartGoodsObj.each(function () {
+                if ($(this).prop('checked')) {
+                    var cartId = $(this).val();
+                    var price = Number($("#goods_price" + cartId).val());
+                    var count = Number($("#goodsCount-" + cartId).val());
+                    priceAll = Number(priceAll) + Number(price * count);
+                }
+            })
+        }
+        priceAll = parsePrice(priceAll);
+        $(".all-price-count").html(priceAll);
+    }
+
+    //失败商品
+    function choseOutTimeGoodsParent() {
+        var shopCartGoodsObj = $("input[name='checkboxOutTimeParent']");
+        if(shopCartGoodsObj.prop('checked')){
+            //alert("选择全部")  子项全部选择
+            $("input[name='checkboxOutTimeSun']").prop("checked", true);
+        }else{
+            //alert("取消选择")  子项全部取消
+            $("input[name='checkboxOutTimeSun']").prop("checked", false);
+        }
+    }
+    function choseOutTimeGoodsSun() {
+        var shopCartGoodsObj = $("input[name='checkboxOutTimeSun']");
+        var count = 0;
+        shopCartGoodsObj.each(function () {
+            if($(this).prop('checked')){
+                count = count + 1;
+            }
+        });
+
+        if(count == shopCartGoodsObj.length){
+            $("input[name='checkboxOutTimeParent']").prop("checked", true);
+        }else{
+            $("input[name='checkboxOutTimeParent']").prop("checked", false);
+        }
+    }
+    
+    //删除过期商品
+    function deleteOutTimeGoods() {
+        var cartIds = "";
+        var shopCartGoodsObj = $("input[name='checkboxOutTimeSun']");
+        shopCartGoodsObj.each(function () {
+            if($(this).prop('checked')){
+                cartIds = cartIds + $(this).val()+",";
+            }
+        });
+
+        if(cartIds == ''){
+            showDialog("请先选择失效商品")
+            return;
+        }
+        submitDelete(cartIds);
+    }
+
+    //删除购物车
+    function deletShopCartGoods(shopId) {
+        var shopCartGoodsObj = $("input[name='checkboxSun"+shopId+"']");
+        var cartIds = "";
+        shopCartGoodsObj.each(function () {
+            if($(this).prop('checked')){
+                cartIds = cartIds + $(this).val()+",";
+            }
+        });
+
+        if(cartIds == ''){
+            showDialog("请先选择要删除的商品")
+            return;
+        }
+
+        submitDelete(cartIds);
+        //window.location.reload()
+    }
+
+    function submitDelete(cartIds) {
+        $.ajax({
+            url: "order/deleteShopCart",
+            type: 'POST',
+            data: {
+                "cartIds":cartIds
+            },// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                if(code == 1){
+                    showDialog('删除成功');
+                    setTimeout("javascript:waitDialog()",2000);
+                }else{
+                    showDialog("删除失败");
+                }
+            }
+        });
+    }
+
+    function waitDialog() {
+        window.location.reload();
+    }
+    
+    //查询商品详情
+    function goodsDetail(goodsId) {
+        window.location.href = "goods/goodsDetail?goodsId="+goodsId;
+    }
+
+</script>
+</html>

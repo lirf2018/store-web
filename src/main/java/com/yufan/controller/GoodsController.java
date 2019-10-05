@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 /**
  * 创建人: lirf
@@ -32,7 +31,7 @@ public class GoodsController {
 
         JSONObject data = new JSONObject();
         data.put("curre_page", goodsCondition.getCurrePage());
-        JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_QUERY_GOODS_LIST);
+        JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_GOODS_LIST);
         if (null != result && result.getInteger("resp_code") == 1) {
             modelAndView.addObject("data", result.getJSONObject("data"));
         }
@@ -60,7 +59,7 @@ public class GoodsController {
             }
             JSONObject data = new JSONObject();
             data.put("curre_page", goodsCondition.getCurrePage());
-            JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_QUERY_GOODS_LIST);
+            JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_GOODS_LIST);
             if (null != result && result.getInteger("resp_code") == 1) {
                 pageData.put("code", 1);
                 pageData.put("data", result.getJSONObject("data"));
@@ -83,18 +82,22 @@ public class GoodsController {
     @RequestMapping("goodsDetail")
     public ModelAndView goodsDetail(HttpServletRequest request, HttpServletResponse response, Integer goodsId) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("404");
+        modelAndView.setViewName("goods-down");
         JSONObject data = new JSONObject();
         data.put("goods_id", goodsId);
-        JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_QUERY_GOODS_DETAIL);
+        data.put("user_id", 1);
+        JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_GOODS_DETAIL);
         if (null != result && result.getInteger("resp_code") == 1) {
             JSONObject resultData = result.getJSONObject("data");
             modelAndView.addObject("data", resultData);
             Integer isSingle = resultData.getInteger("is_single");
-            if(isSingle == 0){
+            Integer timeGoodsId = resultData.getInteger("time_goods_id");//抢购商品标识
+            if (null != timeGoodsId && timeGoodsId > 0) {
+                modelAndView.setViewName("goods-detail-time");//抢购页面
+            } else if (isSingle == 0) {
                 //sku商品
                 modelAndView.setViewName("goods-detail-sku");
-            }else{
+            } else {
                 modelAndView.setViewName("goods-detail");
             }
         }
