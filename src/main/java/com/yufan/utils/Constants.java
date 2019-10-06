@@ -113,6 +113,8 @@ public class Constants {
     public static String QUERY_ORDER_CART = "query_order_cart";//购物车列表
     public static String DELETE_ORDER_CART = "delete_order_cart";//删除购物车
     public static String QUERY_USER_CENTER = "query_user_center";//用户中心
+    public static String QUERY_USER_ADDR = "query_user_addr";//用户地址列表
+    public static String QUERY_COUNTRY_ADDR_LIST = "query_country_addr_list";//查询全国地址列表
 
 
 

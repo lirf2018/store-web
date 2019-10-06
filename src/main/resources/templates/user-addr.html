@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>收货地址</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+	<base th:href="@{/}">
+	<link rel="stylesheet" href="./css/ydui.css?rev=@@hash"/>
+    <script src="./js/ydui.flexible.js"></script>
+    <link rel="stylesheet" href="css/commondemo.css"/>
+    <link rel="stylesheet" href="css/useraddr.css" />
+</head>
+<body>
+<section class="g-flexview">
+	<header class="m-navbar">
+        <a href="main.html" class="navbar-item"><i class="back-ico"></i></a>
+        <div class="navbar-center"><span class="navbar-title">收货地址</span></div>
+        <a href="javascript:addUserAddr()" class="navbar-item">添加</a>
+    </header>
+    <div class="header-height"></div>
+    <section class="g-scrollview">
+	    <div class="item-list">
+	    	<div class="itemt-detail">
+	    		<div class="user-info">
+	    			<span>李先生</span>
+	    			<span>13418952315</span>
+	    		</div>
+	    		<div class="addr-detail">
+	    			<span>广东省深圳市福田区深南大道1009号全国创业科技园中心B层25楼309定</span>
+	    		</div>
+	    		<div class="addr-setting">
+	    			<div>
+	    				<input type="checkbox" /> 设为默认
+	    			</div>
+	    			<div><a href="javascript:updateUserAddr()"><span><i class="icon-edit"></i>修改</span></a><a href="#"><span><i class="icon-delete"></i>删除</span></a></div>
+	    		</div>
+	    		<div style="clear: both;"></div>
+	    	</div>
+	    </div>
+	    
+        <div class="m-cell" style="display: none;">
+            <div class="cell-item">
+                <div class="cell-left">所在地区：</div>
+                <div class="cell-right cell-arrow">
+                    <input type="text" class="cell-input" readonly id="J_Address" placeholder="请选择收货地址">
+                </div>
+            </div>
+        </div>
+        <div id="addAddrDiv" style="display: none;">
+        	<div class="addr-div">
+	        	<div class="addr-title"><span>添加收货地址</span><span><a href="javascript:closeShowAddrDiv()"><i class="icon-x"></i></a></span></div>
+	        	<div style="clear: both;"></div>
+	        	<div class="addr-item addr-user-name"><label><input type="text" placeholder="请输入收货人姓名"></label></div>
+	        	<div class="addr-item addr-phone"><label><input type="number" pattern="[0-9]*" placeholder="请输入收货人电话"></label></div>
+	        	<div class="addr-item addr-area">
+	        		<label  onclick="showChoseAddrArea()">
+	        			<div>
+	        				<span class="chose-addr" data-value="">请选择所在地区</span>
+	        			</div>
+	        			<div>
+	        				<i class="icon-down"></i>
+	        			</div>
+	        		</label>
+	        		<div style="clear: both;"></div>
+	        	</div>
+	        	<div class="addr-item addr-detail"><label><input type="text" placeholder="请输入详细地址"></label></div>
+	        	<div class="addr-item div-save"><a href="javascript:;" class="btn btn-mybtn4">保存</a></div>
+        	</div>
+        </div>
+    </section>
+</section>
+</body>
+<script type="text/javascript" src="js/layer.js" ></script>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+<!--
+-->
+<script type="text/javascript" src="js/common.js" ></script>
+<script type="text/javascript" src="js/ydui.my.js" ></script>
+ <script>
+ 	var html = $("#addAddrDiv").html();
+ 	function addUserAddr(){
+ 		$("#addAddrDiv").html("");
+ 		layer.open({
+			    type: 1
+			    ,content: html
+			    ,anim: 'up'
+			    ,shadeClose: false
+			    ,style: 'position:fixed; bottom:0; left:0; width: 100%; border:none;z-index:200'
+		    });
+ 	}
+ 	
+ 	
+ 	function closeShowAddrDiv(){
+ 		layer.closeAll();
+ 	}
+ 	
+ 	function showChoseAddrArea(){
+ 		 var $target = $('#J_Address');
+         $target.citySelect();
+       	 event.stopPropagation();
+         $target.citySelect('open');
+         $(".layui-m-layer").css("z-index","200");
+
+ 	}
+ </script>
+ <script th:inline="javascript">
+
+
+	 var YDUI_CITYS = [[${list}]];
+
+
+
+	 //层级0:国家1:省/自治区/直辖市/特别行政区2:市/省(自治区)直辖县/省直辖区/自治州3:市辖区/县/自治县4:乡/镇/街道5:村
+	 //市
+	 var city;
+	 //县
+	 var area;
+
+	 //选中的值
+	 var regionLevel = "";
+	 var regionCode = "";
+
+	 function findProvance() {
+	 	if(regionCode == "" || regionLevel == ""){
+	 		return;
+		}
+	 	if(!(regionLevel == 2 || regionLevel == 3)){
+			return;
+		}
+		 $.ajax({
+			 url: "center/queryCountryAddr",
+			 type: 'POST',
+			 data: {
+				 "parentCode":regionCode,
+				 "regionLevel":regionLevel
+			 },// 要提交的表单 ,
+			 async: false,
+			 cache: false,
+			 dataType: "json",
+			 success: function (data) {
+				 if (regionLevel == 2) {
+					 city = data.data;
+				 } else if (regionLevel == 3) {
+					 area = data.data;
+				 }
+			 }
+		 });
+	 }
+
+	 //设置要查询的全国地址
+	 function selectRegionCode(r,word) {
+		 var str = word.split("`");
+		 regionLevel = r;
+		 regionCode = str[3];
+	 }
+
+    /**
+     * 默认调用
+     */
+    !function () {
+        var $target = $('#J_Address');
+
+        $target.on('click', function (event) {
+            event.stopPropagation();
+            $target.citySelect('open');
+        });
+
+        $target.on('done.ydui.cityselect', function (ret) {
+            $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+            $(".chose-addr").html(ret.provance + ret.city + ret.area);
+        });
+    }();
+
+
+    //选择省
+	 var chose1 = "";
+	 function choseProvance(c1) {
+		 chose1 = c1;
+		 console.log("chose1="+chose1);
+	 }
+    //选择市
+	 var chose2 = "";
+	 function choseCity(c2) {
+		 chose2 = c2;
+		 console.log("chose2="+chose2);
+	 }
+    //选择县
+	 var chose3 = "";
+	 function choseArea(c3) {
+		 chose3 = c3;
+		 console.log("chose3="+chose3);
+		 $(".chose-addr").attr("data-value",chose1+"-"+chose2+"-"+chose3)
+	 }
+</script>
+
+</html>
