@@ -2,6 +2,7 @@ package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.bean.UserAddr;
 import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
 import org.apache.log4j.Logger;
@@ -97,7 +98,7 @@ public class UserCenterController {
      * @param parentCode
      */
     @RequestMapping("queryCountryAddr")
-    public void queryCountryAddr(HttpServletRequest request, HttpServletResponse response, String parentCode,Integer regionLevel) {
+    public void queryCountryAddr(HttpServletRequest request, HttpServletResponse response, String parentCode, Integer regionLevel) {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
@@ -118,12 +119,12 @@ public class UserCenterController {
                     String freight = o.getString("freight");
                     String regionCode = o.getString("region_code");
                     String word = regionId + "`" + regionName + "`" + freight + "`" + regionCode;
-                    if(regionLevel == 2){
+                    if (regionLevel == 2) {
                         Map<String, Object> map1 = new HashMap<>();
                         map1.put("n", word);
                         map1.put("a", new JSONArray());
                         list.add(map1);
-                    }else{
+                    } else {
                         list.add(word);
                     }
 
@@ -131,6 +132,98 @@ public class UserCenterController {
             }
             resultJson.put("data", list);
             writer.println(resultJson);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 保存用户地址
+     */
+    @RequestMapping("saveUserAddr")
+    public void saveUserAddr(HttpServletRequest request, HttpServletResponse response, UserAddr userAddr) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            userAddr.setUserId(1);
+            JSONObject data = JSONObject.parseObject(JSONObject.toJSONString(userAddr));
+            JSONObject result = CommonMethod.infoResult(data, Constants.ADD_USER_ADDR);
+
+
+            JSONObject pageData = new JSONObject();
+            pageData.put("code", result.getInteger("resp_code"));
+            if (result.getInteger("resp_code") == 1) {
+                pageData.put("msg", "添加成功");
+            } else {
+                pageData.put("msg", "添加失败");
+            }
+
+            pageData.put("data", result.getJSONObject("data"));
+
+            writer.println(pageData);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 设置默认
+     */
+    @RequestMapping("defaulAddr")
+    public void defaulAddr(HttpServletRequest request, HttpServletResponse response, int id) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            JSONObject data = new JSONObject();
+            data.put("user_id", 1);
+            data.put("id", id);
+            JSONObject result = CommonMethod.infoResult(data, Constants.UPDATE_ADDR_DEFAULT);
+
+
+            JSONObject pageData = new JSONObject();
+            pageData.put("code", result.getInteger("resp_code"));
+            if (result.getInteger("resp_code") == 1) {
+                pageData.put("msg", "添加成功");
+            } else {
+                pageData.put("msg", "添加失败");
+            }
+
+            pageData.put("data", result.getJSONObject("data"));
+
+            writer.println(pageData);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 设置默认
+     */
+    @RequestMapping("deleteUserAddr")
+    public void deleteUserAddr(HttpServletRequest request, HttpServletResponse response, int id) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            JSONObject data = new JSONObject();
+            data.put("user_id", 1);
+            data.put("id", id);
+            JSONObject result = CommonMethod.infoResult(data, Constants.DELETE_USER_ADDR);
+
+
+            JSONObject pageData = new JSONObject();
+            pageData.put("code", result.getInteger("resp_code"));
+            if (result.getInteger("resp_code") == 1) {
+                pageData.put("msg", "添加成功");
+            } else {
+                pageData.put("msg", "添加失败");
+            }
+
+            pageData.put("data", result.getJSONObject("data"));
+
+            writer.println(pageData);
             writer.close();
         } catch (Exception e) {
             e.printStackTrace();

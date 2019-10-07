@@ -115,6 +115,9 @@ public class Constants {
     public static String QUERY_USER_CENTER = "query_user_center";//用户中心
     public static String QUERY_USER_ADDR = "query_user_addr";//用户地址列表
     public static String QUERY_COUNTRY_ADDR_LIST = "query_country_addr_list";//查询全国地址列表
+    public static String ADD_USER_ADDR = "add_user_addr";//付了款地址
+    public static String UPDATE_ADDR_DEFAULT = "update_addr_default";//设置默认地址
+    public static String DELETE_USER_ADDR = "delete_user_addr";//删除地址
 
 
 

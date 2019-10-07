@@ -68,6 +68,9 @@ public class OrderController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
+
+            shopCartBean.setUserId(1);
+
             JSONObject data = JSONObject.parseObject(JSONObject.toJSONString(shopCartBean));
             JSONObject result = CommonMethod.infoResult(data, Constants.ADD_ORDER_CART);
 
