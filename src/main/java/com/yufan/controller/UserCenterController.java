@@ -62,6 +62,7 @@ public class UserCenterController {
         ModelAndView modelAndView = new ModelAndView();
         JSONObject data = new JSONObject();
         data.put("user_id", 1);
+        data.put("addr_type", 1);
         data.put("parent_code", "000000000000");
 
         JSONArray list = new JSONArray();//省
@@ -119,7 +120,12 @@ public class UserCenterController {
                     String freight = o.getString("freight");
                     String regionCode = o.getString("region_code");
                     String word = regionId + "`" + regionName + "`" + freight + "`" + regionCode;
-                    if (regionLevel == 2) {
+                    if(regionLevel == 1){
+                        Map<String, Object> map1 = new HashMap<>();
+                        map1.put("n", word);
+                        map1.put("c", new JSONArray());
+                        list.add(map1);
+                    }else if (regionLevel == 2) {
                         Map<String, Object> map1 = new HashMap<>();
                         map1.put("n", word);
                         map1.put("a", new JSONArray());
@@ -127,7 +133,6 @@ public class UserCenterController {
                     } else {
                         list.add(word);
                     }
-
                 }
             }
             resultJson.put("data", list);
@@ -223,6 +228,36 @@ public class UserCenterController {
 
             pageData.put("data", result.getJSONObject("data"));
 
+            writer.println(pageData);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 查询用户收货地址
+     * @param request
+     * @param response
+     */
+    @RequestMapping("queryUserAddr")
+    public void queryUserAddr(HttpServletRequest request, HttpServletResponse response) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            JSONObject data = new JSONObject();
+            data.put("user_id", 1);
+            data.put("addr_type", 1);
+            data.put("parent_code", "");
+
+            JSONObject pageData = new JSONObject();
+            pageData.put("code",0);
+
+            JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_USER_ADDR);
+            if (result != null && result.getInteger("resp_code") == 1) {
+                pageData.put("code",1);
+                pageData.put("data",result.getJSONObject("data").getJSONArray("user_addr_list"));
+            }
             writer.println(pageData);
             writer.close();
         } catch (Exception e) {

@@ -2507,7 +2507,7 @@
         var arr = [];
         $.each(_this.citys, function (k, v) {
             var str = v.n.split("`");
-            arr.push($('<a class="' + (v.n == _this.defaultSet.provance ? 'crt' : '') + '" href="javascript:choseProvance(\''+str[3]+'\')"><span data-value='+v.n+'>' + str[1] + '</span></a>').data({
+            arr.push($('<a class="' + ((str[1] == _this.defaultSet.provance || str[3] == _this.defaultSet.provance) ? 'crt' : '') + '" href="javascript:choseProvance(\''+str[3]+'\')"><span data-value='+v.n+'>' + str[1] + '</span></a>').data({
                 //citys: v.c,
                 tag: 0
             }));
@@ -2524,7 +2524,7 @@
         var arr = [];
         $.each(cityData, function (k, v) {
             var str = v.n.split("`");
-            arr.push($('<a class="' + (v.n == _this.defaultSet.city ? 'crt' : '') + '" href="javascript:choseCity(\''+str[3]+'\')"><span data-value='+v.n+'>' + str[1] + '</span></a>').data({
+            arr.push($('<a class="' + ((str[1] == _this.defaultSet.city || str[3] == _this.defaultSet.city) ? 'crt' : '') + '" href="javascript:choseCity(\''+str[3]+'\')"><span data-value='+v.n+'>' + str[1] + '</span></a>').data({
                 //citys: v.a,
                 tag: 1
             }));
@@ -2541,7 +2541,7 @@
         var arr = [];
         $.each(areaData, function (k, v) {
             var str = v.split("`");
-            arr.push($('<a class="' + (v == _this.defaultSet.area ? 'crt' : '') + '" href="javascript:choseArea(\''+str[3]+'\');"><span data-value='+v+'>' + str[1] + '</span></a>').data({tag: 2}));
+            arr.push($('<a class="' + ((str[1] == _this.defaultSet.area ||str[3] == _this.defaultSet.area) ? 'crt' : '') + '" href="javascript:choseArea(\''+str[3]+'\');"><span data-value='+v+'>' + str[1] + '</span></a>').data({tag: 2}));
         });
 
         if (arr.length <= 0) {

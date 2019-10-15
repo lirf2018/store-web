@@ -149,7 +149,8 @@
 }
 
 .goods-spec{
-	padding: 1px 0;
+	padding-bottom: 1px;
+	padding-top: 2px;
 	font-weight: normal;
 	color: #505050;
 	font-size: .18rem;
@@ -165,7 +166,6 @@
 	position:absolute; 
 	bottom:.1rem;
 	vertical-align: middle;
-	padding-top: ;
 }
 .goods-mes-item>div:first-child{
 	float: left;

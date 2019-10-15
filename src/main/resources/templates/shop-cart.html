@@ -21,19 +21,23 @@
 </head>
 <body>
 <section class="g-flexview">
-
     <header class="m-navbar">
         <a class="navbar-item"><i class="back-ico" onclick="javascript:history.go(-1)"></i></a>
         <div class="navbar-center"><span class="navbar-title">购物车</span></div>
     </header>
     <div class="header-height"></div>
     <section class="g-scrollview">
+        <form id="dataForm" action="order/toSubmitPage" method="post">
+        <input type="hidden" name="timeGoodsId" value="0">
+        <input type="hidden" name="shopCartIdsCheck" id="shopCartIdsCheck" value="">
+
         <div class="cart-img" th:if="${data.cart_goods_count == 0}">
             <div align="center"><a href="/goods/goodsList"><img src="img/cart.png"></a></div>
             <div align="center"><a href="/goods/goodsList">～～去添加商品～～</a></div>
             <div style="height: 15px"></div>
         </div>
         <div class="shop-list" th:each="item:${data.cart_list}" th:if="${#lists.size(item.cart_detail_list) > 0}">
+            <input type="hidden" name="shopName" th:value="${item.shop_name}">
             <div class="shop-name">
                 <div>
                     <label class="cell-right cell-right-shop-name">
@@ -49,6 +53,16 @@
 
             <div class="goods-list">
                 <div class="goods-item" th:each="itemGoods:${item.cart_detail_list}">
+                    <!-- 订单数据 -->
+                    <input type="hidden" name="goodsIds" th:value="${itemGoods.goods_id}">
+                    <input type="hidden" name="goodsIdNames" th:value="${itemGoods.goods_name}">
+                    <input type="hidden" name="goodsImgs" th:value="${itemGoods.goods_img}">
+                    <input type="hidden" name="goodsNowPrices" th:value="${itemGoods.goods_price}">
+                    <input type="hidden" name="goodsTurePrices" th:value="${itemGoods.true_money}">
+                    <input type="hidden" name="skuIds" th:value="${itemGoods.sku_id}">
+                    <input type="hidden" name="skuSpecNames" th:value="${itemGoods.goods_spec_name}">
+                    <input type="hidden" name="shopCartIds" th:value="${itemGoods.cart_id}">
+
                     <div class="goods-check">
                         <div>
                             <label class="cell-right">
@@ -76,7 +90,7 @@
 					            <!--<span class="m-spinner" data-ydui-spinner="{input: '.J_Input', add: '.J_Add', minus: '.J_Del'}">-->
 					            <span class="m-spinner">
 					                <a th:href="'javascript:updateOrderCart(0,\'' + ${itemGoods.cart_id} + '\');'" class="J_Del"></a>
-					                <input th:name="${'goods_count'+itemGoods.cart_id}"  readonly type="text" class="J_Input" placeholder="" th:value="${itemGoods.goods_count}" th:id="${'goodsCount-'+itemGoods.cart_id}"/>
+					                <input name="goodsCounts"  readonly type="text" class="J_Input" placeholder="" th:value="${itemGoods.goods_count}" th:id="${'goodsCount-'+itemGoods.cart_id}"/>
 					                <a th:href="'javascript:updateOrderCart(1,\'' + ${itemGoods.cart_id} + '\');'" class="J_Add"></a>
 					            </span>
                             </div>
@@ -136,9 +150,10 @@
                 <span class="all-price-count">0.00</span>
             </div>
             <div class="tem-count-topay">
-                <span><a href="order-submit.html">去结算</a></span>
+                <span><a href="javascript:toSubmitOrderPage()">去结算</a></span>
             </div>
         </div>
+        </form>
     </section>
 </section>
 </body>
@@ -281,8 +296,8 @@
 
     //删除购物车
     function deletShopCartGoods(shopId) {
-        var shopCartGoodsObj = $("input[name='checkboxSun"+shopId+"']");
         var cartIds = "";
+        var shopCartGoodsObj = $("input[name='checkboxSun"+shopId+"']");
         shopCartGoodsObj.each(function () {
             if($(this).prop('checked')){
                 cartIds = cartIds + $(this).val()+",";
@@ -327,6 +342,29 @@
     //查询商品详情
     function goodsDetail(goodsId) {
         window.location.href = "goods/goodsDetail?goodsId="+goodsId;
+    }
+
+    //生成提交订单
+    function toSubmitOrderPage() {
+
+        var shopCartIdsCheck = "";//选中的购物车商品
+
+        var shopList = [[${data.cart_list}]];
+        for (var i = 0; i < shopList.length; i++) {
+            var shopId = shopList[i].shop_id;
+            var shopCartGoodsObj = $("input[name='checkboxSun"+shopId+"']");
+            shopCartGoodsObj.each(function () {
+                if($(this).prop('checked')){
+                    shopCartIdsCheck = shopCartIdsCheck + $(this).val()+"`";
+                }
+            });
+        }
+        //$("#dataForm").submit();
+        if(shopCartIdsCheck == ''){
+            return showDialog("请先选择商品");
+        }
+        $("#shopCartIdsCheck").val(shopCartIdsCheck);
+        $("#dataForm").submit();
     }
 
 </script>

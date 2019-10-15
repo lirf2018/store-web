@@ -23,6 +23,7 @@
     </header>
     <div class="header-height"></div>
 	<input type="hidden" id="userAddrId" value="0">
+	<input type="hidden" id="isDefault" value="0">
     <section class="g-scrollview">
 	    <div class="item-list">
 	    	<div class="itemt-detail" th:each="item:${data.user_addr_list}">
@@ -37,7 +38,7 @@
 	    			<div>
 	    				<input type="checkbox" th:value="${item.id}" name="defaulAddr" onclick="defaulAddr(this)" th:checked="${item.is_default == 1}"/> 设为默认
 	    			</div>
-	    			<div><a href="javascript:updateUserAddr()"><span><i class="icon-edit"></i>修改</span></a><a th:href="'javascript:deleteUserAddr('+${item.id}+','+${item.is_default}+')'"><span ><i class="icon-delete"></i>删除</span></a></div>
+	    			<div><a th:href="'javascript:clickUpdateUserAddr('+${item.id}+',\''+${item.user_name}+'\',\''+${item.user_phone}+'\',\''+${item.area_ids}+'\',\''+${item.area_name}+'\',\''+${item.addr_detail}+'\','+${item.is_default}+')'"><span><i class="icon-edit"></i>修改</span></a><a th:href="'javascript:deleteUserAddr('+${item.id}+','+${item.is_default}+')'"><span ><i class="icon-delete"></i>删除</span></a></div>
 	    		</div>
 	    		<div style="clear: both;"></div>
 	    	</div>
@@ -98,24 +99,36 @@
  	function closeShowAddrDiv(){
  		layer.closeAll();
  	}
- 	
+
+ 	var provanceCode = "";
+ 	var cityCode = "";
+ 	var areaCode = "";
  	function showChoseAddrArea(){
  		 var $target = $('#J_Address');
-         $target.citySelect();
-       	 event.stopPropagation();
-         $target.citySelect('open');
-         $(".layui-m-layer").css("z-index","200");
+
+        var id = $("#userAddrId").val();
+        /*if (id > 0) {
+            $target.citySelect({
+                provance: provanceCode,
+                city: cityCode,
+                area: areaCode
+            });
+            alert("provanceCode="+provanceCode+"  cityCode="+cityCode+"  areaCode="+areaCode)
+        }*/
+        $target.citySelect('open');
+        $(".layui-m-layer").css("z-index","200");
 
  	}
 
  	function saveData() {
 
- 		var id = "";
+ 		var id = $("#userAddrId").val();
  		var areaIds =  $(".chose-addr").attr("data-value");
  		var areaNames = $(".chose-addr").html();
  		var addrDetail = $("#addrDetail").val();
  		var userPhone = $("#userPhone").val();
  		var userName = $("#userName").val();
+ 		var isDefault = $("#isDefault").val();
 
  		if(areaIds == ''|| areaNames == ''||areaNames=='请选择所在地区'){
 			showDialog("请选择所在地区")
@@ -140,7 +153,8 @@
 				"areaNames":areaNames,
 				"addrDetail":addrDetail,
 				"userPhone":userPhone,
-				"userName":userName
+				"userName":userName,
+                "isDefault":isDefault
 			},// 要提交的表单 ,
 			async: false,
 			cache: false,
@@ -155,12 +169,20 @@
 				}
 			}
 		});
-		$("#userAddrId").val(0);
+        resetAddrId();
 	}
 	function waitDialog() {
 		window.location.reload();
 	}
-	
+
+	function resetAddrId() {
+        $("#userAddrId").val(0);
+        $("#isDefault").val(0);
+        //provanceCode = "";
+        //cityCode = "";
+        //areaCode = "";
+    }
+
 	 //设置默认
 	 function defaulAddr(obj) {
 		 $("input[name='defaulAddr']").prop("checked",false);
@@ -227,14 +249,36 @@
 			}
 		]);
 	}
+
+	//点点击修改
+    function clickUpdateUserAddr(id, name, phone, areaIds,areaNames,addrDetail,isDefault) {
+        $("#userAddrId").val(id);
+        $("#isDefault").val(isDefault);
+		addUserAddr();
+		$("#userPhone").val(phone);
+		$("#userName").val(name);
+		$(".chose-addr").attr("data-value",areaIds);
+		$(".chose-addr").html(areaNames);
+		$("#addrDetail").val(addrDetail);
+		//赋值
+        var str = areaIds.split("-");
+        provanceCode = str[0];//省
+        cityCode = str[1];//市
+        areaCode= str[2];//县
+
+		showChoseAddrArea();
+
+    }
+	 
  </script>
  <script th:inline="javascript">
 
 
-	 var YDUI_CITYS = [[${list}]];
+	 var YDUI_CITYS = [[${list}]];//省
 
 	 //层级0:国家1:省/自治区/直辖市/特别行政区2:市/省(自治区)直辖县/省直辖区/自治州3:市辖区/县/自治县4:乡/镇/街道5:村
-	 //市
+
+     //市
 	 var city;
 	 //县
 	 var area;
@@ -247,7 +291,7 @@
 	 	if(regionCode == "" || regionLevel == ""){
 	 		return;
 		}
-	 	if(!(regionLevel == 2 || regionLevel == 3)){
+	 	if(!(regionLevel == 1 ||regionLevel == 2 || regionLevel == 3)){
 			return;
 		}
 		 $.ajax({

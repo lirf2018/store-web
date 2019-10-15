@@ -37,5 +37,8 @@ public class UserAddr {
     @JSONField(name = "user_name")
     private String userName;
 
+    @JSONField(name = "is_default")
+    private Integer isDefault;
+
 
 }

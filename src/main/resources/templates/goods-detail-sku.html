@@ -26,6 +26,21 @@
     </header>
 	<div class="header-height"></div>
     <section class="g-scrollview">
+		<form id="dataForm" action="order/toSubmitPage" method="post">
+			<input type="hidden" name="shopName" th:value="${data.shop_name}">
+			<input type="hidden" name="goodsIds" th:value="${data.goods_id}">
+			<input type="hidden" name="goodsIdNames" th:value="${data.goods_name}">
+			<input type="hidden" name="goodsImgs" th:value="${data.goods_img}">
+			<input type="hidden" name="goodsNowPrices" th:value="0.00">
+			<input type="hidden" name="goodsTurePrices" th:value="0.00">
+			<input type="hidden" name="goodsCounts" id="goodsCounts" value="1">
+			<input type="hidden" name="skuIds" value="">
+			<input type="hidden" name="skuSpecNames" value="">
+			<input type="hidden" name="shopCartIds" value="">
+			<input type="hidden" name="shopCartIdsCheck" value="">
+			<input type="hidden" name="timeGoodsId" value="0">
+		</form>
+
 		<div class="goods-bannel">
 			<div class="m-slider" data-ydui-slider="{autoplay: 3000}"><!-- 参数在这里 -->
 			    <div class="slider-wrapper">
@@ -114,7 +129,7 @@
 </section>
 <div class="buy-btn" >
 	<div><a href="javascript:addData()" class="btn-block btn-mybtn5">加入购物车</a></div>
-	<div><a href="javasscript:" class="btn-block btn-mybtn4">立即购买</a></div>
+	<div><a href="javascript:toSubmitOrderPage()" class="btn-block btn-mybtn4">立即购买</a></div>
 </div>
 <div id="spec" style="display: none;">
 	<div class="goods-spec-div">
@@ -148,10 +163,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="spec-btn"  style="display: none;"><a href="javasscript:" class="btn-block btn-mybtn4">立即购买</a></div>
+		<div class="spec-btn"  style="display: none;"><a href="javascript:toSubmitOrderPage()" class="btn-block btn-mybtn4">立即购买</a></div>
 		<div class="btn-buy-stype2 spec-btn" >
 			<div><a href="javascript:addData()" class="btn-block btn-mybtn5">加入购物车</a></div>
-			<div><a href="javasscript:" class="btn-block btn-mybtn4">立即购买</a></div>
+			<div><a href="javascript:toSubmitOrderPage()" class="btn-block btn-mybtn4">立即购买</a></div>
 		</div>
 	</div>
 </div>
@@ -188,8 +203,8 @@
 		      initClick();
 		      isChoseSpec();
 		      initChoseData();
-			var num = $(".add-btn>span:nth-child(2) input").val();
-			$(".add-btn>span:nth-child(2) input").val(num);
+			  var num = $(".add-btn>span:nth-child(2) input").val();
+			  $(".add-btn>span:nth-child(2) input").val(num);
 		});
 
 		//初始化选择数据
@@ -227,7 +242,7 @@
 				var goodsSkuList = [[${data.goods_sku_list}]];
 				for (var i = 0; i < goodsSkuList.length; i++) {
 					var propCode = goodsSkuList[i].prop_code;
-					var money = goodsSkuList[i].now_money;
+					var money = goodsSkuList[i].sku_now_money;
 					var skuNum = goodsSkuList[i].sku_num;
 					if (specCode == propCode) {
 						specStore = skuNum;
@@ -239,14 +254,38 @@
 
 			$(".sale-price>span:first-child").html(salePrice);//售价
 			$(".spec-store").html(specStore);//库存
-			$(".chose-spec-name").html(choseSpecName);
+			$(".chose-spec-name").html(choseSpecName);//已选规格
+
+			//设置订单数据
+			$("input[name='goodsNowPrices']").val(salePrice);
+			var goodsCounts = $(".add-btn>span:nth-child(2) input").val();
+			$("#goodsCounts").val(goodsCounts);
+
+			//设置skuID
+			var skuDataList = [[${data.goods_sku_list}]];
+			for (var i = 0; i < skuDataList.length; i++) {
+				var skuId = skuDataList[i].sku_id;
+				var skuNowPrice = skuDataList[i].sku_now_money;
+				var skuTrueMoney = skuDataList[i].sku_true_money;
+				if(specCode == skuDataList[i].prop_code){
+					$("input[name='skuIds']").val(skuId);
+					$("input[name='goodsNowPrices']").val(skuNowPrice);
+					$("input[name='goodsTurePrices']").val(skuTrueMoney);
+					break;
+				}
+			}
+			$("input[name='skuSpecNames']").val(specName);
+
 		}
 
 		//增加或者减少数量
 		function addNum() {
 			var num = $(".add-btn>span:nth-child(2) input").val();
 			$(".add-btn>span:nth-child(2) input").val(++num);
+			var goodsCounts = $(".add-btn>span:nth-child(2) input").val();
+			$("#goodsCounts").val(goodsCounts);
 		}
+	    //增加或者减少数量
 		function reduceNum() {
 			var num = $(".add-btn>span:nth-child(2) input").val();
 			if(num<=1){
@@ -254,6 +293,8 @@
 			}else{
 				$(".add-btn>span:nth-child(2) input").val(--num);
 			}
+			var goodsCounts = $(".add-btn>span:nth-child(2) input").val();;
+			$("#goodsCounts").val(goodsCounts);
 		}
 
 
@@ -297,6 +338,14 @@
 					});
 					return;
 				}
+				if($(".spec-show").html() == ''){
+					var salePrice = [[${data.sku_low_money}]];
+					$(".sale-price>span:first-child").html(salePrice);//售价
+					$("input[name='skuIds']").val(0);
+					$("input[name='goodsNowPrices']").val(0.00);
+					$("input[name='goodsTurePrices']").val(0.00);
+					$("input[name='skuSpecNames']").val("");
+				}
 				layer.closeAll();
 			});
 
@@ -333,6 +382,7 @@
 				//页面
 				$(".spec-show").html(specName);//页面已选规格
 				$(".spec-show").attr("data-value",specCode);
+				$(".spec-show").attr("data-value-str",specName);
 
 				layer.closeAll();
 			});
@@ -361,7 +411,7 @@
 		}
 		
 	//}(window, jQuery);
-	//增加数据
+	//增加购物车数据
 	function addData() {
 		var goodsId = [[${data.goods_id}]];
 		var userId = "1";
@@ -403,6 +453,17 @@
 				}
 			}
 		});
+	}
+
+	//生成提交订单
+	function toSubmitOrderPage() {
+		var skuIds = $("#skuIds").val();
+		var goodsSpec = $(".spec-show").attr("data-value");
+		if(goodsSpec == "" || skuIds == ''){
+
+			return showDialog("请选择商品规格");
+		}
+		$("#dataForm").submit();
 	}
 </script>
 </body>

@@ -15,7 +15,6 @@
     <script src="js/ydui.flexible.js"></script>
     <link rel="stylesheet" href="css/commondemo.css"/>
     <link rel="stylesheet" href="css/goodsdetail.css" />
-    
 </head>
 <body>
 <section class="g-flexview">
@@ -26,6 +25,22 @@
     </header>
 	<div class="header-height"></div>
     <section class="g-scrollview">
+
+		<form id="dataForm" action="order/toSubmitPage" method="post">
+			<input type="hidden" name="shopName" th:value="${data.shop_name}">
+			<input type="hidden" name="goodsIds" th:value="${data.goods_id}">
+			<input type="hidden" name="goodsIdNames" th:value="${data.goods_name}">
+			<input type="hidden" name="goodsImgs" th:value="${data.goods_img}">
+			<input type="hidden" name="goodsNowPrices" th:value="${data.now_money}">
+			<input type="hidden" name="goodsTurePrices" th:value="${data.true_money}">
+			<input type="hidden" name="goodsCounts" id="goodsCounts" value="1">
+			<input type="hidden" name="skuIds" value="">
+			<input type="hidden" name="skuSpecNames" value="">
+			<input type="hidden" name="shopCartIds" value="">
+			<input type="hidden" name="shopCartIdsCheck" value="">
+			<input type="hidden" name="timeGoodsId" value="0">
+		</form>
+
 		<div class="goods-bannel">
 			<div class="m-slider" data-ydui-slider="{autoplay: 3000}"><!-- 参数在这里 -->
 			    <div class="slider-wrapper">
@@ -55,7 +70,7 @@
 					<div class="cell-left">购买数量</div>
 					<div class="cell-right add-btn" >
 						<span><button onclick="reduceNum()">-</button></span>
-						<span><input readonly="readonly" type="number" value="1" /></span>
+						<span><input readonly="readonly" type="number" value="1" id="goodsCounts_"/></span>
 						<span><button onclick="addNum()">+</button></span>
 					</div>
 				</div>
@@ -106,9 +121,8 @@
 </section>
 <div class="buy-btn" >
 	<div><a href="javascript:addData()" class="btn-block btn-mybtn5">加入购物车</a></div>
-	<div><a href="javascript:" class="btn-block btn-mybtn4">立即购买</a></div>
+	<div><a href="javascript:toSubmitOrderPage()" class="btn-block btn-mybtn4">立即购买</a></div>
 </div>
-
 <script src="js/jquery-1.10.1.min.js"></script>
 <script src="js/ydui.js"></script>
 <script type="text/javascript" src="js/layer.js" ></script>
@@ -129,6 +143,8 @@
 		function addNum() {
 			var num = $(".add-btn>span:nth-child(2) input").val();
 			$(".add-btn>span:nth-child(2) input").val(++num);
+			var goodsCounts = $("#goodsCounts_").val();
+			$("#goodsCounts").val(goodsCounts);
 		}
 		function reduceNum() {
 			var num = $(".add-btn>span:nth-child(2) input").val();
@@ -137,6 +153,8 @@
 			}else{
 				$(".add-btn>span:nth-child(2) input").val(--num);
 			}
+			var goodsCounts = $("#goodsCounts_").val();
+			$("#goodsCounts").val(goodsCounts);
 		}
 
 		//增加数据
@@ -153,7 +171,6 @@
 				showDialog("库存不足")
 				return;
 			}
-
 
 			var data = {
 				"goodsId":goodsId,
@@ -180,6 +197,15 @@
 				}
 			});
 		}
+
+
+	//生成提交订单
+	function toSubmitOrderPage() {
+		var goodsCounts = $("#goodsCounts_").val();
+		$("#goodsCounts").val(goodsCounts);
+		$("#dataForm").submit();
+	}
+
 </script>
 </body>
 </html>

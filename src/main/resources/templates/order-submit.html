@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>确认订单</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+	<base th:href="@{/}">
+	<link rel="stylesheet" href="./css/ydui.css?rev=@@hash"/>
+    <script src="js/ydui.flexible.js"></script>
+    <link rel="stylesheet" href="css/commondemo.css"/>
+    <link rel="stylesheet" href="css/ordersubmit.css" />
+    <link rel="stylesheet" href="css/useraddr.css" />
+</head>
+<body>
+<section class="g-flexview">
+	<header class="m-navbar">
+        <a href="javascript:history.go(-1)" class="navbar-item"><i class="back-ico"></i></a>
+        <div class="navbar-center"><span class="navbar-title">提交订单</span></div>
+	</header>
+	<div class="header-height"></div>
+    <section class="g-scrollview">
+		<input type="hidden" th:value="${userAddrId}" id="userAddrId">
+		<input type="hidden" th:value="${freight}" id="freight">
+		<input type="hidden" name="timeGoodsId" th:value="${timeGoodsId}">
+		<input type="hidden" value="0" id="discountPrice">
+
+
+    	<div class="order-addr" onclick="toAddrDiv()" th:if="${userAddrId != ''}">
+    		<div><i class="icon-addr"></i></div>
+    		<div class="order-addr-detail">
+    			<div>
+    				<span th:text="${userName}"></span>
+    				<span th:text="${userPhone}"></span>
+    			</div>
+    			<div th:text="${addrName}"></div>
+    		</div>
+    		<div><i class="icon-turnnext"></i></div>
+    	</div>  
+    	<div class="order-addr no-addr" onclick="toAddrDiv()" th:if="${userAddrId == ''}">
+    		<div><i class="icon-addr"></i></div>
+    		<div class="order-addr-detail">
+    			添加收货地址
+    		</div>
+    		<div><i class="icon-turnnext"></i></div>
+    	</div>
+    	<div style="clear: both;"></div>
+    	
+    	<div class="shop-list">
+    		<div class="shop-name">
+    			<div>
+					<label class="cell-right cell-right-shop-name">
+	                    <i class="icon-home-outline"></i>
+	                    <span th:text="${shopName}"></span>
+		            </label>
+    			</div>
+    			<div>&nbsp;</div>
+	            <div></div>
+	            <div style="clear: both;"></div>
+    		</div>
+    		<div class="goods-list" th:each="item:${goodsList}">
+				<!-- 订单数据 -->
+				<input type="hidden" name="goodsIds" th:value="${item.goodsId}">
+				<input type="hidden" name="goodsCounts" th:value="${item.goodsCount}">
+				<input type="hidden" name="skuIds" th:value="${item.skuId}">
+				<input type="hidden" name="shopCartIds" th:value="${item.shopCartId}">
+
+    			<div class="goods-item">
+			        <div class="goods-img">
+			            <div align="center"><img th:src="${item.goodsImg}"></div>
+			        </div>
+			        <div class="goods-mes">
+			            <h3 class="goods-title" th:text="${item.goodsName}"></h3>
+			            <div class="goods-spec" th:text="${item.skuSpecName}"></div>
+			            <div class="goods-mes-item">
+			                <div>
+			                    <span class="goods-price"><em>¥</em><span th:text="${item.goodsNowPrice}"></span></span>
+			                    <span class="goods-del-price">¥<span th:text="${item.goodsTruePrice}"></span></span>
+			                </div>
+					        <div class="demo-spinner demo-small-pitch">
+					            X <span style="font-size: .35rem;" th:text="${item.goodsCount}"></span>
+					        </div>		                	
+			            </div>
+			        </div>
+			         <div style="clear: both;"></div>
+		        </div>
+    		</div>
+    	</div>
+		<div class="order-detail-price">
+			<div>
+				<span>商品总价:</span>
+				<span class="detail-price"><em>¥ </em><span id="goodsPriceAllStr" th:text="${goodsPriceAll}"></span></span>
+			</div>
+			<div>
+				<span>运费(快递):</span>
+				<span class="post-price"><em>¥ </em><span id="freightStr" th:text="${freight}"></span></span>
+			</div>
+			<div>
+				<span>优惠:</span>
+				<span class="discount-price">- <em>¥ </em><span id="discountPriceStr">0.00</span></span>
+			</div>
+			<div>
+				<span>订单总价:</span>
+				<span class="order-price"><em>¥ </em><span id="realPriceStr"></span></span>
+			</div>
+		</div>
+    	<div style="height: 1.26rem;width: 100%;"></div>
+    	<div class="item-count">
+    		<div class="item-count-money">
+				<span style="font-size: 14px">实付<span style="font-size: 10px">(含运费)</span>:</span>
+    			<span>￥</span>
+    			<span id="orderPriceStr">0.00</span>
+    		</div>
+    		<div class="tem-count-topay">
+    			<span>立即支付</span>
+    		</div>
+    	</div>
+    </section>
+</section>
+<div id="html" style="display: none;">
+	<div class="addrDiv">
+		<header class="m-navbar">
+	        <a href="javascript:closeToAddrDiv()" class="navbar-item"><i class="back-ico"></i></a>
+	        <div class="navbar-center"><span class="navbar-title">收货地址</span></div>
+	        <a href="javascript:addUserAddr()" class="navbar-item">添加</a>
+	    </header>
+	    <div class="header-height"></div>
+		<div class="item-list">
+			<div class="itemt-detail" th:each="item:${data.user_addr_list}">
+				<div class="user-info" th:data-id="${item.id}" th:user_name="${item.user_name}" th:user_phone="${item.user_phone}" th:addr_name="${item.addr_name}" th:freight="${item.freight}" onclick="javascript:selectItem(this)">
+					<span th:text="${item.user_name}"></span>
+					<span th:text="${item.user_phone}"></span>
+				</div>
+				<div class="addr-detail" th:data-id="${item.id}" th:user_name="${item.user_name}" th:user_phone="${item.user_phone}" th:addr_name="${item.addr_name}" th:freight="${item.freight}" onclick="javascript:selectItem(this)">
+					<span th:text="${item.addr_name}"></span>
+				</div>
+				<div class="addr-setting">
+					<div>
+						<input type="checkbox" th:value="${item.id}" name="defaulAddr" onclick="defaulAddr(this)" th:checked="${item.is_default == 1}"/> 设为默认
+					</div>
+					<div><a th:href="'javascript:deleteUserAddr('+${item.id}+','+${item.is_default}+')'"><span ><i class="icon-delete"></i>删除</span></a></div>
+				</div>
+				<div style="clear: both;"></div>
+			</div>
+		</div>
+	    
+	    <div class="m-cell" style="display: none;">
+	        <div class="cell-item">
+	            <div class="cell-left">所在地区：</div>
+	            <div class="cell-right cell-arrow">
+	                <input type="text" class="cell-input" readonly id="J_Address" placeholder="请选择收货地址">
+	            </div>
+	        </div>
+	    </div>
+	    <div id="addAddrDiv" style="display: none;">
+	    	<div class="addr-div">
+	        	<div class="addr-title"><span>添加收货地址</span><span><a href="javascript:closeShowAddrDiv()"><i class="icon-x"></i></a></span></div>
+	        	<div style="clear: both;"></div>
+	        	<div class="addr-item addr-user-name"><label><input type="text" placeholder="请输入收货人姓名" id="userName"></label></div>
+	        	<div class="addr-item addr-phone"><label><input type="number" pattern="[0-9]*" placeholder="请输入收货人电话" id="userPhone"></label></div>
+	        	<div class="addr-item addr-area">
+	        		<label  onclick="showChoseAddrArea()">
+	        			<div>
+	        				<span class="chose-addr">请选择所在地区</span>
+	        			</div>
+	        			<div>
+	        				<i class="icon-down"></i>
+	        			</div>
+	        		</label>
+	        		<div style="clear: both;"></div>
+	        	</div>
+	        	<div class="addr-item addr-detail"><label><input type="text" placeholder="请输入详细地址" id="addrDetail"></label></div>
+	        	<div class="addr-item div-save"><a href="javascript:saveData();" class="btn btn-mybtn4">保存</a></div>
+	    	</div>
+	    </div>
+    </div>
+</div>
+		
+<div id="html3" style="display: none;">
+	<div class="pay-items">
+		<div class="pay-title">
+			<div>支付方式</div>
+			<div><a href="javascript:closeToAddrDiv()"><i class="icon-x"></i></a></span></div>
+		</div>
+		<div style="clear: both;"></div>
+		<div class="pay-item-detail">
+			<a href="order-detail.html">
+				<div class="pay-name"><span><i class="icon-pay-wx"></i></span>微信支付</div>
+				<div class="pay-name-next"><i class="icon-turnnext"></i></div>
+			</a>
+			<a href="order-detail.html">
+				<div class="pay-name"><span><i class="icon-pay-alipy"></i></span>支付宝支付</div>
+				<div class="pay-name-next"><i class="icon-turnnext"></i></div>
+			</a>
+		</div>
+	</div>
+</div>    		
+</body>
+<script type="text/javascript" src="js/layer.js" ></script>
+ <script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+ <script type="text/javascript" src="js/ydui.my.js" ></script>
+ <script type="text/javascript" src="js/common.js" ></script>
+ <script>
+ 	var html = $("#html").html();
+ 	function toAddrDiv(){
+ 		$("#html").html("");
+ 		var pageii = layer.open({
+			  type: 1
+			  ,content: html
+			  ,anim: 'up'
+			  ,shadeClose: false
+			  ,style: 'overflow-y: scroll;position:fixed; left:0; top:0; width:100%; height:100%; border: none; -webkit-animation-duration: .5s; animation-duration: .5s;background-color: #EEEDF3;'
+		});
+ 	}
+ 	function closeToAddrDiv(){
+ 		layer.closeAll();
+ 	}
+ 	
+ 	
+ 	
+ 	var html2 = $("#addAddrDiv").html();
+ 	var layer2;
+ 	function addUserAddr(){
+ 		$("#addAddrDiv").html("");
+ 		layer2 = layer.open({
+			    type: 1
+			    ,content: html2
+			    ,anim: 'up'
+			    ,shadeClose: false
+			    ,style: 'position:fixed; bottom:0; left:0; width: 100%; border:none;z-index:200'
+		    });
+ 	}
+ 	
+ 	
+ 	function closeShowAddrDiv(){
+ 		layer.close(layer2);
+ 	}
+ 	
+ 	function showChoseAddrArea(){
+ 		 var $target = $('#J_Address');
+         $target.citySelect();
+       	 event.stopPropagation();
+         $target.citySelect('open');
+         $(".layui-m-layer").css("z-index","200");
+         initAddrYdui();
+ 	}
+ 	//选择的地址
+ 	function selectItem(obj){
+ 		var id = $(obj).attr("data-id");
+ 		var userName = $(obj).attr("user_name");
+ 		var userPhone = $(obj).attr("user_phone");
+ 		var userAddr = $(obj).attr("addr_name");
+ 		var freight = $(obj).attr("freight");
+ 		//alert("id="+id+"userName="+userName+"  userPhone="+userPhone+"  userAddr="+userAddr+"freight="+freight)
+
+		$(".order-addr-detail>div:first-child>span:first-child").html(userName);
+		$(".order-addr-detail>div:first-child>span:last-child").html(userPhone);
+		$(".order-addr-detail>div:last-child").html(userAddr);
+
+		$("#userAddrId").val(id);
+		$("#freight").val(freight);
+		initPrice();
+		layer.closeAll();
+ 	}
+ </script>
+</html>
+ <script>
+	 /**
+     * 默认调用
+     */
+
+    function initAddrYdui(){
+		 var $target = $('#J_Address');
+
+        $target.citySelect();
+
+        $target.on('click', function (event) {
+            event.stopPropagation();
+            $target.citySelect('open');
+        });
+
+        $target.on('done.ydui.cityselect', function (ret) {
+            $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+            $(".chose-addr").html(ret.provance + ret.city + ret.area);
+        });
+ 	}
+</script>
+<script>
+	var html3 = $("#html3").html();
+    $('.tem-count-topay').on('click', function () {
+       	  $("#html3").html("");
+		  layer.open({
+		    type: 1
+		    ,content: html3
+		    ,anim: 'up'
+		    ,shadeClose: false
+		    //,style: 'position:fixed; bottom:0; left:0; width: 100%; height: 200px; padding:10px 0; border:none;line-height: 10px'
+		    ,style: 'position:fixed; bottom:0; left:0; width: 100%; border:none;'
+		  });
+		  $(".layui-m-layer *").css("-webkit-box-sizing","inherit")
+		  $(".layui-m-layer *").css("box-sizing","inherit")
+    });
+
+	//设置默认
+	function defaulAddr(obj) {
+		$("input[name='defaulAddr']").prop("checked",false);
+		$(obj).prop("checked",true);
+		$.ajax({
+			url: "center/defaulAddr",
+			type: 'POST',
+			data: {
+				"id":$(obj).val()
+			},// 要提交的表单 ,
+			async: false,
+			cache: false,
+			dataType: "json",
+			success: function (data) {
+				var code = data.code;
+				if(code == 1){
+					showDialog('设置成功');
+					reloadUserAddr();
+				}else{
+					showDialog("设置失败");
+				}
+			}
+		});
+	}
+
+	//删除地址
+	function deleteUserAddr(id,defaulAddr) {
+		if(defaulAddr == 1){
+			showDialog("默认地址不能删除")
+			return;
+		}
+		YDUI.dialog.confirm('确认删除收货地址?', [
+			{
+				txt: '取消',
+				color: false, /* false:黑色  true:绿色 或 使用颜色值 */
+				callback: function () {
+
+				}
+			},
+			{
+				txt: '确定',
+				color: true,
+				callback: function () {
+					$.ajax({
+						url: "center/deleteUserAddr",
+						type: 'POST',
+						data: {
+							"id": id
+						},// 要提交的表单 ,
+						async: false,
+						cache: false,
+						dataType: "json",
+						success: function (data) {
+							var code = data.code;
+							if (code == 1) {
+								showDialog('删除成功');
+                                reloadUserAddr()
+							} else {
+								showDialog("删除失败");
+							}
+						}
+					});
+				}
+			}
+		]);
+		$(".mask-black-dialog").css("z-index","19991014");
+	}
+
+    //重新加载收货地址
+    function reloadUserAddr() {
+        $.ajax({
+            url: "center/queryUserAddr",
+            type: 'POST',
+            data: {
+            },// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                var code = data.code;
+                if(code == 1){
+                	var html = "";
+                    var userAddrList = data.data;
+                    for (var i = 0; i < userAddrList.length; i++) {
+                    	var id = userAddrList[i].id;
+                    	var userName = userAddrList[i].user_name;
+                    	var userPhone = userAddrList[i].user_phone;
+                    	var freight = userAddrList[i].freight;
+                    	var addrName = userAddrList[i].addr_name;
+                    	var isDefault = userAddrList[i].is_default;
+                    	var checkStr = "";
+                    	if(isDefault == 1 || isDefault == '1'){
+							checkStr  ="checked='checked'";
+						}
+                        html = html + "<div class='itemt-detail'>\n" +
+								"<div class='user-info' data-id='"+id+"' user_name='"+userName+"' user_phone='"+userPhone+"' addr_name='"+addrName+"' freight='"+freight+"' onclick='javascript:selectItem(this)'>\n" +
+								"<span>"+userName+"</span>\n" +
+								"<span>"+userPhone+"</span>\n" +
+								"</div>\n" +
+								"<div class='addr-detail' data-id='"+id+"' user_name='"+userName+"' user_phone='"+userPhone+"' addr_name='"+addrName+"' freight='"+freight+"' onclick='javascript:selectItem(this)'>\n" +
+								"<span>"+addrName+"</span>\n" +
+								"</div>\n" +
+								"<div class='addr-setting'>\n" +
+								"<div>\n" +
+								"<input type='checkbox' value='"+id+"' name='defaulAddr' onclick='defaulAddr(this)' "+checkStr+" /> 设为默认\n" +
+								"</div>\n" +
+								"<div><a href='javascript:deleteUserAddr("+id+","+isDefault+")'><span ><i class='icon-delete'></i>删除</span></a></div>\n" +
+								"</div>\n" +
+								"<div style='clear: both;'></div>\n" +
+								"</div>";
+                    }
+					$(".item-list").html(html);
+                }else{
+                    showDialog("网络异常");
+                }
+            }
+        });
+    }
+
+	function saveData() {
+
+		var areaIds =  $(".chose-addr").attr("data-value");
+		var areaNames = $(".chose-addr").html();
+		var addrDetail = $("#addrDetail").val();
+		var userPhone = $("#userPhone").val();
+		var userName = $("#userName").val();
+
+		if(areaIds == ''|| areaNames == ''||areaNames=='请选择所在地区'){
+			return showDialog("请选择所在地区")
+		}
+		if(userPhone == ''){
+			return showDialog("收货人电话不能为空")
+		}
+
+		if(userName == ''){
+			return showDialog("收货人姓名不能为空")
+		}
+		if(addrDetail == ''){
+			return showDialog("详细地址不能为空")
+		}
+
+		$.ajax({
+			url: "center/saveUserAddr",
+			type: 'POST',
+			data: {
+				"id":0,
+				"areaIds":areaIds,
+				"areaNames":areaNames,
+				"addrDetail":addrDetail,
+				"userPhone":userPhone,
+				"userName":userName,
+				"isDefault":0
+			},// 要提交的表单 ,
+			async: false,
+			cache: false,
+			dataType: "json",
+			success: function (data) {
+				var code = data.code;
+				if(code == 1){
+					showDialog('保存成功');
+					layer.close(layer2);
+					reloadUserAddr();
+				}else{
+					showDialog("保存失败");
+				}
+			}
+		});
+	}
+</script>
+<script th:inline="javascript">
+	//初始化价格
+	initPrice();
+	function initPrice() {
+		//商品总价
+		var goodsPriceAll = [[${goodsPriceAll}]];
+		//邮费
+		var freight = $("#freight").val();
+		$("#freightStr").html(freight);
+		//优惠券
+		var discountPrice = $("#discountPrice").val();
+
+		//订单总价
+		var realPrice = Number(goodsPriceAll) + Number(freight);
+		$("#realPriceStr").html(parsePrice(realPrice));
+		//订单支付价格
+		var orderPrice = Number(realPrice) - Number(discountPrice);
+		$("#orderPriceStr").html(parsePrice(orderPrice));
+	}
+</script>
+<script th:inline="javascript">
+
+
+	var YDUI_CITYS = [[${list}]];//省
+
+	//层级0:国家1:省/自治区/直辖市/特别行政区2:市/省(自治区)直辖县/省直辖区/自治州3:市辖区/县/自治县4:乡/镇/街道5:村
+
+	//市
+	var city;
+	//县
+	var area;
+
+	//选中的值
+	var regionLevel = "";
+	var regionCode = "";
+
+	function findProvance() {
+		if(regionCode == "" || regionLevel == ""){
+			return;
+		}
+		if(!(regionLevel == 1 ||regionLevel == 2 || regionLevel == 3)){
+			return;
+		}
+		$.ajax({
+			url: "center/queryCountryAddr",
+			type: 'POST',
+			data: {
+				"parentCode":regionCode,
+				"regionLevel":regionLevel
+			},// 要提交的表单 ,
+			async: false,
+			cache: false,
+			dataType: "json",
+			success: function (data) {
+				if (regionLevel == 2) {
+					city = data.data;
+				} else if (regionLevel == 3) {
+					area = data.data;
+				}
+			}
+		});
+	}
+
+	//设置要查询的全国地址
+	function selectRegionCode(r,word) {
+		var str = word.split("`");
+		regionLevel = r;
+		regionCode = str[3];
+	}
+
+	/**
+	 * 默认调用
+	 */
+	!function () {
+		var $target = $('#J_Address');
+
+		$target.on('click', function (event) {
+			event.stopPropagation();
+			$target.citySelect('open');
+		});
+
+		$target.on('done.ydui.cityselect', function (ret) {
+			$(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+			$(".chose-addr").html(ret.provance + ret.city + ret.area);
+		});
+	}();
+
+
+	//选择省
+	var chose1 = "";
+	function choseProvance(c1) {
+		chose1 = c1;
+		console.log("chose1="+chose1);
+	}
+	//选择市
+	var chose2 = "";
+	function choseCity(c2) {
+		chose2 = c2;
+		console.log("chose2="+chose2);
+	}
+	//选择县
+	var chose3 = "";
+	function choseArea(c3) {
+		chose3 = c3;
+		console.log("chose3="+chose3);
+		$(".chose-addr").attr("data-value",chose1+"-"+chose2+"-"+chose3)
+	}
+</script>
