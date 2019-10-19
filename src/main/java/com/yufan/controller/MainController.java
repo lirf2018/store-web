@@ -14,9 +14,14 @@ import org.springframework.web.servlet.ModelAndView;
  * 功能介绍:
  */
 @Controller
-@RequestMapping(value = "/")
+@RequestMapping(value = "/index/")
 public class MainController {
 
+    /**
+     * 首页
+     *
+     * @return
+     */
     @RequestMapping("mainPage")
     public ModelAndView mainPage() {
         ModelAndView modelAndView = new ModelAndView();
@@ -28,6 +33,20 @@ public class MainController {
 //            modelAndView.addObject("data", result.getJSONObject("data"));
 //        }
         modelAndView.setViewName("main");
+        return modelAndView;
+    }
+
+    @RequestMapping("searchPage")
+    public ModelAndView searchPage() {
+        ModelAndView modelAndView = new ModelAndView();
+
+        JSONObject data = new JSONObject();
+        data.put("user_id", 1);
+        JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_HISTORY_LIST);
+        if (null != result) {
+            modelAndView.addObject("data", result.getJSONObject("data"));
+        }
+        modelAndView.setViewName("search-page");
         return modelAndView;
     }
 

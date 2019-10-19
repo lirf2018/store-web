@@ -26,7 +26,7 @@
     <header class="m-navbar">
         <a class="navbar-item"><i class="back-ico" onclick="javascript:history.go(-1)"></i></a>
         <div class="navbar-center"><span class="navbar-title">分类</span></div>
-        <div class="navbar-item navbar-right"><a href="shop-cart.html"><i class="icon-shopcart-outline"></i></a></div>
+        <div class="navbar-item navbar-right"><a href="order/shopCartList"><i class="icon-shopcart-outline"></i></a></div>
     </header>
 	<div class="header-height"></div>
 	
@@ -34,7 +34,7 @@
 			<ul class="category-list" th:each="level:${data.level_list}" th:if="${#lists.size(level.category_list)}>0">
 				<div class="category-title" th:text="${level.level_name}"></div>
 				<div class="category-detail">
-					<li th:each="item:${level.category_list}" th:text="${item.category_name}" th:data-category-id="${item.category_id}" th:data-category-code="${item.category_code}"></li>
+					<li th:onclick="'toGoodsList('+${item.category_id}+')'" th:each="item:${level.category_list}" th:text="${item.category_name}" th:data-category-id="${item.category_id}" th:data-category-code="${item.category_code}"></li>
 				</div>
 			</ul>
 		<div style="width: 100%;padding-bottom: 30px;"></div>
@@ -42,5 +42,10 @@
 </section>
 <script src="js/jquery-1.10.1.min.js"></script>
 <script src="js/ydui.js"></script>
+<script>
+    function toGoodsList(categoryId) {
+        window.location.href = "goods/goodsList?categoryIds="+categoryId;
+    }
+</script>
 </body>
 </html>

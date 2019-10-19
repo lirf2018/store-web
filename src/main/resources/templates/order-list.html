@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单列表</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+	<base th:href="@{/}">
+	<link rel="stylesheet" href="./css/ydui.css?rev=@@hash"/>
+    <link rel="stylesheet" href="css/commondemo.css"/>
+    <link rel="stylesheet" href="css/orderlist.css" />
+</head>
+<body>
+<section class="g-flexview">
+	<header class="m-navbar">
+        <a class="navbar-item"><i class="back-ico" onclick="javascript:history.go(-1)"></i></a>
+        <div class="navbar-center">
+			<span class="navbar-title">订单列表<span  th:text="${'——'+orderStatusName}"></span></span>
+		</div>
+	</header>
+	<div class="header-height"></div>
+    <section class="g-scrollview">
+		<input type="hidden" value="status" th:value="${status}" id="status">
+    	<section class="g-scrollview" id="J_List">
+        	<div id="J_ListContent" class="m-list list-theme1"></div>
+    	</section>
+    </section>
+</section>
+</body>
+<script type="text/javascript" src="js/layer.js" ></script>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+<script src="js/ydui.js"></script>
+<script src="./js/ydui.flexible.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script>
+	var html = $("#testhtml").html();
+</script>
+<script src="js/ydui.js"></script>
+<script>
+    !function () {
+        // 根据实际情况自定义获取数据方法
+		var page = 1, pageSize = 20;
+		var loadMore = function (callback) {
+			$.ajax({
+				url: 'order/loadOrderList',
+				dataType: 'json',
+				data: {
+					page: page,
+					pagesize: pageSize,
+					status:$("#status").val()
+				},
+				success: function (ret) {
+					typeof callback == 'function' && callback(ret);
+				}
+			});
+		};
+
+
+		$('#J_List').infiniteScroll({
+			binder: '#J_List',
+			pageSize: pageSize,
+			initLoad: true,
+			loadingHtml: '<img src="img/loading10.svg"/>',
+			//doneTxt:'没有更多数据了',
+			loadListFn: function () {
+				var def = $.Deferred();
+				loadMore(function (ret) {
+					var code = ret.code;
+					var data = ret.data;
+					var hasNext = false;
+					if (code == 1) {
+						var orderList = data.order_list;
+						hasNext = data.has_next;
+						for (var i = 0; i < orderList.length; i++) {
+							var orderStatus = orderList[i].order_status;
+							var orderStatusName = orderList[i].order_status_name;
+							var orderPrice = orderList[i].order_price;
+							var shopName = orderList[i].shop_name;
+							var shopLogo = orderList[i].shop_logo;
+							var orderId = orderList[i].order_id;
+							var orderCount = orderList[i].order_count;
+
+
+							var htmlDetail = "";
+							var detailList = orderList[i].detail_list;
+							for (var j = 0; j < detailList.length; j++) {
+								var goodsName = detailList[j].goods_name;
+								var saleMoney = detailList[j].sale_money;
+								var goodsCount = detailList[j].goods_count;
+								var goodsImg = detailList[j].goods_img;
+								var goodsSpecNameStr = detailList[j].goods_spec_name_str;
+								htmlDetail = htmlDetail + "<div class='goods-item' onclick='toDetail(" + orderId + ")'>\n" +
+										"<div class='goods-img'>\n" +
+										"<div align='center'><img src='" + goodsImg + "'></div>\n" +
+										"</div>\n" +
+										"<div class='goods-mes'>\n" +
+										"<h3 class='goods-title'>" + goodsName + "</h3>\n" +
+										"<div class='goods-spec'>" + goodsSpecNameStr + "</div>\n" +
+										"<div class='goods-mes-item'>\n" +
+										"<div>\n" +
+										"<span class='goods-price'><em>¥</em>" + saleMoney + "</span>\n" +
+										"</div>\n" +
+										"<div>\n" +
+										"<span class='buy-count'>X " + goodsCount + "</span>\n" +
+										"</div>\n" +
+										"</div>\n" +
+										"</div>\n" +
+										"<div style='clear: both;'></div>\n" +
+										"</div>";
+							}
+
+							var html = "<div class='shop-list'>\n" +
+									"<div class='shop-name'>\n" +
+									"<div>\n" +
+									"<span><i class='icon-shop-logo'></i></span>\n" +
+									"<span>" + shopName + "</span>\n" +
+									"<span><i class='icon-turnnext'></i></span>\n" +
+									"</div>\n" +
+									"<div>" + orderStatusName + "</div>\n" +
+									"</div>\n" +
+									"<div style='clear: both;'></div>\n" +
+									"<div class='goods-list'>";
+
+
+							html = html + htmlDetail;
+
+							html = html + "</div>\n" +
+									"<div class='shop-order-count'>\n" +
+									"<span>共" + orderCount + "件商品</span>\n" +
+									"<span>实付:</span>\n" +
+									"<span class='goods-price-count'><em>¥</em>" + orderPrice + "</span>\n" +
+									"</div>\n" +
+									"<div class='shop-order-count-btn'>\n" +
+									"<a href='javascript:;' class='btn btn-mybtn3'>取消订单</a>\n" +
+									"<a href='javascript:;' class='btn btn-mybtn3'>确认订单</a>\n" +
+									"</div>\n" +
+									"</div>";
+							$('#J_ListContent').append(html);
+						}
+					}
+					/* 获取数据，并插入页面后，调用resole，并传入当前获取的记录列表集合 */
+					def.resolve(hasNext);
+					++page;
+				});
+				return def.promise();
+			}
+        });
+        
+    }();
+    
+   function toDetail(orderId){
+       window.location.href = "order/orderDetail?orderId="+orderId
+   };
+</script>
+</html>

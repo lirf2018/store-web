@@ -40,60 +40,60 @@
     	</div>
     	<div style="clear: both;"></div>
 		<div class="m-cell">
-		    <a class="cell-item" href="order-list.html">
+		    <a class="cell-item" href="javascript:loadOrderList(-1)">
 		        <div class="cell-left"></i>我的订单</div>
 		        <div class="cell-right cell-arrow">查看全部订单</div>
 		    </a>
 		</div>
 		<div class="m-cell-order">
-			<div>
+			<div onclick="loadOrderList(0)">
 				<div align="center"><img src="img/order/o1.png"/></div>
 				<div>待付款</div>
 				<div class="badge-count" th:text="${data.order_dfk}" th:if="${data.order_dfk>0}">0</div>
 			</div>
-			<div>
+			<div onclick="loadOrderList(1)">
 				<div align="center"><img src="img/order/o2.png"/></div>
 				<div>已付款</div>
 				<div class="badge-count" th:text="${data.order_yfk}" th:if="${data.order_yfk>0}">0</div>
 			</div>
-			<div>
+			<div onclick="loadOrderList(5)">
 				<div align="center"><img src="img/order/o4.png"/></div>
 				<div>待收货</div>
 				<div class="badge-count" th:text="${data.order_dsh}" th:if="${data.order_dsh>0}">0</div>
 			</div>			
-			<div>
+			<div onclick="loadOrderList(12)">
 				<div align="center"><img src="img/order/o5.png"/></div>
 				<div>还货中</div>
 				<div class="badge-count" th:text="${data.order_hhz}" th:if="${data.order_hhz>0}">0</div>
 			</div>
-			<div>
+			<div onclick="loadOrderList(9)">
 				<div align="center"><img src="img/order/o3.png"/></div>
 				<div>退款中</div>
 				<div class="badge-count" th:text="${data.order_tkz}" th:if="${data.order_tkz>0}">0</div>
 			</div>
 		</div>
 		<div class="m-cell-order">
-			<div>
+			<div onclick="loadOrderList(6)">
 				<div align="center"><img src="img/order/o1.png"/></div>
 				<div>已完成</div>
 				<div class="badge-count" th:text="${data.order_ywc}" th:if="${data.order_ywc>0}">0</div>
 			</div>
-			<div>
+			<div onclick="loadOrderList(3)">
 				<div align="center"><img src="img/order/o2.png"/></div>
 				<div>已失败</div>
 				<div class="badge-count" th:text="${data.order_ysb}" th:if="${data.order_ysb>0}">0</div>
 			</div>
-			<div>
+			<div onclick="loadOrderList(7)">
 				<div align="center"><img src="img/order/o4.png"/></div>
 				<div>已取消</div>
 				<div class="badge-count" th:text="${data.order_yqx}" th:if="${data.order_yqx>0}">0</div>
 			</div>
-			<div>
+			<div onclick="loadOrderList(10)">
 				<div align="center"><img src="img/order/o3.png"/></div>
 				<div>已退款</div>
 				<div class="badge-count" th:text="${data.order_ytk}" th:if="${data.order_ytk>0}">0</div>
 			</div>
-			<div>
+			<div onclick="loadOrderList(13)">
 				<div align="center"><img src="img/order/o5.png"/></div>
 				<div>已还货</div>
 				<div class="badge-count" th:text="${data.order_yhh}" th:if="${data.order_yhh>0}">0</div>
@@ -111,25 +111,25 @@
 			&nbsp;
 		</div>
         <footer class="m-tabbar tabbar-fixed">
-            <a href="main.html" class="tabbar-item">
+            <a href="index/mainPage" class="tabbar-item">
                 <div class="tabbar-icon">
                     <i class="icon-home"></i>
                 </div>
                 <div class="tabbar-txt">首页</div>
             </a>
-            <a href="category.html" class="tabbar-item">
+            <a href="category/categoryPage" class="tabbar-item">
                 <div class="tabbar-icon">
                     <i class="icon-catogrey"></i>
                 </div>
                 <div class="tabbar-txt">分类</div>
             </a>
-            <a href="shop-cart.html" class="tabbar-item">
+            <a href="order/shopCartList" class="tabbar-item">
                 <div class="tabbar-icon">
                     <i class="icon-shopcart"></i>
                 </div>
                 <div class="tabbar-txt">购物车</div>
             </a>
-            <a href="user-center.html" class="tabbar-item foor-activate">
+            <a href="center/userCenter" class="tabbar-item foor-activate">
                 <div class="tabbar-icon">
                     <i class="icon-ucenter"></i>
                 </div>
@@ -143,4 +143,11 @@
 <script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
 <script type="text/javascript" src="js/ydui.js" ></script>
 <script type="text/javascript" src="js/common.js" ></script>
+<script>
+
+	//查询订单
+	function loadOrderList(status) {
+		window.location.href = "order/orderListPage?status="+status;
+	}
+</script>
 </html>

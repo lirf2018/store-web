@@ -21,7 +21,7 @@
     <header class="m-navbar">
         <a class="navbar-item"><i class="back-ico" onclick="javascript:history.go(-1)"></i></a>
         <div class="navbar-center"><span class="navbar-title">商品详情</span></div>
-        <div class="navbar-item navbar-right"><a href="shop-cart.html"><i class="icon-shopcart-outline"><div class="shopcart-count" th:text="${data.cart_goods_count}"></div></i></a></div>
+        <div class="navbar-item navbar-right"><a href="order/shopCartList"><i class="icon-shopcart-outline"><div class="shopcart-count" th:text="${data.cart_goods_count}"></div></i></a></div>
     </header>
 	<div class="header-height"></div>
     <section class="g-scrollview">
@@ -34,11 +34,12 @@
 			<input type="hidden" name="goodsNowPrices" th:value="${data.now_money}">
 			<input type="hidden" name="goodsTurePrices" th:value="${data.true_money}">
 			<input type="hidden" name="goodsCounts" id="goodsCounts" value="1">
-			<input type="hidden" name="skuIds" value="">
+			<input type="hidden" name="skuIds" value="0">
 			<input type="hidden" name="skuSpecNames" value="">
-			<input type="hidden" name="shopCartIds" value="">
+			<input type="hidden" name="shopCartIds" value="0">
 			<input type="hidden" name="shopCartIdsCheck" value="">
 			<input type="hidden" name="timeGoodsId" value="0">
+			<input type="hidden" name="shopId" th:value="${data.shop_id}">
 		</form>
 
 		<div class="goods-bannel">

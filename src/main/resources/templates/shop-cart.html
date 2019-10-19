@@ -38,9 +38,11 @@
         </div>
         <div class="shop-list" th:each="item:${data.cart_list}" th:if="${#lists.size(item.cart_detail_list) > 0}">
             <input type="hidden" name="shopName" th:value="${item.shop_name}">
+            <input type="hidden" name="shopId" th:value="${item.shop_id}">
             <div class="shop-name">
                 <div>
                     <label class="cell-right cell-right-shop-name">
+
                         <input type="checkbox" th:value="${item.shop_id}" th:name="${'checkboxParent'+item.shop_id}" th:onclick="'javascript:choseShopGoodsParent(\'' + ${item.shop_id} + '\');'"/>
                         <i class="cell-checkbox-icon"></i>
                         <span th:text="${item.shop_name}"></span>

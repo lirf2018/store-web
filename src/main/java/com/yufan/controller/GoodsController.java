@@ -1,9 +1,11 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import com.yufan.bean.GoodsCondition;
 import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,18 +24,20 @@ import java.io.PrintWriter;
 public class GoodsController {
 
     @RequestMapping("goodsList")
-    public ModelAndView goodsList(HttpServletRequest request, HttpServletResponse response, GoodsCondition goodsCondition) {
+    public ModelAndView goodsList(HttpServletRequest request, HttpServletResponse response, String categoryIds, String goodsName) {
         ModelAndView modelAndView = new ModelAndView();
 
-        if (goodsCondition.getCurrePage() == null) {
-            goodsCondition.setCurrePage(1);
-        }
-
-        JSONObject data = new JSONObject();
-        data.put("curre_page", goodsCondition.getCurrePage());
-        JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_GOODS_LIST);
-        if (null != result && result.getInteger("resp_code") == 1) {
-            modelAndView.addObject("data", result.getJSONObject("data"));
+        modelAndView.addObject("categoryIds", categoryIds == null ? "" : categoryIds);
+        modelAndView.addObject("goodsName", goodsName == null ? "" : goodsName);
+        modelAndView.addObject("category_name", "");
+        if (StringUtils.isNotEmpty(categoryIds)) {
+            JSONObject data = new JSONObject();
+            data.put("category_id", categoryIds);
+            JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_CATEGORY_DETAIL);
+            if (null != result && result.getInteger("resp_code") == 1) {
+                String categoryName = result.getJSONObject("data").getString("category_name");
+                modelAndView.addObject("category_name", categoryName);
+            }
         }
         modelAndView.setViewName("goods-list");
         return modelAndView;
@@ -59,6 +63,9 @@ public class GoodsController {
             }
             JSONObject data = new JSONObject();
             data.put("curre_page", goodsCondition.getCurrePage());
+            data.put("goods_name", goodsCondition.getGoodsName());
+            data.put("category_ids", goodsCondition.getCategoryIds());
+            data.put("user_id", 1);
             JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_GOODS_LIST);
             if (null != result && result.getInteger("resp_code") == 1) {
                 pageData.put("code", 1);

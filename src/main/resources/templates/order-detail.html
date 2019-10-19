@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单详情</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+	<base th:href="@{/}">
+	<link rel="stylesheet" href="./css/ydui.css?rev=@@hash"/>
+    <link rel="stylesheet" href="css/commondemo.css"/>
+    <link rel="stylesheet" href="css/orderlist.css" />
+    <style>
+    	body{
+			  background-color: white;
+		 	  font-family: ff-tisa-web-pro-1,ff-tisa-web-pro-2,"Lucida Grande","Hiragino Sans GB","Hiragino Sans GB W3";
+			}
+
+    </style>
+</head>
+<body>
+<section class="g-flexview">
+	<header class="m-navbar">
+        <a class="navbar-item"><i class="back-ico" onclick="javascript:history.go(-1)"></i></a>
+        <div class="navbar-center"><span class="navbar-title">订单详情</span></div>
+	</header>
+	<div class="header-height"></div>
+    <section class="g-scrollview">
+    	<div class="order-msg">
+    		<div><span>订单编号：</span><span th:text="${data.order_no}"></span></div>
+    		<div><span>下单时间：</span><span th:text="${data.order_time}"></span></div>
+    		<div th:if="${data.pay_time != '' }"><span>付款时间：</span><span th:text="${data.pay_time}"></span></div>
+    		<div th:if="${data.finish_time != '' }"><span>完成时间：</span><span th:text="${data.finish_time}"></span></div>
+    		<div th:if="${data.pay_way_name != '' }"><span>支付方式：</span><span th:text="${data.pay_way_name}"></span></div>
+    	</div>
+    	<div class="order-msg">
+    		<div>
+    			<span>收货人:</span>
+    			<span th:text="${data.user_name}"></span>
+    		</div>
+    		<div>
+    			<span>收货人电话:</span>
+    			<span th:text="${data.user_phone}"></span>
+    		</div>
+    		<div>
+    			<span>收货地址:</span>
+    			<span th:text="${data.user_addr}"></span>
+    		</div>
+    	</div>
+    	
+    	<div class="shop-list shop-detail">
+    		<div class="shop-name">
+    			<div>
+					<span><i class="icon-shop-logo"></i></span>
+					<span th:text="${data.shop_name}"></span>
+					<span><i class="icon-turnnext"></i></span>
+    			</div>
+	            <div th:text="${data.order_status_name}"></div>
+    		</div>
+    		<div style="clear: both;"></div>
+    		<div class="goods-list">
+    			<div class="goods-item" th:each="item:${data.detail_list}">
+			        <div class="goods-img">
+			            <div align="center"><img th:src="${item.goods_img}"></div>
+			        </div>
+			        <div class="goods-mes">
+			            <h3 class="goods-title" th:text="${item.goods_name}"></h3>
+			            <div class="goods-spec" th:text="${item.goods_spec_name_str}"></div>
+			            <div class="goods-mes-item">
+			                <div>
+			                    <span class="goods-price"><em>¥</em><span th:text="${item.sale_money}"></span></span>
+			                </div>
+					        <div>
+					           <span class="buy-count">X <span th:text="${item.goods_count}"></span></span>
+					        </div>		                	
+			            </div>
+			        </div>
+			         <div style="clear: both;"></div>
+		        </div>
+    		</div>
+    		<div class="order-detail-price">
+    			<div>
+    				<span>商品总价:</span>
+    				<span class="detail-price"><em>¥ </em><span th:text="${data.goods_price_all}"></span></span>
+    			</div>
+    			<div>
+    				<span>运费(快递):</span>
+    				<span class="post-price"><em>¥ </em><span th:text="${data.post_price}"></span></span>
+    			</div>
+    			<div>
+    				<span>优惠:</span>
+    				<span class="discount-price">- <em>¥ </em><span th:text="${data.discounts_price}"></span></span>
+    			</div>
+    			<div>
+    				<span>订单总价:</span>
+    				<span class="discount-price"><em>¥ </em><span th:text="${data.real_price}"></span></span>
+    			</div>
+    		</div>
+    		<div class="shop-order-count shop-order-detail-count">
+    			<span>共<span th:text="${data.order_count}"></span>件商品</span>
+    			<span>实付款:<b style="font-size: 8px;font-weight: normal">(含运费)</b></span>
+    			<span class="goods-price-count"><em>¥</em><span th:text="${data.order_price}"></span></span>
+    		</div>
+    		<div class="shop-order-count-btn">
+    			<a href="javascript:;" class="btn btn-mybtn3">取消订单</a>
+    			<a href="javascript:;" class="btn btn-mybtn3">确认订单</a>
+    		</div>
+    	</div>
+    </section>
+</section>
+</body>
+<script src="js/ydui.flexible.js"></script>
+<script type="text/javascript" src="js/layer.js" ></script>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+<script src="js/ydui.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+</html>

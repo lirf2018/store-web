@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>搜索</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+	<base th:href="@{/}">
+	<link rel="stylesheet" href="./css/ydui.css?rev=@@hash"/>
+    <link rel="stylesheet" href="css/commondemo.css"/>
+    <link rel="stylesheet" href="css/search.css" />
+</head>
+<body>
+<section class="g-flexview">
+	<header class="navbar-search">
+        <div class="search-btn">
+        	<div>
+        		<a href="javascript:history.go(-1)" ><i class="icon-turnback"></i></a>
+        	</div>
+        	<div>
+        		<input type="text" placeholder="输入搜索内容" id="searchDataName"/>
+        	</div>
+        	<div>
+        		<span><a href="javascript:searchData()">搜索</a></span>
+        	</div>
+        </div>
+	</header>
+	<div class="header-height"></div>
+	
+    <section class="g-scrollview">
+    	
+    	<div class="my-search">
+    		<div class="search-title">历史搜索</div>
+    		<div class="search-item">
+    			<ul>
+					<li th:each="item:${data.user_history_list}"><a th:href="'javascript:toGoodsList(\''+${item.type_word}+'\')'" th:text="${item.type_word}"></a></li>
+    			</ul>
+    		</div>
+    	</div>
+    	<div style="clear: both;"></div>
+    	<div class="hot-search">
+    		<div class="search-title">热门搜索</div>
+    		<div class="search-item">
+    			<ul>
+					<li th:each="item:${data.history_list}"><a th:href="'javascript:toGoodsList(\''+${item.type_word}+'\')'" th:text="${item.type_word}"></a></li>
+    			</ul>
+    		</div>
+    	</div>
+		<form id="dataForm" action="goods/goodsList" method="post">
+			<input type="hidden" id="goodsName" value="" name="goodsName">
+		</form>
+    </section>
+</section>
+</body>
+<script type="text/javascript" src="js/layer.js" ></script>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+<script src="js/ydui.js"></script>
+<script src="js/ydui.flexible.js"></script>
+<script src="js/common.js"></script>
+<script>
+
+	function searchData() {
+		var goodsName = $("#searchDataName").val();
+		toGoodsList(goodsName);
+	}
+
+	function toGoodsList(goodsName) {
+		$("#goodsName").val(goodsName);
+		$("#dataForm").submit();
+	}
+</script>
+</html>

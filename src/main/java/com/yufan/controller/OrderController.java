@@ -2,6 +2,7 @@ package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.bean.GoodsCondition;
 import com.yufan.bean.ShopCartBean;
 import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
@@ -47,10 +48,7 @@ public class OrderController {
         if (null != result && result.getInteger("resp_code") == 1) {
             //暂时不支持多个店铺
             JSONArray cartList = result.getJSONObject("data").getJSONArray("cart_list");
-            if (cartList.size() == 1) {
-
-                modelAndView.addObject("data", result.getJSONObject("data"));
-            }
+            modelAndView.addObject("data", result.getJSONObject("data"));
             if (cartList.size() > 0) {
                 LOG.info("=======暂时只支持一个店铺========");
             }
@@ -177,37 +175,8 @@ public class OrderController {
 
         ModelAndView modelAndView = new ModelAndView();
         //店铺信息
+        String shopId = request.getParameter("shopId");
         String shopName = request.getParameter("shopName");
-        /*//商品通用信息
-        String goodsIds = request.getParameter("goodsIds");
-        String[] goodsIdsArray = goodsIds.split("`");
-        String goodsIdNames = request.getParameter("goodsIdNames");
-        String[] goodsIdNamesArray = goodsIdNames.split("`");
-        String goodsImgs = request.getParameter("goodsImgs");
-        String[] goodsImgsArray = goodsImgs.split("`");
-        String goodsCounts = request.getParameter("goodsCounts");
-        String[] goodsCountsArray = goodsCounts.split("`");
-        String goodsNowPrices = request.getParameter("goodsNowPrices");
-        String[] goodsNowPricesArray = goodsNowPrices.split("`");//现价
-        String goodsTurePrices = request.getParameter("goodsTurePrices");
-        String[] goodsTurePricesArray = goodsTurePrices.split("`");//原价
-        //sku商品信息
-        String skuIds = request.getParameter("skuIds");
-        String[] skuIdsArray = {};//商品skuIds
-        if (StringUtils.isNotEmpty(skuIds)) {
-            skuIdsArray = skuIds.split("`");
-        }
-        String skuNames = request.getParameter("skuNames");
-        String[] skuNamesArray = {};//商品sku规格名称
-        if (StringUtils.isNotEmpty(skuNames)) {
-            skuNamesArray = skuNames.split("`");
-        }
-        //购物车Ids
-        String shopCartIds = request.getParameter("shopCartIds");
-        String[] shopCartIdsArray = {};
-        if (StringUtils.isNotEmpty(shopCartIds)) {
-            shopCartIdsArray = shopCartIds.split("`");
-        }*/
         //商品通用信息
         String[] goodsIdsArray = request.getParameterValues("goodsIds");
         String[] goodsIdNamesArray = request.getParameterValues("goodsIdNames");
@@ -227,7 +196,7 @@ public class OrderController {
         if (StringUtils.isNotEmpty(shopCartIdsCheck)) {
             String[] shopCartIdsCheckStrArray = shopCartIdsCheck.split("`");
             for (int i = 0; i < shopCartIdsCheckStrArray.length; i++) {
-                if(StringUtils.isEmpty(shopCartIdsCheckStrArray[i])){
+                if (StringUtils.isEmpty(shopCartIdsCheckStrArray[i])) {
                     continue;
                 }
                 shopCartIdsCheckMap.put(shopCartIdsCheckStrArray[i], shopCartIdsCheckStrArray[i]);
@@ -303,7 +272,7 @@ public class OrderController {
             //sku商品信息
             if (null != skuIdsArray && skuIdsArray.length > 0) {
                 map.put("skuId", skuIdsArray[i]);
-                map.put("skuSpecName", StringUtils.isEmpty(skuSpecNamesArray[i])?"":"规格:"+skuSpecNamesArray[i]);
+                map.put("skuSpecName", StringUtils.isEmpty(skuSpecNamesArray[i]) ? "" : "规格:" + skuSpecNamesArray[i]);
             } else {
                 map.put("skuId", "0");
                 map.put("skuName", "");
@@ -326,21 +295,217 @@ public class OrderController {
         }
 
         //设置订单提交页面参数
+        modelAndView.addObject("shopId", shopId);
         modelAndView.addObject("shopName", shopName);
         modelAndView.addObject("goodsList", goodsList);
         modelAndView.addObject("goodsPriceAll", goodsPriceAll);
         modelAndView.addObject("goodsList", goodsList);
         modelAndView.addObject("timeGoodsId", timeGoodsId);
         //用户收货信息
-        modelAndView.addObject("userAddrId",userAddrId);
-        modelAndView.addObject("userName",userName);
-        modelAndView.addObject("userPhone",userPhone);
-        modelAndView.addObject("addrName",addrName);
+        modelAndView.addObject("userAddrId", userAddrId);
+        modelAndView.addObject("userName", userName);
+        modelAndView.addObject("userPhone", userPhone);
+        modelAndView.addObject("addrName", addrName);
         modelAndView.addObject("freight", freight.setScale(2, BigDecimal.ROUND_HALF_UP));
         //
         modelAndView.setViewName("order-submit");
         return modelAndView;
     }
 
+    /**
+     * 创建订单
+     * {
+     * "user_id": 1,
+     * "time_goods_id": 0,
+     * "user_addr_id": 10,
+     * "shop_id": 1,
+     * "order_price": 23.02,
+     * "real_price": 63.00,
+     * "goods_price_all": 65,
+     * "discounts_id": 0,
+     * "goods_list": {
+     * "goods_id": 100,
+     * "goods_count": 10,
+     * "sku_id": 0,
+     * "cart_id": 10,
+     * "detail_prop": [{
+     * "property_key": "iccid",
+     * "property_value": "84852",
+     * "remark": "001"
+     * }]* 	}
+     * }
+     *
+     * @return
+     */
+    @RequestMapping("createOrder")
+    public void createOrder(HttpServletRequest request, HttpServletResponse response) {
+        JSONObject outParam = new JSONObject();
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            outParam.put("code", 0);
 
+            String shopId = request.getParameter("shopId");
+            String userAddrId = request.getParameter("userAddrId");
+            String timeGoodsId = request.getParameter("timeGoodsId");
+            String discountId = request.getParameter("discountId");
+            String orderPrice = request.getParameter("orderPrice");
+            String realPrice = request.getParameter("realPrice");
+            String goodsPriceAll = request.getParameter("goodsPriceAll");
+
+            String goodsIds = request.getParameter("goodsIds");
+            String goodsCounts = request.getParameter("goodsCounts");
+            String skuIds = request.getParameter("skuIds");
+            String shopCartIds = request.getParameter("shopCartIds");
+
+
+            JSONObject data = new JSONObject();
+            data.put("user_id", 1);
+            data.put("time_goods_id", timeGoodsId);
+            data.put("user_addr_id", userAddrId);
+            data.put("shop_id", shopId);
+            data.put("discounts_id", discountId);
+            data.put("order_price", orderPrice);
+            data.put("real_price", realPrice);
+            data.put("goods_price_all", goodsPriceAll);
+            JSONArray goodsList = new JSONArray();
+            String[] goodsIdsArray = goodsIds.split("`");
+            String[] goodsCountsArray = goodsCounts.split("`");
+            String[] skuIdsArray = skuIds.split("`");
+            String[] shopCartIdsArray = shopCartIds.split("`");
+            for (int i = 0; i < goodsIdsArray.length; i++) {
+                String goodsId = goodsIdsArray[i];
+                String goodsCount = goodsCountsArray[i];
+                String skuId = skuIdsArray[i];
+                String cartId = shopCartIdsArray[i];
+                if (StringUtils.isEmpty(goodsId)) {
+                    continue;
+                }
+                JSONObject goods = new JSONObject();
+                goods.put("goods_id", goodsId);
+                goods.put("goods_count", goodsCount);
+                goods.put("sku_id", skuId);
+                goods.put("cart_id", cartId);
+                goodsList.add(goods);
+            }
+            data.put("goods_list", goodsList);
+            JSONObject result = CommonMethod.infoResult(data, Constants.CREATE_ORDER);
+            if (null != result) {
+                outParam.put("code", result.getInteger("resp_code"));
+                outParam.put("msg", result.getString("resp_desc"));
+            }
+            writer.print(outParam);
+            writer.close();
+        } catch (Exception e) {
+            LOG.error("------------创建订单异常-----------------");
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 跳转到支付页面
+     *
+     * @return
+     */
+    @RequestMapping("toPay")
+    public ModelAndView toPay(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            modelAndView.addObject("code", 1);
+            modelAndView.setViewName("result-page3");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
+
+    /**
+     * 订单列表
+     *
+     * @return
+     */
+    @RequestMapping("orderListPage")
+    public ModelAndView orderListPage(HttpServletRequest request, HttpServletResponse response, Integer status) {
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            modelAndView.addObject("status", status);
+            String orderStatusName = "全部";
+            if (null != status && status != -1) {
+                Map<Integer, String> map = new HashMap<>();
+                map.put(0, "待付款");
+                map.put(1, "已付款");
+                map.put(3, "已失败");
+                map.put(4, "待发货");
+                map.put(5, "待收货");
+                map.put(6, "已完成");
+                map.put(7, "已取消");
+                map.put(8, "已删除");
+                map.put(9, "退款中");
+                map.put(10, "已退款");
+                map.put(11, "处理中");
+                map.put(13, "已还货");
+                map.put(12, "还货中");
+                orderStatusName = map.get(status);
+            }
+            modelAndView.addObject("orderStatusName", orderStatusName);
+            modelAndView.setViewName("order-list");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
+
+    /**
+     * 查询订单列表
+     *
+     * @param request
+     * @param response
+     */
+    @RequestMapping("loadOrderList")
+    public void loadOrderList(HttpServletRequest request, HttpServletResponse response, Integer page, Integer status) {
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            JSONObject pageData = new JSONObject();
+            pageData.put("code", 0);
+
+            JSONObject data = new JSONObject();
+            data.put("user_id", 1);
+            data.put("status", status);
+            data.put("curre_page", page == null ? 1 : page);
+            JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_ORDER_LIST);
+            if (null != result && result.getInteger("resp_code") == 1) {
+                pageData.put("code", 1);
+                pageData.put("data", result.getJSONObject("data"));
+            }
+            writer.println(pageData);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 订单详情
+     *
+     * @return
+     */
+    @RequestMapping("orderDetail")
+    public ModelAndView orderDetailPage(HttpServletRequest request, HttpServletResponse response, Integer orderId) {
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            JSONObject data = new JSONObject();
+            data.put("user_id", 1);
+            data.put("order_id", orderId);
+            JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_ORDER_DETAIL);
+            if (null != result && result.getInteger("resp_code") == 1) {
+                modelAndView.addObject("data", result.getJSONObject("data"));
+            }
+            modelAndView.setViewName("order-detail");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
 }
