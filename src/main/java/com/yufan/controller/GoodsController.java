@@ -24,12 +24,13 @@ import java.io.PrintWriter;
 public class GoodsController {
 
     @RequestMapping("goodsList")
-    public ModelAndView goodsList(HttpServletRequest request, HttpServletResponse response, String categoryIds, String goodsName) {
+    public ModelAndView goodsList(HttpServletRequest request, HttpServletResponse response, String categoryIds, String goodsName,String searchType) {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.addObject("categoryIds", categoryIds == null ? "" : categoryIds);
         modelAndView.addObject("goodsName", goodsName == null ? "" : goodsName);
         modelAndView.addObject("category_name", "");
+        modelAndView.addObject("searchType", searchType);
         if (StringUtils.isNotEmpty(categoryIds)) {
             JSONObject data = new JSONObject();
             data.put("category_id", categoryIds);
@@ -66,6 +67,7 @@ public class GoodsController {
             data.put("goods_name", goodsCondition.getGoodsName());
             data.put("category_ids", goodsCondition.getCategoryIds());
             data.put("user_id", 1);
+            data.put("search_type", goodsCondition.getSearchType());
             JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_GOODS_LIST);
             if (null != result && result.getInteger("resp_code") == 1) {
                 pageData.put("code", 1);

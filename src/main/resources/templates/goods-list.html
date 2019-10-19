@@ -39,6 +39,7 @@
 	<form id="dataForm" action="goods/goodsList" method="post">
 		<header class="navbar-search">
 			<input type="hidden" id="categoryIds" th:value="${categoryIds}" name="categoryIds">
+			<input type="hidden" id="searchType" th:value="${searchType}" name="searchType">
 			<div class="search-btn">
 				<div>
 					<a><i class="icon-turnback" onclick="javascript:history.go(-1)"></i></a>
@@ -84,7 +85,8 @@
                     page: page,
                     pagesize: pageSize,
 					goodsName:$("#goodsName").val(),
-					categoryIds:$("#categoryIds").val()
+					categoryIds:$("#categoryIds").val(),
+					searchType:$("#searchType").val()
                 },
                 success: function (ret) {
                     typeof callback == 'function' && callback(ret);

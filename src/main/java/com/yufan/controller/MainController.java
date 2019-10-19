@@ -28,10 +28,10 @@ public class MainController {
 
         JSONObject data = new JSONObject();
 
-//        JSONObject result = CommonMethod.infoResult(data, Constants.INFO_MAIN);
-//        if (null != result) {
-//            modelAndView.addObject("data", result.getJSONObject("data"));
-//        }
+        JSONObject result = CommonMethod.infoResult(data, Constants.INFO_MAIN);
+        if (null != result) {
+            modelAndView.addObject("data", result.getJSONObject("data"));
+        }
         modelAndView.setViewName("main");
         return modelAndView;
     }

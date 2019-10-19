@@ -123,183 +123,83 @@
         </div>
         <div class="new-goods">
             <div class="recommend">
-                <div><i class="icon-like"></i><span class="icon-like-span">热销</span><a href="#"><i class="icon-turnnext"></i></a></div>
+                <div  onclick="javascript:orderList('weight')"><i class="icon-like"></i><span class="icon-like-span">热销</span><a href="goods/goodsList?type=hot"><i class="icon-turnnext"></i></a></div>
                 <a><img src="img/appbanner-11.jpg" /></a>
             </div>
             <div class="m-list list-theme1">
-                <a href="goods-detail.html" class="list-item">
+                <div  class="list-item" th:each="item:${data.hot_goods_list}" th:onclick="'javascript:orderDetail('+${item.goods_id}+')'">
                     <div class="list-img">
-                        <img src="img/goods01.png">
+                        <img th:src="${item.goods_img}">
                     </div>
                     <div class="list-mes">
-                        <h3 class="list-title">superman短袖t恤日潮牌男士日韩夏装水洗做旧修身个性短袖t恤衣服220X220</h3>
+                        <h3 class="list-title" th:text="${item.goods_name}"></h3>
                         <div class="list-mes-item">
-                            <div>
-                                <span class="list-price"><em>¥</em>34.45</span>
-                                <span class="list-del-price">¥545.65</span>
+                            <div th:if="${item.is_single == 1}">
+                                <span class="list-price"><em>¥</em><span th:text="${item.now_money}"></span></span>
+                                <span class="list-del-price">¥<span th:text="${item.true_money}"></span></span>
                             </div>
+                            <div th:if="${item.is_single == 0}">
+                                <span class="list-price"><em>¥</em><span th:text="${item.sku_now_money + '起'}"></span></span>
+                                <div></div>
+                            </div>
+                            <div><button type="button" class="btn-block btn-danger">购买</button></div>
                         </div>
                     </div>
-                </a>
-                <a href="goods-detail.html" class="list-item">
-                    <div class="list-img">
-                        <img src="img/goods01.png">
-                    </div>
-                    <div class="list-mes">
-                        <h3 class="list-title">superman短袖t恤日潮牌男士日韩夏装水洗做旧修身个性短袖t恤衣服220X220</h3>
-                        <div class="list-mes-item">
-                            <div>
-                                <span class="list-price"><em>¥</em>34.45</span>
-                                <span class="list-del-price">¥545.65</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                <a href="goods-detail.html" class="list-item">
-                    <div class="list-img">
-                        <img src="img/goods01.png">
-                    </div>
-                    <div class="list-mes">
-                        <h3 class="list-title">superman短袖t恤日潮牌男士日韩夏装水洗做旧修身个性短袖t恤衣服220X220</h3>
-                        <div class="list-mes-item">
-                            <div>
-                                <span class="list-price"><em>¥</em>34.45</span>
-                                <span class="list-del-price">¥545.65</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                <a href="goods-detail.html" class="list-item">
-                    <div class="list-img">
-                        <img src="img/goods01.png">
-                    </div>
-                    <div class="list-mes">
-                        <h3 class="list-title">superman短袖t恤日潮牌男士日韩夏装水洗做旧修身个性短袖t恤衣服220X220</h3>
-                        <div class="list-mes-item">
-                            <div>
-                                <span class="list-price"><em>¥</em>34.45</span>
-                                <span class="list-del-price">¥545.65</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
+                </div>
             </div>
         </div>
         <div class="recommend"><a><img src="img/appbanner-11.jpg" /></a> </div>
         <div class="recommend">
-            <div class="title"><i class="icon-like"></i><span class="icon-like-span">好物推荐</span><a href="#"><i class="icon-turnnext"></i></a></div>
+            <div class="title"  onclick="javascript:orderList('weight')"><i class="icon-like"></i><span class="icon-like-span">好物推荐</span><a href="goods/goodsList?type=weight"><i class="icon-turnnext"></i></a></div>
             <a><img src="img/appbanner-11.jpg" /></a>
         </div>
         <div class="m-list list-theme4">
-            <a href="#" class="list-item">
+            <div class="list-item" th:each="item:${data.weight_goods_list}"  th:onclick="'javascript:orderDetail('+${item.goods_id}+')'">
                 <div class="list-img">
-                    <img src="img/goods02.png">
+                    <img th:src="${item.goods_img}">
                 </div>
                 <div class="list-mes">
-                    <h3 class="list-title">2016夏装新款时尚潮流短袖T恤男纯棉V领日系青ss少年韩版夏季上衣服</h3>
+                    <h3 class="list-title" th:text="${item.goods_name}"></h3>
                     <div class="list-mes-item">
-                        <div>
-                            <span class="list-price"><em>¥</em>34.7</span>
-                            <span class="list-del-price">¥45.65</span>
+                        <div th:if="${item.is_single == 1}">
+                            <span class="list-price"><em>¥</em><span th:text="${item.now_money}"></span></span>
+                            <span class="list-del-price">¥<span th:text="${item.true_money}"></span></span>
+                        </div>
+                        <div th:if="${item.is_single == 0}">
+                            <span class="list-price"><em>¥</em><span th:text="${item.sku_now_money + '起'}"></span></span>
+                            <div></div>
                         </div>
                         <div><button type="button" class="btn-block btn-danger">购买</button></div>
                     </div>
                 </div>
-            </a>
-            <a href="goods-detail.html" class="list-item">
-                <div class="list-img">
-                    <img src="img/goods01.png">
-                </div>
-                <div class="list-mes">
-                    <h3 class="list-title">2016夏装新款时尚潮流短袖T恤男纯棉V领日系青少年韩版夏季上衣服220X220</h3>
-                    <div class="list-mes-item">
-                        <div>
-                            <span class="list-price"><em>¥</em>34.7</span>
-                            <span class="list-del-price">¥45.65</span>
-                        </div>
-                        <div><button type="button" class="btn-block btn-danger">购买</button></div>
-                    </div>
-                </div>
-            </a>
-            <a href="goods-detail.html" class="list-item">
-                <div class="list-img">
-                    <img src="img/goods03.png">
-                </div>
-                <div class="list-mes">
-                    <h3 class="list-title">2016夏装新款时尚潮流短袖T恤男纯棉V领日系青少年韩版夏季上衣服</h3>
-                    <div class="list-mes-item">
-                        <div>
-                            <span class="list-price"><em>¥</em>34.7</span>
-                            <span class="list-del-price">¥45.65</span>
-                        </div>
-                        <div><button type="button" class="btn-block btn-danger">购买</button></div>
-                    </div>
-                </div>
-            </a>
+            </div>
         </div>
         <div class="recommend"><a><img src="img/appbanner-11.jpg" /></a> </div>
         <div class="new-goods">
             <div class="recommend">
-                <div><i class="icon-like"></i><span class="icon-like-span">新品上架</span><a href="#"><i class="icon-turnnext"></i></a></div>
+                <div onclick="javascript:orderList('new')"><i class="icon-like"></i><span class="icon-like-span">新品上架</span><a href="goods/goodsList?type=new"><i class="icon-turnnext"></i></a></div>
                 <a><img src="img/appbanner-11.jpg" /></a>
             </div>
             <div class="m-list list-theme1">
-                <a href="goods-detail.html" class="list-item">
+                <div class="list-item" th:each="item:${data.new_goods_list}"  th:onclick="'javascript:orderDetail('+${item.goods_id}+')'">
                     <div class="list-img">
-                        <img src="img/goods01.png">
+                        <img th:src="${item.goods_img}">
                     </div>
                     <div class="list-mes">
-                        <h3 class="list-title">superman短袖t恤日潮牌男士日韩夏装ss水洗做旧修身个性短袖t恤衣服220X220</h3>
+                        <h3 class="list-title" th:text="${item.goods_name}"></h3>
                         <div class="list-mes-item">
-                            <div>
-                                <span class="list-price"><em>¥</em>34.45</span>
-                                <span class="list-del-price">¥545.65</span>
+                            <div th:if="${item.is_single == 1}">
+                                <span class="list-price"><em>¥</em><span th:text="${item.now_money}"></span></span>
+                                <span class="list-del-price">¥<span th:text="${item.true_money}"></span></span>
                             </div>
+                            <div th:if="${item.is_single == 0}">
+                                <span class="list-price"><em>¥</em><span th:text="${item.sku_now_money + '起'}"></span></span>
+                                <div></div>
+                            </div>
+                            <div><button type="button" class="btn-block btn-danger">购买</button></div>
                         </div>
                     </div>
-                </a>
-                <a href="goods-detail.html" class="list-item">
-                    <div class="list-img">
-                        <img src="img/goods01.png">
-                    </div>
-                    <div class="list-mes">
-                        <h3 class="list-title">superman短袖t恤日潮牌男士日韩夏装水洗做旧修身个性短袖t恤衣服220X220</h3>
-                        <div class="list-mes-item">
-                            <div>
-                                <span class="list-price"><em>¥</em>34.45</span>
-                                <span class="list-del-price">¥545.65</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                <a href="goods-detail.html" class="list-item">
-                    <div class="list-img">
-                        <img src="img/goods01.png">
-                    </div>
-                    <div class="list-mes">
-                        <h3 class="list-title">superman短袖t恤日潮牌男士日韩夏装水洗做旧修身个性短袖t恤衣服220X220</h3>
-                        <div class="list-mes-item">
-                            <div>
-                                <span class="list-price"><em>¥</em>34.45</span>
-                                <span class="list-del-price">¥545.65</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                <a href="goods-detail.html" class="list-item">
-                    <div class="list-img">
-                        <img src="img/goods01.png">
-                    </div>
-                    <div class="list-mes">
-                        <h3 class="list-title">superman短袖t恤日潮牌男士日韩夏装水洗做旧修身个性短袖t恤衣服220X220</h3>
-                        <div class="list-mes-item">
-                            <div>
-                                <span class="list-price"><em>¥</em>34.45</span>
-                                <span class="list-del-price">¥545.65</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
+                </div>
             </div>
         </div>
         <div class="foot-msg">亲爱的, 下面没有东西啦~</div>
@@ -347,5 +247,13 @@
             $(".activity-left>div").css("top","1.25rem");
         }
     })(jQuery);
+
+    function orderList(searchType) {
+        window.location.href = "goods/goodsList?searchType="+searchType;
+    }
+
+    function orderDetail(goodsId) {
+        window.location.href = "goods/goodsDetail?goodsId="+goodsId;
+    }
 </script>
 </html>
