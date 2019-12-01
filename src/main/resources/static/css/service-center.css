@@ -1,0 +1,20 @@
+.item{
+    width: 100%;
+    padding: 10px 10px;
+    background: white;
+    margin-top: 10px;
+    color: #333333;
+}
+
+.item>div{
+    float: left;
+}
+
+.item-word{
+    margin-left: 15px;
+    line-height: 22px;
+}
+
+.item-word>span:last-child{
+    margin-left: 15px;
+}

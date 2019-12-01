@@ -1,5 +1,6 @@
 package com.yufan.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
@@ -30,6 +31,12 @@ public class MainController {
 
         JSONObject result = CommonMethod.infoResult(data, Constants.INFO_MAIN);
         if (null != result) {
+            JSONObject dataJson = result.getJSONObject("data");
+            JSONArray activityList =dataJson.getJSONArray("activity_list");
+            for (int i = 0; i < activityList.size(); i++) {
+                modelAndView.addObject("activityImg"+i,activityList.getJSONObject(i).getString("activity_img"));
+                modelAndView.addObject("activityLink"+i,activityList.getJSONObject(i).getString("activity_link"));
+            }
             modelAndView.addObject("data", result.getJSONObject("data"));
         }
         modelAndView.setViewName("main");

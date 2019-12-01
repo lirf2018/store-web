@@ -502,6 +502,8 @@ public class OrderController {
             if (null != result && result.getInteger("resp_code") == 1) {
                 modelAndView.addObject("data", result.getJSONObject("data"));
             }
+
+
             modelAndView.setViewName("order-detail");
         } catch (Exception e) {
             e.printStackTrace();
