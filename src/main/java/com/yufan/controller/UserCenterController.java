@@ -119,12 +119,12 @@ public class UserCenterController {
                     String freight = o.getString("freight");
                     String regionCode = o.getString("region_code");
                     String word = regionId + "`" + regionName + "`" + freight + "`" + regionCode;
-                    if(regionLevel == 1){
+                    if (regionLevel == 1) {
                         Map<String, Object> map1 = new HashMap<>();
                         map1.put("n", word);
                         map1.put("c", new JSONArray());
                         list.add(map1);
-                    }else if (regionLevel == 2) {
+                    } else if (regionLevel == 2) {
                         Map<String, Object> map1 = new HashMap<>();
                         map1.put("n", word);
                         map1.put("a", new JSONArray());
@@ -236,6 +236,7 @@ public class UserCenterController {
 
     /**
      * 查询用户收货地址
+     *
      * @param request
      * @param response
      */
@@ -250,12 +251,12 @@ public class UserCenterController {
             data.put("parent_code", "");
 
             JSONObject pageData = new JSONObject();
-            pageData.put("code",0);
+            pageData.put("code", 0);
 
             JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_USER_ADDR);
             if (result != null && result.getInteger("resp_code") == 1) {
-                pageData.put("code",1);
-                pageData.put("data",result.getJSONObject("data").getJSONArray("user_addr_list"));
+                pageData.put("code", 1);
+                pageData.put("data", result.getJSONObject("data").getJSONArray("user_addr_list"));
             }
             writer.println(pageData);
             writer.close();
@@ -266,11 +267,22 @@ public class UserCenterController {
 
     /**
      * 服务中心
+     *
      * @return
      */
     @RequestMapping("toServicePage")
-    public String toServicePage(){
+    public String toServicePage() {
         return "service-center";
+    }
+
+    /**
+     * 绑定手机号码
+     *
+     * @return
+     */
+    @RequestMapping("toBangPhone")
+    public String toBangPhone() {
+        return "bang-phone";
     }
 
 }

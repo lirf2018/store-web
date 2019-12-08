@@ -20,7 +20,8 @@
     	<div class="user-info">
     		<div align="center" class="user-phone"><img src="img/photo1.png"></div>
     		<div align="center" class="nichen" th:text="${data.nick_name}"></div>
-    		<div align="center" class="class-id"th:text="${'ID: '+data.member_id}"></div>
+    		<div align="center" class="class-id"th:text="${'SVIP: '+data.member_id}"></div>
+    		<div align="center" class="class-data">2019-11-01 至 2020-12-01</div>
     	</div>
     	<div class="user-msg">
     		<div>
@@ -101,12 +102,36 @@
 		</div>
 		<div style="clear: both;"></div>
 		<div class="m-cell">
+		    <a class="cell-item" href="#">
+		        <div class="cell-left"></i>我的福利</div>
+		        <div class="cell-right cell-arrow"></div>
+		    </a>
+		</div>
+		<div class="m-cell">
 		    <a class="cell-item" href="center/userAddr">
 		        <div class="cell-left"></i>收货地址</div>
 		        <div class="cell-right cell-arrow"></div>
 		    </a>
 		</div>
-		<a href="login.html" class="btn-block btn-mybtn4">退出登录</a>
+		<div class="m-cell">
+		    <a class="cell-item" href="/center/toServicePage">
+		        <div class="cell-left"></i>服务中心</div>
+		        <div class="cell-right cell-arrow"></div>
+		    </a>
+		</div>
+		<div class="m-cell">
+		    <a class="cell-item" href="/center/toBangPhone">
+		        <div class="cell-left"></i>绑定/解绑手机号码</div>
+		        <div class="cell-right cell-arrow"></div>
+		    </a>
+		</div>
+		<div class="m-cell">
+		    <a class="cell-item" href="#">
+		        <div class="cell-left"></i>绑定/会员卡</div>
+		        <div class="cell-right cell-arrow"></div>
+		    </a>
+		</div>
+		<!--<a href="login.html" class="btn-block btn-mybtn4">退出登录</a>-->
 		<div class="cont_warp_clear">
 			&nbsp;
 		</div>
