@@ -35,9 +35,9 @@ public class MyInterceptorConf implements WebMvcConfigurer {
         patterns.add( "/login/resetLoginPasswd");
         patterns.add( "/login/phoneCodeLogin");
         patterns.add( "/login/passwdLogin");
-        patterns.add( "/css/*/*");
-        patterns.add( "/js/*/*");
-        patterns.add( "/img/*/*");
+        patterns.add( "/css/**");
+        patterns.add( "/js/**");
+        patterns.add( "/img/**");
 
         registry.addInterceptor(new MyInterceptor())
                 .addPathPatterns("/**")
