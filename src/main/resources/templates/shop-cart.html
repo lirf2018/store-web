@@ -32,8 +32,8 @@
         <input type="hidden" name="shopCartIdsCheck" id="shopCartIdsCheck" value="">
 
         <div class="cart-img" th:if="${data.cart_goods_count == 0}">
-            <div align="center"><a href="/goods/goodsList"><img src="img/cart.png"></a></div>
-            <div align="center"><a href="/goods/goodsList">～～去添加商品～～</a></div>
+            <div align="center"><a href="goods/goodsList"><img src="img/cart.png"></a></div>
+            <div align="center"><a href="goods/goodsList">～～去添加商品～～</a></div>
             <div style="height: 15px"></div>
         </div>
         <div class="shop-list" th:each="item:${data.cart_list}" th:if="${#lists.size(item.cart_detail_list) > 0}">

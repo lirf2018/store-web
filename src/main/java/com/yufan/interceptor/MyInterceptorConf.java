@@ -4,6 +4,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 创建人: lirf
  * 创建时间:  2019/6/26 16:24
@@ -23,10 +26,21 @@ public class MyInterceptorConf implements WebMvcConfigurer {
         System.out.println("------------------------->MyInterceptorConf");
 //         addPathPatterns - 用于添加拦截规则
 //         excludePathPatterns - 用户排除拦截
+
+        List<String> patterns = new ArrayList<>();
+        patterns.add( "/login/userLogin");
+        patterns.add( "/login/phoneLogin");
+        patterns.add( "/login/resetPasswd");
+        patterns.add( "/login/sendPhoneCode");
+        patterns.add( "/login/resetLoginPasswd");
+        patterns.add( "/login/phoneCodeLogin");
+        patterns.add( "/login/passwdLogin");
+        patterns.add( "/css/*/*");
+        patterns.add( "/js/*/*");
+        patterns.add( "/img/*/*");
+
         registry.addInterceptor(new MyInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/login/userLogin","/login/phoneLogin","/login/resetPasswd","/login/sendPhoneCode","/login/resetLoginPasswd",
-                        "/login/phoneCodeLogin","/login/passwdLogin",
-                        "/css/*", "/js/*", "/img/*");
+                .excludePathPatterns(patterns);
     }
 }

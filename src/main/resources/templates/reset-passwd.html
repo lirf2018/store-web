@@ -54,7 +54,7 @@
 							<div class="cell-right"><input type="password" class="cell-input" placeholder="重复输入账号密码" autocomplete="off" id="passwd2"/></div>
 						</div>
 						<div class="password-get" >
-							<div class="code-login" align="center"><a href="/login/phoneLogin">注册/登录 &#62;</a></div>
+							<div class="code-login" align="center"><a href="login/phoneLogin">注册/登录 &#62;</a></div>
 						</div>
 					</div>
 					<div style="clear: both;"></div>
@@ -185,7 +185,7 @@
 					showDialog('登录密码重置成功');
 					var flag = [[${flag}]];
 					if(flag == 0){
-						setTimeout("javaScript:window.location.href='/login/userLogin'",1000);
+						setTimeout("javaScript:window.location.href='login/userLogin'",1000);
 					}else{
 						setTimeout("javaScript:window.location.href='center/userCenter'",1000);
 					}

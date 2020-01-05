@@ -105,7 +105,7 @@ public class Constants {
     /**
      * 接口业务类型
      */
-    public static String INFO_URL = "http://127.0.0.1:8082/test";
+    public static String INFO_URL = "http://127.0.0.1:8082/store-info/test";
     public static String INFO_MAIN = "main";
     public static String QUERY_HISTORY_LIST = "query_history_list";
     public static String QUERY_LEVEL_CATEGORY_LIST = "query_level_category_list";//查询一级分类和类目

@@ -135,7 +135,7 @@
 							var code = data.resp_code;
 							if (code == 1) {
 								showDialog('注销成功');
-								setTimeout("javaScript:window.location.href='/login/userLogin'",1000);
+								setTimeout("javaScript:window.location.href='login/userLogin'",1000);
 							} else {
 								showDialog(data.resp_desc);
 								$("#phoneCode").val("");
