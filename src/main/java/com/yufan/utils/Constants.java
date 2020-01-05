@@ -35,19 +35,20 @@ public class Constants {
      * //12	还货中
      * //13	已还货
      */
-    public static Integer ORDER_STATUS_DFK = 0;
-    public static Integer ORDER_STATUS_YFK = 1;
-    public static Integer ORDER_STATUS_YSB = 3;
-    public static Integer ORDER_STATUS_DFH = 4;
-    public static Integer ORDER_STATUS_DSH = 5;
-    public static Integer ORDER_STATUS_YWC = 6;
-    public static Integer ORDER_STATUS_YQX = 7;
-    public static Integer ORDER_STATUS_YSC = 8;
-    public static Integer ORDER_STATUS_TKZ = 9;
-    public static Integer ORDER_STATUS_YTK = 10;
-    public static Integer ORDER_STATUS_CLZ = 11;
-    public static Integer ORDER_STATUS_HHZ = 12;
-    public static Integer ORDER_STATUS_YHH = 13;
+    public static Integer ORDER_STATUS_0 = 0;
+    public static Integer ORDER_STATUS_1 = 1;
+    public static Integer ORDER_STATUS_2 = 2;
+    public static Integer ORDER_STATUS_3 = 3;
+    public static Integer ORDER_STATUS_4 = 4;
+    public static Integer ORDER_STATUS_5 = 5;
+    public static Integer ORDER_STATUS_6 = 6;
+    public static Integer ORDER_STATUS_7 = 7;
+    public static Integer ORDER_STATUS_8 = 8;
+    public static Integer ORDER_STATUS_9 = 9;
+    public static Integer ORDER_STATUS_10 = 10;
+    public static Integer ORDER_STATUS_11 = 11;
+    public static Integer ORDER_STATUS_12 = 12;
+    public static Integer ORDER_STATUS_13 = 13;
 
     /**
      * 数据状态
@@ -123,7 +124,32 @@ public class Constants {
     public static String QUERY_ORDER_LIST = "query_order_list";//查询订单列表
     public static String QUERY_ORDER_DETAIL = "query_order_detail";//查询订单详情
     public static String QUERY_CATEGORY_DETAIL = "query_category_detail";//查询分类
+    public static String DELETE_SEARCH_HISTORY = "delete_search_history";//删除搜索地址
+    public static String SEND_PHONE_CODE = "send_phone_code";//发送手机验证码
+    public static String RESET_PASSWD = "reset_passwd";//重置密码
+    public static String PHONE_CODE_LOGIN = "phone_code_login";//手机验证码登录
+    public static String PASSWD_LOGIN = "passwd_login";//密码登录
+    public static String CANCEL_ACCOUNT = "cancel_account";//注销账号
+    public static String UPDATE_ORDER_STATUS = "update_order_status";//更新订单状态
+    public static String APPLY_ORDER_REFUND = "apply_order_refund";//订单退款
 
 
+    /**
+     * 手机验证码类型
+     * valid_type：1手机绑定2修改密码3重置密码4手机解绑5手机注册6验证码登录7注销账号
+     */
+    public static Integer VALID_TYPE_1 = 1;
+    public static Integer VALID_TYPE_2 = 2;
+    public static Integer VALID_TYPE_3 = 3;
+    public static Integer VALID_TYPE_4 = 4;
+    public static Integer VALID_TYPE_5 = 5;
+    public static Integer VALID_TYPE_6 = 6;
+    public static Integer VALID_TYPE_7 = 7;
 
+
+    //交易方式 0现金付款1微信2支付宝3账户余额
+    public static Integer PAY_WAY_0 = 0;
+    public static Integer PAY_WAY_1 = 1;
+    public static Integer PAY_WAY_2 = 2;
+    public static Integer PAY_WAY_3 = 3;
 }

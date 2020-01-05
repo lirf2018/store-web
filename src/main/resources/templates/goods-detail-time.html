@@ -143,14 +143,12 @@
     function addData() {
 
         var goodsId = [[${data.goods_id}]];
-        var userId = "0";
         var goodsCount = $(".add-btn>span:nth-child(2) input").val();
         var goodsSpec = "";
         var goodsPrice = [[${data.time_price}]];
         var trueMoney = [[${data.true_money}]];
         var data = {
             "goods_id":goodsId,
-            "user_id":userId,
             "goods_count":goodsCount,
             "goods_spec":goodsSpec,
             "goods_price":goodsPrice,

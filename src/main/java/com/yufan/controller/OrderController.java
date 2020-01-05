@@ -2,7 +2,7 @@ package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yufan.bean.GoodsCondition;
+import com.yufan.bean.LoginUser;
 import com.yufan.bean.ShopCartBean;
 import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
@@ -42,8 +42,10 @@ public class OrderController {
     @RequestMapping("shopCartList")
     public ModelAndView shopCartList(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
+
+        LoginUser user = (LoginUser) request.getSession().getAttribute("user");
         JSONObject data = new JSONObject();
-        data.put("user_id", 1);
+        data.put("user_id", user.getUserId());
         JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_ORDER_CART);
         if (null != result && result.getInteger("resp_code") == 1) {
             //暂时不支持多个店铺
@@ -73,7 +75,8 @@ public class OrderController {
         try {
             writer = response.getWriter();
 
-            shopCartBean.setUserId(1);
+            LoginUser user = (LoginUser) request.getSession().getAttribute("user");
+            shopCartBean.setUserId(user.getUserId());
 
             JSONObject data = JSONObject.parseObject(JSONObject.toJSONString(shopCartBean));
             JSONObject result = CommonMethod.infoResult(data, Constants.ADD_ORDER_CART);
@@ -107,8 +110,9 @@ public class OrderController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
+            LoginUser user = (LoginUser) request.getSession().getAttribute("user");
             JSONObject data = new JSONObject();
-            data.put("user_id", 1);
+            data.put("user_id", user.getUserId());
             data.put("cart_id", cartId);
             data.put("goods_count", count);
 
@@ -144,8 +148,11 @@ public class OrderController {
 
             cartIds = cartIds.substring(0, cartIds.length() - 1);
             writer = response.getWriter();
+
+            LoginUser user = (LoginUser) request.getSession().getAttribute("user");
+
             JSONObject data = new JSONObject();
-            data.put("user_id", 1);
+            data.put("user_id", user.getUserId());
             data.put("cart_ids", cartIds);
 
             JSONObject result = CommonMethod.infoResult(data, Constants.DELETE_ORDER_CART);
@@ -213,9 +220,9 @@ public class OrderController {
         String userName = "";
         String userPhone = "";
         String addrName = "";
-
+        LoginUser user = (LoginUser) request.getSession().getAttribute("user");
         JSONObject data = new JSONObject();
-        data.put("user_id", 1);
+        data.put("user_id", user.getUserId());
         data.put("addr_type", 1);
         data.put("parent_code", "000000000000");
         JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_USER_ADDR);
@@ -358,9 +365,9 @@ public class OrderController {
             String skuIds = request.getParameter("skuIds");
             String shopCartIds = request.getParameter("shopCartIds");
 
-
+            LoginUser user = (LoginUser) request.getSession().getAttribute("user");
             JSONObject data = new JSONObject();
-            data.put("user_id", 1);
+            data.put("user_id", user.getUserId());
             data.put("time_goods_id", timeGoodsId);
             data.put("user_addr_id", userAddrId);
             data.put("shop_id", shopId);
@@ -469,9 +476,9 @@ public class OrderController {
             writer = response.getWriter();
             JSONObject pageData = new JSONObject();
             pageData.put("code", 0);
-
+            LoginUser user = (LoginUser) request.getSession().getAttribute("user");
             JSONObject data = new JSONObject();
-            data.put("user_id", 1);
+            data.put("user_id", user.getUserId());
             data.put("status", status);
             data.put("curre_page", page == null ? 1 : page);
             JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_ORDER_LIST);
@@ -495,19 +502,69 @@ public class OrderController {
     public ModelAndView orderDetailPage(HttpServletRequest request, HttpServletResponse response, Integer orderId) {
         ModelAndView modelAndView = new ModelAndView();
         try {
+            LoginUser user = (LoginUser) request.getSession().getAttribute("user");
             JSONObject data = new JSONObject();
-            data.put("user_id", 1);
+            data.put("user_id", user.getUserId());
             data.put("order_id", orderId);
             JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_ORDER_DETAIL);
             if (null != result && result.getInteger("resp_code") == 1) {
                 modelAndView.addObject("data", result.getJSONObject("data"));
             }
 
-
             modelAndView.setViewName("order-detail");
         } catch (Exception e) {
             e.printStackTrace();
         }
         return modelAndView;
+    }
+
+    /**
+     * 更新订单状态
+     */
+    @RequestMapping("updateOrderStatus")
+    public void updateOrderStatus(HttpServletRequest request, HttpServletResponse response, Integer orderId, Integer status) {
+        PrintWriter writer;
+        try {
+            writer = response.getWriter();
+
+            LoginUser user = (LoginUser) request.getSession().getAttribute("user");
+            JSONObject data = new JSONObject();
+            data.put("user_id", user.getUserId());
+            data.put("order_id", orderId);
+            data.put("order_status", status);
+            JSONObject result = CommonMethod.infoResult(data, Constants.UPDATE_ORDER_STATUS);
+            if (null == result) {
+                result.put("resp_code", 0);
+            }
+            writer.print(result);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 更订单申请退款
+     */
+    @RequestMapping("orderRefund")
+    public void orderRefund(HttpServletRequest request, HttpServletResponse response, Integer orderId) {
+        PrintWriter writer;
+        try {
+            writer = response.getWriter();
+
+            LoginUser user = (LoginUser) request.getSession().getAttribute("user");
+            JSONObject data = new JSONObject();
+            data.put("user_id", user.getUserId());
+            data.put("order_id", orderId);
+            JSONObject result = CommonMethod.infoResult(data, Constants.APPLY_ORDER_REFUND);
+            if (null == result) {
+                result.put("resp_code", 0);
+            }
+            writer.print(result);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

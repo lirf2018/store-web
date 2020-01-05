@@ -57,3 +57,12 @@
 	color: gray;
 	font-size:.25rem
 }
+
+.clear-history{
+	text-align: center;
+	width: 100%;
+	padding: 10px;
+	color: gray;
+	border:1px solid #CCCCCC;
+	margin-top: 25px;
+}

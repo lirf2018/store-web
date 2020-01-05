@@ -1,4 +1,4 @@
-.div-top{
+.div-top {
 	height: 4rem;
 	text-align: center;
 	vertical-align: middle;
@@ -12,7 +12,7 @@
 }
 
 
-.div-foot{
+.div-foot {
 	background-color: white;
 	position: absolute;
 	width: 100%;
@@ -21,74 +21,101 @@
 	padding-top: .65rem;
 	overflow-y: hidden;
 }
-.m-cell{
+
+.m-cell {
 	margin: 0px 0px;
-    padding: 0px 0px;
-    border: none;
-    color: #CECECE;
-    margin: 0px 10px;
+	padding: 0px 0px;
+	border: none;
+	color: #CECECE;
+	margin: 0px 10px;
 }
 
-.cell-left,.cell-right{
+.cell-left,
+.cell-right {
 	border-bottom: 1px solid #CECECE;
 	font-size: .25rem;
 }
 
-.password-get>div{
+.password-get>div {
 	color: #cd1144;
 	margin-top: 15px;
 	margin-right: 10px;
 }
-.password{
+
+.password,
+.code-login {
 	float: right;
 }
 
-.login-btn{
+.code-login>a {
+	color: gray;
+}
+
+.login-btn {
 	margin: 15px 10px;
 	text-align: center;
 	position: relative;
-	
-	
+
+
 }
 
-.other-login{
-    font-size: .28rem;
-    font-weight: normal;
-    text-align: center;
-    padding-top: 10px;
-    position: relative;
-    color: #505050;;
-}
-.other-login::before{
-    content: "";
-    display: block;
-    width: 90vw;
-    height: 1px;
-    background: #CECECE;;
-    position: absolute;
-    left: 50%;
-    margin-left: -45vw;
-    top: 18px;
-}
-.other-login span{
-    padding: 0 10px;
-    background: white;
-    position: relative;
-    z-index: 2;
+.other-login {
+	font-size: .28rem;
+	font-weight: normal;
+	text-align: center;
+	padding-top: 10px;
+	position: relative;
+	color: #505050;
+;
 }
 
+.other-login::before {
+	content: "";
+	display: block;
+	width: 90vw;
+	height: 1px;
+	background: #CECECE;
+;
+	position: absolute;
+	left: 50%;
+	margin-left: -45vw;
+	top: 18px;
+}
+
+.other-login span {
+	padding: 0 10px;
+	background: white;
+	position: relative;
+	z-index: 2;
+}
+.other-login-detail{
+	padding: 15px 0;
+}
 .other-login-detail>div{
-	font-size: .75rem;
-	color: #cd1144;
-	text-align: center;
-	float: left;
-	width: 100%;
-	margin-top: 15px;
+	display: flex;
+	justify-content: center;
+	margin-top: 10px;
+}
+.other-login-detail>div>img {
+	width: 40px;
+	height: 40px;
+	margin: 0px 3px;
+	border: 1px solid #CCCCCC;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-o-border-radius: 50%;
+	-ms-border-radius: 50%;
+	border-radius: 50%;
 }
 
-.register{
+.register {
 	text-align: center;
 	color: #cd1144;
-	padding-top: 1.45rem;
-	padding-bottom: .55rem;
+	position: fixed;
+	bottom: 30px;
+	width: 100%;
+}
+
+.agreed {
+	color: black;
 }

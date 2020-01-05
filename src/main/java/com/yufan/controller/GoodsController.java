@@ -1,8 +1,8 @@
 package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.JsonObject;
 import com.yufan.bean.GoodsCondition;
+import com.yufan.bean.LoginUser;
 import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
 import org.apache.commons.lang3.StringUtils;
@@ -62,11 +62,12 @@ public class GoodsController {
             if (goodsCondition.getCurrePage() == null) {
                 goodsCondition.setCurrePage(1);
             }
+            LoginUser user = (LoginUser)request.getSession().getAttribute("user");
             JSONObject data = new JSONObject();
             data.put("curre_page", goodsCondition.getCurrePage());
             data.put("goods_name", goodsCondition.getGoodsName());
             data.put("category_ids", goodsCondition.getCategoryIds());
-            data.put("user_id", 1);
+            data.put("user_id", user.getUserId());
             data.put("search_type", goodsCondition.getSearchType());
             JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_GOODS_LIST);
             if (null != result && result.getInteger("resp_code") == 1) {
@@ -92,9 +93,11 @@ public class GoodsController {
     public ModelAndView goodsDetail(HttpServletRequest request, HttpServletResponse response, Integer goodsId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("goods-down");
+
+        LoginUser user = (LoginUser)request.getSession().getAttribute("user");
         JSONObject data = new JSONObject();
         data.put("goods_id", goodsId);
-        data.put("user_id", 1);
+        data.put("user_id", user.getUserId());
         JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_GOODS_DETAIL);
         if (null != result && result.getInteger("resp_code") == 1) {
             JSONObject resultData = result.getJSONObject("data");

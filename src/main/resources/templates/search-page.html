@@ -32,23 +32,27 @@
 	
     <section class="g-scrollview">
     	
-    	<div class="my-search">
-    		<div class="search-title">历史搜索</div>
-    		<div class="search-item">
-    			<ul>
-					<li th:each="item:${data.user_history_list}"><a th:href="'javascript:toGoodsList(\''+${item.type_word}+'\')'" th:text="${item.type_word}"></a></li>
-    			</ul>
-    		</div>
-    	</div>
-    	<div style="clear: both;"></div>
-    	<div class="hot-search">
-    		<div class="search-title">热门搜索</div>
-    		<div class="search-item">
-    			<ul>
+		<div class="hot-search">
+			<div class="search-title">热门搜索</div>
+			<div class="search-item">
+				<ul>
 					<li th:each="item:${data.history_list}"><a th:href="'javascript:toGoodsList(\''+${item.type_word}+'\')'" th:text="${item.type_word}"></a></li>
-    			</ul>
-    		</div>
-    	</div>
+				</ul>
+			</div>
+		</div>
+    	<div style="clear: both;"></div>
+		<div class="my-search">
+			<div class="search-title">历史搜索</div>
+			<div class="search-item">
+				<ul>
+					<li th:each="item:${data.user_history_list}"><a th:href="'javascript:toGoodsList(\''+${item.type_word}+'\')'" th:text="${item.type_word}"></a></li>
+				</ul>
+			</div>
+		</div>
+		<div style="clear: both;"></div>
+		<div class="clear-history" align="center" onclick="clearSerachData()">
+			<span>清空历史</span>
+		</div>
 		<form id="dataForm" action="goods/goodsList" method="post">
 			<input type="hidden" id="goodsName" value="" name="goodsName">
 		</form>
@@ -70,6 +74,43 @@
 	function toGoodsList(goodsName) {
 		$("#goodsName").val(goodsName);
 		$("#dataForm").submit();
+	}
+	
+	function clearSerachData() {
+		YDUI.dialog.confirm('确认清空历史?', [
+			{
+				txt: '取消',
+				color: false, /* false:黑色  true:绿色 或 使用颜色值 */
+				callback: function () {
+
+				}
+			},
+			{
+				txt: '确定',
+				color: "#cd1144", /* false:黑色  true:绿色 或 使用颜色值 */
+				callback: function () {
+					$.ajax({
+						url: "index/delUserHistory",
+						type: 'POST',
+						data: {
+							"id": id
+						},// 要提交的表单 ,
+						async: false,
+						cache: false,
+						dataType: "json",
+						success: function (data) {
+							var code = data.code;
+							if (code == 1) {
+								showDialog('删除成功');
+								setTimeout("javascript:window.location.reload();", 1000);
+							} else {
+								showDialog("删除失败");
+							}
+						}
+					});
+				}
+			}
+		]);
 	}
 </script>
 </html>

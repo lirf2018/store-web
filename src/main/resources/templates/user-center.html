@@ -19,9 +19,9 @@
     <section class="g-scrollview">
     	<div class="user-info">
     		<div align="center" class="user-phone"><img src="img/photo1.png"></div>
-    		<div align="center" class="nichen" th:text="${data.nick_name}"></div>
-    		<div align="center" class="class-id"th:text="${'SVIP: '+data.member_id}"></div>
-    		<div align="center" class="class-data">2019-11-01 至 2020-12-01</div>
+    		<div align="center" class="nichen" th:text="${session.user.nickName}"></div>
+    		<div align="center" class="class-id"th:text="${'SVIP: '+session.user.memberId}" th:if="${session.user.memberId != ''}"></div>
+    		<div align="center" class="class-data" th:if="${session.user.startTime != ''}"><span th:text="${session.user.startTime}"></span> 至 <span th:text="${session.user.endTime}"></span></div>
     	</div>
     	<div class="user-msg">
     		<div>
@@ -62,51 +62,51 @@
 				<div>待收货</div>
 				<div class="badge-count" th:text="${data.order_dsh}" th:if="${data.order_dsh>0}">0</div>
 			</div>			
-			<div onclick="loadOrderList(12)">
-				<div align="center"><img src="img/order/o5.png"/></div>
-				<div>还货中</div>
-				<div class="badge-count" th:text="${data.order_hhz}" th:if="${data.order_hhz>0}">0</div>
-			</div>
 			<div onclick="loadOrderList(9)">
 				<div align="center"><img src="img/order/o3.png"/></div>
 				<div>退款中</div>
 				<div class="badge-count" th:text="${data.order_tkz}" th:if="${data.order_tkz>0}">0</div>
-			</div>
-		</div>
-		<div class="m-cell-order">
-			<div onclick="loadOrderList(6)">
-				<div align="center"><img src="img/order/o1.png"/></div>
-				<div>已完成</div>
-				<div class="badge-count" th:text="${data.order_ywc}" th:if="${data.order_ywc>0}">0</div>
-			</div>
-			<div onclick="loadOrderList(3)">
-				<div align="center"><img src="img/order/o2.png"/></div>
-				<div>已失败</div>
-				<div class="badge-count" th:text="${data.order_ysb}" th:if="${data.order_ysb>0}">0</div>
-			</div>
-			<div onclick="loadOrderList(7)">
-				<div align="center"><img src="img/order/o4.png"/></div>
-				<div>已取消</div>
-				<div class="badge-count" th:text="${data.order_yqx}" th:if="${data.order_yqx>0}">0</div>
 			</div>
 			<div onclick="loadOrderList(10)">
 				<div align="center"><img src="img/order/o3.png"/></div>
 				<div>已退款</div>
 				<div class="badge-count" th:text="${data.order_ytk}" th:if="${data.order_ytk>0}">0</div>
 			</div>
+		</div>
+		<div class="m-cell-order">
+			<div onclick="loadOrderList(12)">
+				<div align="center"><img src="img/order/o5.png"/></div>
+				<div>还货中</div>
+				<div class="badge-count" th:text="${data.order_hhz}" th:if="${data.order_hhz>0}">0</div>
+			</div>
 			<div onclick="loadOrderList(13)">
 				<div align="center"><img src="img/order/o5.png"/></div>
 				<div>已还货</div>
 				<div class="badge-count" th:text="${data.order_yhh}" th:if="${data.order_yhh>0}">0</div>
 			</div>
+			<div onclick="loadOrderList(7)">
+				<div align="center"><img src="img/order/o4.png"/></div>
+				<div>已取消</div>
+				<div class="badge-count" th:text="${data.order_yqx}" th:if="${data.order_yqx>0}">0</div>
+			</div>
+			<div onclick="loadOrderList(3)">
+				<div align="center"><img src="img/order/o2.png"/></div>
+				<div>已失败</div>
+				<div class="badge-count" th:text="${data.order_ysb}" th:if="${data.order_ysb>0}">0</div>
+			</div>
+			<div onclick="loadOrderList(6)">
+				<div align="center"><img src="img/order/o1.png"/></div>
+				<div>已完成</div>
+				<div class="badge-count" th:text="${data.order_ywc}" th:if="${data.order_ywc>0}">0</div>
+			</div>
 		</div>
 		<div style="clear: both;"></div>
-		<div class="m-cell">
+		<!--<div class="m-cell">
 		    <a class="cell-item" href="#">
 		        <div class="cell-left"></i>我的福利</div>
 		        <div class="cell-right cell-arrow"></div>
 		    </a>
-		</div>
+		</div>-->
 		<div class="m-cell">
 		    <a class="cell-item" href="center/userAddr">
 		        <div class="cell-left"></i>收货地址</div>
@@ -119,19 +119,31 @@
 		        <div class="cell-right cell-arrow"></div>
 		    </a>
 		</div>
-		<div class="m-cell">
-		    <a class="cell-item" href="/center/toBangPhone">
-		        <div class="cell-left"></i>绑定/解绑手机号码</div>
-		        <div class="cell-right cell-arrow"></div>
-		    </a>
-		</div>
-		<div class="m-cell">
+		<!--<div class="m-cell">
 		    <a class="cell-item" href="#">
 		        <div class="cell-left"></i>绑定/会员卡</div>
 		        <div class="cell-right cell-arrow"></div>
 		    </a>
+		</div>-->
+		<div class="m-cell">
+			<a class="cell-item" href="/center/toBangPhone">
+				<div class="cell-left"></i>绑定/解绑微信</div>
+				<div class="cell-right cell-arrow"></div>
+			</a>
 		</div>
-		<!--<a href="login.html" class="btn-block btn-mybtn4">退出登录</a>-->
+		<div class="m-cell">
+			<a class="cell-item" href="/login/resetPasswd">
+				<div class="cell-left"></i>重置登录密码</div>
+				<div class="cell-right cell-arrow"></div>
+			</a>
+		</div>
+		<div class="m-cell">
+			<a class="cell-item" href="/login/cancelAccount">
+				<div class="cell-left"></i>注销账号</div>
+				<div class="cell-right cell-arrow"></div>
+			</a>
+		</div>
+		<a href="/login/userExit" class="btn-block btn-mybtn4">退出登录</a>
 		<div class="cont_warp_clear">
 			&nbsp;
 		</div>

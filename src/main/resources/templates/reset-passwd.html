@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>重置密码</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+	<base th:href="@{/}">
+    <link rel="stylesheet" href="./css/ydui.css?rev=@@hash"/>
+    <script src="./js/ydui.flexible.js"></script>
+	<link rel="stylesheet" href="css/demo.css" />
+    <link rel="stylesheet" href="css/commondemo.css"/>
+    <link rel="stylesheet" href="css/login.css" />
+    <style>
+    	body{
+    			background-color: white;
+			 	font-family: ff-tisa-web-pro-1,ff-tisa-web-pro-2,"Lucida Grande","Hiragino Sans GB","Hiragino Sans GB W3";
+			}
+    </style>
+</head>
+<body>
+<input type="hidden" th:value="${validType}" id="validType">
+<section class="g-flexview">
+    <section class="g-scrollview">
+		<!--		未登录的重置-->
+		<div th:if="${flag == 0}" >
+			<div class="div-top">
+				<i class="icon-ucenter"></i>
+			</div>
+			<div class="div-foot">
+				<section class="g-scrollview">
+					<div class="user-info">
+						<div class="cell-item">
+							<div class="cell-left"><i class="cell-icon demo-icons-phone"></i></div>
+							<div class="cell-right">
+								<input type="number" pattern="[0-9]*" class="cell-input" placeholder="请输入手机号码" autocomplete="off" id="phone" />
+								<a href="javascript:sendPhoneCode();" class="btn btn-mybtn3" style="width: 110px" id="time">获取短信验证码</a>
+								<input type="hidden" value="1" id="timeFlag">
+							</div>
+						</div>
+						<div class="cell-item">
+							<div class="cell-left">短信验证码：</div>
+							<div class="cell-right"><input maxlength="4" type="text" class="cell-input" placeholder="请输入短信验证码" autocomplete="off"  id="phoneCode"/></div>
+						</div>
+						<div class="cell-item">
+							<div class="cell-left">账号密码：</div>
+							<div class="cell-right"><input type="password" class="cell-input" placeholder="输入账号密码" autocomplete="off" id="passwd"/></div>
+						</div>
+						<div class="cell-item">
+							<div class="cell-left">重复账号密码：</div>
+							<div class="cell-right"><input type="password" class="cell-input" placeholder="重复输入账号密码" autocomplete="off" id="passwd2"/></div>
+						</div>
+						<div class="password-get" >
+							<div class="code-login" align="center"><a href="/login/phoneLogin">注册/登录 &#62;</a></div>
+						</div>
+					</div>
+					<div style="clear: both;"></div>
+					<div>&nbsp;</div>
+					<div>&nbsp;</div>
+					<div class="register-btn" align="center">
+						<a href="javaScript:resetLoginPasswd()" class="btn-block btn-mybtn4">重置密码</a>
+					</div>
+				</section>
+			</div>
+		</div>
+<!--		登录成功后的重置-->
+		<div th:if="${flag == 1}" >
+			<header class="m-navbar">
+				<a class="navbar-item"><i class="back-ico" onclick="javascript:history.go(-1)"></i></a>
+				<div class="navbar-center"><span class="navbar-title">重置密码</span></div>
+			</header>
+			<div class="header-height"></div>
+			<section class="g-scrollview">
+				<div class="user-info">
+					<div class="cell-item">
+						<div class="cell-left"><i class="cell-icon demo-icons-phone"></i></div>
+						<div class="cell-right">
+							<input readonly disabled type="number" pattern="[0-9]*" class="cell-input" placeholder="请输入手机号码" autocomplete="off" id="phone" th:value="${phone}"/>
+							<a href="javascript:sendPhoneCode();" class="btn btn-mybtn3" style="width: 110px" id="time">获取短信验证码</a>
+							<input type="hidden" value="1" id="timeFlag">
+						</div>
+					</div>
+					<div class="cell-item">
+						<div class="cell-left">短信验证码：</div>
+						<div class="cell-right"><input maxlength="4" type="text" class="cell-input" placeholder="请输入短信验证码" autocomplete="off"  id="phoneCode"/></div>
+					</div>
+					<div class="cell-item">
+						<div class="cell-left">账号密码：</div>
+						<div class="cell-right"><input type="password" class="cell-input" placeholder="输入账号密码" autocomplete="off" id="passwd"/></div>
+					</div>
+					<div class="cell-item">
+						<div class="cell-left">重复账号密码：</div>
+						<div class="cell-right"><input type="password" class="cell-input" placeholder="重复输入账号密码" autocomplete="off" id="passwd2"/></div>
+					</div>
+				</div>
+				<div style="clear: both;"></div>
+				<div>&nbsp;</div>
+				<div>&nbsp;</div>
+				<div class="register-btn" align="center">
+					<a href="javaScript:resetLoginPasswd()" class="btn-block btn-mybtn4">重置密码</a>
+				</div>
+			</section>
+		</div>
+    </section>
+</section>
+</body>
+<script type="text/javascript" src="js/layer.js" ></script>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+<script src="js/ydui.js"></script>
+<script src="js/ydui.flexible.js"></script>
+<script src="js/common.js"></script>
+<script th:inline="javascript">
+    //发送验证码
+	function sendPhoneCode() {
+		var timeFlag = document.getElementById("timeFlag").value;
+		if(timeFlag == 0){
+			return;
+		}
+		document.getElementById("timeFlag").value = 0;
+		var phone = $("#phone").val();
+		if(phone.trim() == ''){
+			document.getElementById("timeFlag").value = 1;
+			return showDialog('手机号码不能为空');
+		}
+		$.ajax({
+			url: "login/sendPhoneCode",
+			type: 'POST',
+			data: {
+				"validType": $("#validType").val(),
+				"phone": phone.trim()
+			},// 要提交的表单 ,
+			async: false,
+			cache: false,
+			dataType: "json",
+			success: function (data) {
+				var code = data.resp_code;
+				if (code == 1) {
+					showDialog('验证码发送成功');
+					$(".btn-mybtn3").css("background","gray");
+					t = 100;
+					inter = setInterval("fun()", 1000);
+				} else {
+					showDialog(data.resp_desc);
+					document.getElementById("timeFlag").value = 1;
+				}
+			}
+		});
+	}
+
+	//重置登录密码
+	function resetLoginPasswd() {
+		var phone = $("#phone").val();
+		var phoneCode = $("#phoneCode").val();
+		var passwd = $("#passwd").val();
+		var passwd2 = $("#passwd2").val();
+		if(passwd != passwd2){
+			return showDialog("两次输入密码不一致");
+		}
+		if(phone.trim() == ''){
+			return showDialog('手机号码不能为空');
+		}
+		if (phoneCode.trim() == '' || phoneCode.trim().length != 4) {
+			return showDialog('请输入短信验证码');
+		}
+		if(passwd.trim() == ''){
+			return showDialog('密码不能为空');
+		}
+		$.ajax({
+			url: "login/resetLoginPasswd",
+			type: 'POST',
+			data: {
+				"phone": phone.trim(),
+				"phoneCode": phoneCode.trim(),
+				"passwd": passwd.trim()
+			},// 要提交的表单 ,
+			async: false,
+			cache: false,
+			dataType: "json",
+			success: function (data) {
+				var code = data.resp_code;
+				if (code == 1) {
+					showDialog('登录密码重置成功');
+					var flag = [[${flag}]];
+					if(flag == 0){
+						setTimeout("javaScript:window.location.href='/login/userLogin'",1000);
+					}else{
+						setTimeout("javaScript:window.location.href='center/userCenter'",1000);
+					}
+				} else {
+					showDialog(data.resp_desc);
+					$("#phoneCode").val("");
+				}
+			}
+		});
+	}
+
+</script>
+<script>
+	//倒计时
+	var t ;
+	function fun() {
+		t--;
+		document.getElementById("time").innerHTML = t+"s";
+		if(t < 0) {
+			clearInterval(inter);
+			document.getElementById("time").innerHTML = "获取短信验证码";
+			document.getElementById("timeFlag").value = 1;
+			$(".btn-mybtn3").css("background","#cd1144");
+		}
+	}
+	var inter ;
+</script>
+</html>

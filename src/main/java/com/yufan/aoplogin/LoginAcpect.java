@@ -2,6 +2,7 @@ package com.yufan.aoplogin;
 
 import com.alibaba.fastjson.JSON;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -23,8 +24,8 @@ import java.util.Map;
  * 创建时间:  2019/12/8 19:39
  * 功能介绍: 定义登录拦截切面
  */
-@Aspect
-@Component
+/*@Aspect
+@Component*/
 public class LoginAcpect {
 
 
@@ -42,34 +43,49 @@ public class LoginAcpect {
     public void doBefore(JoinPoint joinPoint) throws Throwable {
         try {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            HttpServletResponse response=((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+            HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
 
             ////获取目标方法的参数信息
             Object[] obj = joinPoint.getArgs();
             for (int i = 0; i < obj.length; i++) {
-                LOG.info("----------------------------------"+obj[i]);
+                LOG.info("----------------------------------" + obj[i]);
             }
 
             //获取请求参数
             Enumeration<String> enumeration = request.getParameterNames();
-            Map<String,String> parameterMap = new HashMap<>();
-            while (enumeration.hasMoreElements()){
+            Map<String, String> parameterMap = new HashMap<>();
+            while (enumeration.hasMoreElements()) {
                 String parameter = enumeration.nextElement();
-                parameterMap.put(parameter,request.getParameter(parameter));
+                parameterMap.put(parameter, request.getParameter(parameter));
             }
             String str = JSON.toJSONString(parameterMap);
 
 
-
-            LOG.error("------------------Before---------------------"+str);
-            String path=request.getContextPath();
+            LOG.error("------------------Before---------------------" + str);
+            String path = request.getContextPath();
             //response.sendRedirect(path+"/other/otherLogin");
         } catch (Exception e) {
             LOG.error("----e---");
         }
     }
 
+    @After("loginAsp()")
+    public void doAfter(JoinPoint joinPoint) throws Throwable {
+        try {
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
 
+
+
+
+
+
+
+
+        } catch (Exception e) {
+            LOG.error("----e---");
+        }
+    }
 
 
 }

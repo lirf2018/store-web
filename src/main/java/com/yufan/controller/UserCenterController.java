@@ -2,6 +2,7 @@ package com.yufan.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.yufan.bean.LoginUser;
 import com.yufan.bean.UserAddr;
 import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
@@ -38,8 +39,9 @@ public class UserCenterController {
     @RequestMapping("userCenter")
     public ModelAndView userCenter(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
+        LoginUser user = (LoginUser)request.getSession().getAttribute("user");
         JSONObject data = new JSONObject();
-        data.put("user_id", 1);
+        data.put("user_id", user.getUserId());
         JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_USER_CENTER);
         if (null != result && result.getInteger("resp_code") == 1) {
             modelAndView.addObject("data", result.getJSONObject("data"));
@@ -59,8 +61,9 @@ public class UserCenterController {
     @RequestMapping("userAddr")
     public ModelAndView userAddr(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
+        LoginUser user = (LoginUser)request.getSession().getAttribute("user");
         JSONObject data = new JSONObject();
-        data.put("user_id", 1);
+        data.put("user_id", user.getUserId());
         data.put("addr_type", 1);
         data.put("parent_code", "000000000000");
 
@@ -150,7 +153,10 @@ public class UserCenterController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
-            userAddr.setUserId(1);
+
+            LoginUser user = (LoginUser) request.getSession().getAttribute("user");
+
+            userAddr.setUserId(user.getUserId());
             JSONObject data = JSONObject.parseObject(JSONObject.toJSONString(userAddr));
             JSONObject result = CommonMethod.infoResult(data, Constants.ADD_USER_ADDR);
 
@@ -181,7 +187,8 @@ public class UserCenterController {
         try {
             writer = response.getWriter();
             JSONObject data = new JSONObject();
-            data.put("user_id", 1);
+            LoginUser user = (LoginUser)request.getSession().getAttribute("user");
+            data.put("user_id", user.getUserId());
             data.put("id", id);
             JSONObject result = CommonMethod.infoResult(data, Constants.UPDATE_ADDR_DEFAULT);
 
@@ -204,15 +211,16 @@ public class UserCenterController {
     }
 
     /**
-     * 设置默认
+     * 删除地址
      */
     @RequestMapping("deleteUserAddr")
     public void deleteUserAddr(HttpServletRequest request, HttpServletResponse response, int id) {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
+            LoginUser user = (LoginUser)request.getSession().getAttribute("user");
             JSONObject data = new JSONObject();
-            data.put("user_id", 1);
+            data.put("user_id", user.getUserId());
             data.put("id", id);
             JSONObject result = CommonMethod.infoResult(data, Constants.DELETE_USER_ADDR);
 
@@ -245,8 +253,9 @@ public class UserCenterController {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
+            LoginUser user = (LoginUser)request.getSession().getAttribute("user");
             JSONObject data = new JSONObject();
-            data.put("user_id", 1);
+            data.put("user_id", user.getUserId());
             data.put("addr_type", 1);
             data.put("parent_code", "");
 
@@ -283,6 +292,18 @@ public class UserCenterController {
     @RequestMapping("toBangPhone")
     public String toBangPhone() {
         return "bang-phone";
+    }
+
+    /**
+     * 绑定手机号码
+     *
+     * @return
+     */
+    @RequestMapping("toBangMemberNum")
+    public String toBangMemberNum() {
+
+
+        return "bang-member-num";
     }
 
 }

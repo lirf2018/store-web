@@ -16,15 +16,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * 在spring5.0之前可以继承WebMvcConfigurerAdapter此适配器进行配置，但spring5.0以后此适配器就被废弃（已被标注为@Deprecated），
  * 目前有两种解决方案，一种是直接实现WebMvcConfigurer，另一种是直接继承WebMvcConfigurationSupport，官方推荐第一种方案。
  */
-//@Configuration
+@Configuration
 public class MyInterceptorConf implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         System.out.println("------------------------->MyInterceptorConf");
-        // addPathPatterns - 用于添加拦截规则
-        // excludePathPatterns - 用户排除拦截
+//         addPathPatterns - 用于添加拦截规则
+//         excludePathPatterns - 用户排除拦截
         registry.addInterceptor(new MyInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/index.html", "/user/login", "/login/userLoginPage", "/login/checkLogin", "login/userExit", "/css/*", "/js/*", "/img/*", "/fonts/*");
+                .excludePathPatterns("/login/userLogin","/login/phoneLogin","/login/resetPasswd","/login/sendPhoneCode","/login/resetLoginPasswd",
+                        "/login/phoneCodeLogin","/login/passwdLogin",
+                        "/css/*", "/js/*", "/img/*");
     }
 }
