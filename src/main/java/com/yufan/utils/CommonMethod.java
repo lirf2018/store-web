@@ -113,6 +113,7 @@ public class CommonMethod {
 
     /**
      * 处理结果参数
+     *
      * @param code
      * @return
      */
@@ -143,6 +144,11 @@ public class CommonMethod {
         try {
             JSONObject out = new JSONObject();
             out.put("req_type", reqType);
+            String timestamp = String.valueOf(System.currentTimeMillis()/1000);
+            String sign = VerifySign.getSign(data, Constants.SID, Constants.SECRET_KEY, timestamp);
+            out.put("sid", Constants.SID);
+            out.put("timestamp", timestamp);
+            out.put("sign", sign);
             out.put("data", data);
             String result = RequestMethod.httpPost(Constants.INFO_URL, out.toString());
             if (StringUtils.isNotEmpty(result)) {

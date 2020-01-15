@@ -86,3 +86,5 @@ body{
 	font-size: 0.28rem;
 }
 
+/* 抢先 隐藏 iframe */
+body iframe {display: none;}

@@ -1,7 +1,9 @@
 package com.yufan.utils;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yufan.common.bean.ReceiveJsonBean;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,75 +17,40 @@ import java.util.Map;
  */
 public class VerifySign {
 
-    /**
-     * 签名校验
-     *
-     * @param bean      json内容
-     * @param appsecret 密钥
-     * @return
-     */
-    public static boolean checkSign(ReceiveJsonBean bean, String appsecret) {
-        //传过来的sign
-        try {
-            String getSign = bean.getSign();
-            MyMap map = new MyMap();
-            //系统参数
-            map.put("sid", bean.getSid());
-            map.put("appsecret", appsecret);
-            map.put("timestamp", bean.getTimestamp());
+    private static Logger LOG = Logger.getLogger(VerifySign.class);
 
-            JSONObject json = bean.getData();
-            for (Object k : json.keySet()) {
-                Object v = json.get(k);
-                //只取data第一层数据
-//                if (null != v && !(v instanceof JSONArray) && v.toString().indexOf("{") == -1 && v.toString().indexOf("[") == -1) {
-                map.put(k.toString(), v);
-//                }
-            }
-            String sign = MD5.enCodeStandard(HelpCommon.getSign(map) + appsecret);
-            if (null != getSign && getSign.equals(sign)) {
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        return false;
-    }
     /**
      * 生成签名
      *
-     * @param bean      json内容
-     * @param appsecret 密钥
+     * @param json
+     * @param secretKey
      * @return
      */
-    public static boolean getSign(ReceiveJsonBean bean, String appsecret) {
+    public static String getSign(JSONObject json, String sid, String secretKey, String timestamp) {
+        LOG.info("---------json:" + json);
+        LOG.info("---------secretKey:" + secretKey);
         //传过来的sign
         try {
-            String getSign = bean.getSign();
             MyMap map = new MyMap();
             //系统参数
-            map.put("sid", bean.getSid());
-            map.put("appsecret", appsecret);
-            map.put("timestamp", bean.getTimestamp());
+            map.put("sid", sid);
+            map.put("secretKey", secretKey);
+            map.put("timestamp", timestamp);
 
-            JSONObject json = bean.getData();
             for (Object k : json.keySet()) {
                 Object v = json.get(k);
                 //只取data第一层数据
-//                if (null != v && !(v instanceof JSONArray) && v.toString().indexOf("{") == -1 && v.toString().indexOf("[") == -1) {
-                map.put(k.toString(), v);
-//                }
+                if (null != v && !(v instanceof JSONArray) && v.toString().indexOf("{") == -1 && v.toString().indexOf("[") == -1) {
+                    map.put(k.toString(), v);
+                }
             }
-            String sign = MD5.enCodeStandard(HelpCommon.getSign(map) + appsecret);
-            if (null != getSign && getSign.equals(sign)) {
-                return true;
-            }
+            String sign = MD5.enCodeStandard(HelpCommon.getSign(map) + secretKey);
+            return sign;
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return false;
+        return null;
     }
-
 }

@@ -90,6 +90,10 @@
 }
 .other-login-detail{
 	padding: 15px 0;
+	position: fixed;
+	bottom: 30px;
+	text-align: center;
+	width: 100%;
 }
 .other-login-detail>div{
 	display: flex;
@@ -112,7 +116,7 @@
 	text-align: center;
 	color: #cd1144;
 	position: fixed;
-	bottom: 30px;
+	bottom: 15px;
 	width: 100%;
 }
 

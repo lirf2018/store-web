@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yufan.bean.LoginUser;
 import com.yufan.bean.ShopCartBean;
+import com.yufan.utils.Base64Coder;
 import com.yufan.utils.CommonMethod;
 import com.yufan.utils.Constants;
+import com.yufan.utils.VerifySign;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -400,6 +402,9 @@ public class OrderController {
             if (null != result) {
                 outParam.put("code", result.getInteger("resp_code"));
                 outParam.put("msg", result.getString("resp_desc"));
+                String orderNo = result.getJSONObject("data").getString("order_no");
+                outParam.put("orderNo", orderNo == null ? "" : orderNo);
+
             }
             writer.print(outParam);
             writer.close();
@@ -407,24 +412,6 @@ public class OrderController {
             LOG.error("------------创建订单异常-----------------");
             e.printStackTrace();
         }
-    }
-
-
-    /**
-     * 跳转到支付页面
-     *
-     * @return
-     */
-    @RequestMapping("toPay")
-    public ModelAndView toPay(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            modelAndView.addObject("code", 1);
-            modelAndView.setViewName("result-page3");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return modelAndView;
     }
 
     /**
@@ -499,13 +486,13 @@ public class OrderController {
      * @return
      */
     @RequestMapping("orderDetail")
-    public ModelAndView orderDetailPage(HttpServletRequest request, HttpServletResponse response, Integer orderId) {
+    public ModelAndView orderDetailPage(HttpServletRequest request, HttpServletResponse response, String orderNo) {
         ModelAndView modelAndView = new ModelAndView();
         try {
             LoginUser user = (LoginUser) request.getSession().getAttribute("user");
             JSONObject data = new JSONObject();
             data.put("user_id", user.getUserId());
-            data.put("order_id", orderId);
+            data.put("order_no", orderNo);
             JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_ORDER_DETAIL);
             if (null != result && result.getInteger("resp_code") == 1) {
                 modelAndView.addObject("data", result.getJSONObject("data"));
@@ -567,4 +554,37 @@ public class OrderController {
             e.printStackTrace();
         }
     }
+
+
+    /**
+     * 创建支付订单参数
+     */
+    @RequestMapping("createPayCenter")
+    public void createPayCenter(HttpServletResponse response, HttpServletRequest request, String payWay, String orderNo) {
+        PrintWriter writer;
+        try {
+            writer = response.getWriter();
+            String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
+            JSONObject paramData = new JSONObject();
+            paramData.put("business_code", Constants.PAY_BUSINESS_CODE);
+            paramData.put("order_no", orderNo);
+            paramData.put("pay_way", payWay);//交易方式 1 微信2 支付宝
+            paramData.put("record_type", 4);//事项 1 订单退押金 2 订单退款 3 提现 4 订单支付
+
+            String sign = VerifySign.getSign(paramData, Constants.PAY_SID, Constants.PAY_SECRET_KEY, timestamp);
+
+            paramData.put("sid", Constants.PAY_SID);
+            paramData.put("timestamp", timestamp);
+            paramData.put("sign", sign);
+            String base64Str = Base64Coder.encodeString(paramData.toJSONString());
+            LOG.info("----请求支付参数-----" + paramData);
+            JSONObject out = new JSONObject();
+            out.put("values", base64Str);
+            writer.print(out);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="./css/ydui.css?rev=@@hash"/>
     <link rel="stylesheet" href="css/commondemo.css"/>
     <link rel="stylesheet" href="css/orderlist.css" />
+    <link rel="stylesheet" href="css/pay.css" />
 </head>
 <body>
 <section class="g-flexview">
@@ -20,6 +21,7 @@
         <div class="navbar-center">
 			<span class="navbar-title">订单列表<span  th:text="${'——'+orderStatusName}"></span></span>
 		</div>
+        <div class="navbar-item navbar-right"><a href="index/mainPage"><i class="icon-home-outline"></i></a></div>
 	</header>
 	<div class="header-height"></div>
     <section class="g-scrollview">
@@ -29,12 +31,32 @@
     	</section>
     </section>
 </section>
+<div id="html3" style="display: none;">
+    <div class="pay-items">
+        <div class="pay-title">
+            <div>支付方式</div>
+            <div><a href="javascript:closeToAddrDiv()"><i class="icon-x"></i></a></span></div>
+        </div>
+        <div style="clear: both;"></div>
+        <div class="pay-item-detail">
+            <a href="javascript:submitPayCenterData(1)">
+                <div class="pay-name"><span><i class="icon-pay-wx"></i></span>微信支付</div>
+                <div class="pay-name-next"><i class="icon-turnnext"></i></div>
+            </a>
+            <a href="javascript:submitPayCenterData(2)">
+                <div class="pay-name"><span><i class="icon-pay-alipy"></i></span>支付宝支付</div>
+                <div class="pay-name-next"><i class="icon-turnnext"></i></div>
+            </a>
+        </div>
+    </div>
+</div>
 </body>
 <script type="text/javascript" src="js/layer.js" ></script>
 <script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
 <script src="js/ydui.js"></script>
 <script src="./js/ydui.flexible.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/pay.js"></script>
 <script>
 	var html = $("#testhtml").html();
 </script>
@@ -75,6 +97,7 @@
 						var orderList = data.order_list;
 						hasNext = data.has_next;
 						for (var i = 0; i < orderList.length; i++) {
+							var orderNo = orderList[i].order_no;
 							var orderStatus = orderList[i].order_status;
 							var orderStatusName = orderList[i].order_status_name;
 							var orderPrice = orderList[i].order_price;
@@ -92,7 +115,7 @@
 								var goodsCount = detailList[j].goods_count;
 								var goodsImg = detailList[j].goods_img;
 								var goodsSpecNameStr = detailList[j].goods_spec_name_str;
-								htmlDetail = htmlDetail + "<div class='goods-item' onclick='toDetail(" + orderId + ")'>\n" +
+								htmlDetail = htmlDetail + "<div class='goods-item' onclick='javascript:toDetail(\"" + orderNo + "\")'>\n" +
 										"<div class='goods-img'>\n" +
 										"<div align='center'><img src='" + goodsImg + "'></div>\n" +
 										"</div>\n" +
@@ -131,6 +154,7 @@
                             var statusHtml = "";
                             if(0 == orderStatus){
                                 statusHtml = statusHtml + "<a href='javascript:updateOrderStatus("+orderId+",7);' class='btn btn-mybtn3'>取消订单</a>";
+                                statusHtml = statusHtml + "<a href='javascript:chosePayWay(\""+orderNo+"\");' class='btn btn-mybtn3'>去付款</a>";
                             }else if(1 == orderStatus){
                                 if(Number(orderPrice) == 0 || Number(orderPrice) == 0.00){
                                     statusHtml = statusHtml + "<a href='javascript:updateOrderStatus("+orderId+",7);' class='btn btn-mybtn3'>取消订单</a>";
@@ -187,8 +211,8 @@
     }();
 
     //查看订单详情
-   function toDetail(orderId){
-       window.location.href = "order/orderDetail?orderId="+orderId
+   function toDetail(orderNo){
+       window.location.href = "order/orderDetail?orderNo="+orderNo
    }
 
     //修改订单状态

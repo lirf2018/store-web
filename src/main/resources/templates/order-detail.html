@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="./css/ydui.css?rev=@@hash"/>
     <link rel="stylesheet" href="css/commondemo.css"/>
     <link rel="stylesheet" href="css/orderlist.css" />
+	<link rel="stylesheet" href="css/pay.css"/>
     <style>
     	body{
 			  background-color: white;
@@ -23,8 +24,9 @@
 <body>
 <section class="g-flexview">
 	<header class="m-navbar">
-        <a class="navbar-item"><i class="back-ico" onclick="javascript:history.go(-1)"></i></a>
+        <a class="navbar-item"><i class="back-ico" onclick="javascript:window.location.href='order/orderListPage?status=0'"></i></a>
         <div class="navbar-center"><span class="navbar-title">订单详情</span></div>
+		<div class="navbar-item navbar-right"><a href="index/mainPage"><i class="icon-home-outline"></i></a></div>
 	</header>
 	<div class="header-height"></div>
     <section class="g-scrollview">
@@ -109,6 +111,7 @@
     		</div>
     		<div class="shop-order-count-btn" th:if="${data.order_status == 0}">
     			<a th:href="'javascript:updateOrderStatus(\''+${data.order_id}+'\',7);'" class="btn btn-mybtn3">取消订单</a>
+    			<a th:href="'javascript:chosePayWay(\''+${data.order_no}+'\');'" class="btn btn-mybtn3">去付款</a>
     		</div>
 			<div class="shop-order-count-btn" th:if="${data.order_status == 1 && (data.order_price == 0 || data.order_price == '0.00')}">
 				<a th:href="'javascript:updateOrderStatus(\''+${data.order_id}+'\',7);'" class="btn btn-mybtn3">取消订单</a>
@@ -149,12 +152,32 @@
     	</div>
     </section>
 </section>
+<div id="html3" style="display: none;">
+	<div class="pay-items">
+		<div class="pay-title">
+			<div>支付方式</div>
+			<div><a href="javascript:closeToAddrDiv()"><i class="icon-x"></i></a></span></div>
+		</div>
+		<div style="clear: both;"></div>
+		<div class="pay-item-detail">
+			<a href="javascript:submitPayCenterData(1)">
+				<div class="pay-name"><span><i class="icon-pay-wx"></i></span><span>微信支付</span></div>
+				<div class="pay-name-next"><i class="icon-turnnext"></i></div>
+			</a>
+			<a href="javascript:submitPayCenterData(2)">
+				<div class="pay-name"><span><i class="icon-pay-alipy"></i></span><span>支付宝支付</span></div>
+				<div class="pay-name-next"><i class="icon-turnnext"></i></div>
+			</a>
+		</div>
+	</div>
+</div>
 </body>
 <script src="js/ydui.flexible.js"></script>
 <script type="text/javascript" src="js/layer.js" ></script>
 <script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
 <script src="js/ydui.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/pay.js"></script>
 <script>
 	//修改订单状态
 	function updateOrderStatus(orderId,status) {

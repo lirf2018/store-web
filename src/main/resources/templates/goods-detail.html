@@ -200,6 +200,16 @@
 
 	//生成提交订单
 	function toSubmitOrderPage() {
+
+		var goodsCount = $(".add-btn>span:nth-child(2) input").val();
+
+		//校验
+		var goodsNum = [[${data.goods_num}]];//库存
+		if (goodsCount > goodsNum) {
+			showDialog("库存不足")
+			return;
+		}
+
 		var goodsCounts = $("#goodsCounts_").val();
 		$("#goodsCounts").val(goodsCounts);
 		$("#dataForm").submit();

@@ -105,7 +105,14 @@ public class Constants {
     /**
      * 接口业务类型
      */
-    public static String INFO_URL = "http://127.0.0.1:8082/store-info/test";
+    public static String INFO_URL = "http://127.0.0.1:8082/store-info/service";
+
+    /**
+     * 接口秘钥
+     */
+    public static String SID = "store-web";
+    public static String SECRET_KEY = "store-web-test";
+
     public static String INFO_MAIN = "main";
     public static String QUERY_HISTORY_LIST = "query_history_list";
     public static String QUERY_LEVEL_CATEGORY_LIST = "query_level_category_list";//查询一级分类和类目
@@ -152,4 +159,13 @@ public class Constants {
     public static Integer PAY_WAY_1 = 1;
     public static Integer PAY_WAY_2 = 2;
     public static Integer PAY_WAY_3 = 3;
+
+    /**
+     * 支付中心参数
+     */
+    public static String PAY_SECRET_KEY = "dsfsdfsd";
+    public static String PAY_SID = "h5-web";
+    public static String PAY_BUSINESS_CODE = "order_pay";
+
+
 }
