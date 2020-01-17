@@ -18,11 +18,12 @@
 
 </head>
 <body>
+<input type="hidden" th:value="${session.version}" id="v">
 <section class="g-flexview">
     <header class="m-navbar">
         <a class="navbar-item"><i class="back-ico" onclick="javascript:history.go(-1)"></i></a>
         <div class="navbar-center"><span class="navbar-title">商品详情</span></div>
-        <div class="navbar-item navbar-right"><a href="order/shopCartList"><i class="icon-shopcart-outline"><div class="shopcart-count" th:text="${data.cart_goods_count}"></div></i></a></div>
+        <div class="navbar-item navbar-right"><a href="order/shopCartList"><i class="icon-shopcart-outline"></i></a></div>
     </header>
     <div class="header-height"></div>
     <section class="g-scrollview">

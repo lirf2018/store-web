@@ -22,6 +22,7 @@
     </style>
 </head>
 <body>
+<input type="hidden" th:value="${session.version}" id="v">
 <input type="hidden" th:value="${validType}" id="validType">
 <section class="g-flexview">
     <section class="g-scrollview">
@@ -140,7 +141,7 @@
 				var code = data.resp_code;
 				if (code == 1) {
 					showDialog('登录成功');
-					setTimeout("javaScript:window.location.href='center/userCenter'",1000);
+					setTimeout("javaScript:window.location.href='index/mainPage'",1000);
 				} else {
 					showDialog(data.resp_desc);
 					$("#phoneCode").val("");

@@ -3,39 +3,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>商品详情</title>
+    <title>404</title>
     <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
     <meta content="yes" name="apple-mobile-web-app-capable"/>
     <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
     <meta content="telephone=no" name="format-detection"/>
     <base th:href="@{/}">
-    <link rel="stylesheet" href="css/ydui.css?rev=@@hash"/>
-    <link rel="stylesheet" href="css/demo.css"/>
-    <link rel="stylesheet" href="css/category.css" />
+    <link rel="stylesheet" href="./css/ydui.css?rev=@@hash"/>
     <script src="js/ydui.flexible.js"></script>
     <link rel="stylesheet" href="css/commondemo.css"/>
-    <link rel="stylesheet" href="css/goodsdetail.css" />
-
+    <style>
+        .g-scrollview{
+            color: grey;
+        }
+        .error{
+            font-size: 3.2rem;
+        }
+        .error-word{
+            font-size: .86rem;
+        }
+    </style>
 </head>
 <body>
 <input type="hidden" th:value="${session.version}" id="v">
 <section class="g-flexview">
     <header class="m-navbar">
-        <a class="navbar-item"><i class="back-ico" onclick="javascript:history.go(-1)"></i></a>
-        <div class="navbar-center"><span class="navbar-title">商品详情</span></div>
-        <div class="navbar-item navbar-right"></div>
+        <a class="navbar-item"></a>
+        <div class="navbar-center"><span class="navbar-title">404</span></div>
+        <div class="navbar-item navbar-right"><a href="index/mainPage"><i class="icon-home-outline"></i></a></div>
     </header>
     <div class="header-height"></div>
     <section class="g-scrollview">
-        <div align="center" style="padding-top: 30px"><img width="80px" src="img/war.png"></div>
-        <div align="center" style="color: gray;font-size: 18px;">商品已下架或者不存在</div>
-        <div align="center" style="color: gray;font-size: 18px;padding-top: 50px"><a href="goods/goodsList">～～查看商品列表～～</a></div>
+        <div align="center" class="error"><span>404</span></div>
+        <div align="center" class="error-word"><span>查询不存在</span></div>
     </section>
-</section>
 
-<script src="js/jquery-1.10.1.min.js"></script>
-<script src="js/ydui.js"></script>
-<script type="text/javascript" src="js/layer.js" ></script>
-<script type="text/javascript" src="js/common.js" ></script>
+</section>
 </body>
+<script type="text/javascript" src="js/layer.js" ></script>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+<script type="text/javascript" src="js/ydui.js" ></script>
+<script type="text/javascript" src="js/common.js" ></script>
 </html>

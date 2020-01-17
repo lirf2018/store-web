@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="css/pay.css"/>
 </head>
 <body>
+<input type="hidden" th:value="${uuid}" id="uuid">
+<input type="hidden" th:value="${session.version}" id="v">
 <section class="g-flexview">
     <header class="m-navbar">
         <a class="navbar-item"><i class="back-ico" onclick="javascript:history.go(-1)"></i></a>
@@ -25,6 +27,7 @@
     <div class="header-height"></div>
     <section class="g-scrollview">
         <input type="hidden" th:value="${userAddrId}" id="userAddrId" name="userAddrId">
+        <input type="hidden" value="1" id="postWay" name="postWay">
         <input type="hidden" th:value="${freight}" id="freight" name="freight">
         <input type="hidden" name="timeGoodsId" th:value="${timeGoodsId}">
         <input type="hidden" value="0" id="discountId" name="discountId">
@@ -214,10 +217,152 @@
 <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
 <script type="text/javascript" src="js/ydui.my.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
-<script type="text/javascript" src="js/pay.js"></script>
 <script>
-    var html = $("#html").html();
+    var html3 = $("#html3").html();//支付html
+    var payOrderNo = "";//订单号
+    //去付款(选择支付方式)
+    function chosePayWay(orderNo) {
+        payOrderNo = orderNo;
+        if(!checkParam()){
+            return;
+        }
+        showPayWay();
+    }
 
+    //校验订单参数
+    function checkParam() {
+        var userAddrId = $("#userAddrId").val();
+        if(userAddrId == '' || userAddrId == 0){
+            showDialog("请选择收货地址");
+            return false;
+        }
+        return true;
+    }
+
+    //选择支付方式
+    function showPayWay() {
+        $("#html3").html("");
+        layer.open({
+            type: 1
+            , content: html3
+            , anim: 'up'
+            , shadeClose: false
+            //,style: 'position:fixed; bottom:0; left:0; width: 100%; height: 200px; padding:10px 0; border:none;line-height: 10px'
+            , style: 'position:fixed; bottom:0; left:0; width: 100%; border:none;'
+        });
+        $(".layui-m-layer *").css("-webkit-box-sizing", "inherit")
+        $(".layui-m-layer *").css("box-sizing", "inherit")
+    }
+
+    //提交订单
+    function createOrder(payWay) {
+        var uuid = $("#uuid").val();
+        if(uuid == ""){
+            return return showDialog("网络异常,请稍后重试");
+        }else{
+            $("#uuid").val("");
+        }
+
+        var shopId = $("#shopId").val();
+        var userAddrId = $("#userAddrId").val();
+        var timeGoodsId = $("#timeGoodsId").val();
+        var discountId = $("#discountId").val();
+        var orderPrice = $("#orderPrice").val();
+        var realPrice = $("#realPrice").val();
+        var goodsPriceAll = $("#goodsPriceAll").val();
+
+        if(userAddrId == '' || userAddrId == null){
+            return showDialog("请选择收货地址");
+        }
+
+        var goodsIds = "";
+        var goodsCounts = "";
+        var skuIds = "";
+        var shopCartIds = "";
+
+        var goodsIdsObj = $("input[name='goodsIds']");
+        goodsIdsObj.each(function () {
+            goodsIds = goodsIds + $(this).val() + "`";
+        })
+        var goodsCountsObj = $("input[name='goodsCounts']");
+        goodsCountsObj.each(function () {
+            goodsCounts = goodsCounts + $(this).val() + "`";
+        })
+        var skuIdsbj = $("input[name='skuIds']");
+        skuIdsbj.each(function () {
+            skuIds = skuIds + $(this).val() + "`";
+        })
+        var shopCartIdsObj = $("input[name='shopCartIds']");
+        shopCartIdsObj.each(function () {
+            shopCartIds = shopCartIds + $(this).val() + "`";
+        })
+        $.ajax({
+            url: "order/createOrder",
+            type: 'POST',
+            data: {
+                "shopId": shopId,
+                "userAddrId": userAddrId,
+                "timeGoodsId": timeGoodsId,
+                "discountId": discountId,
+                "orderPrice": orderPrice,
+                "realPrice": realPrice,
+                "goodsPriceAll": goodsPriceAll,
+                "goodsIds": goodsIds,
+                "goodsCounts": goodsCounts,
+                "skuIds": skuIds,
+                "shopCartIds": shopCartIds
+            },// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 1) {
+                    if(Number(orderPrice) != 0){
+                        submitPayCenterData(payWay,data.orderNo);
+                    }else{
+                        toOrderDetail(data.orderNo);
+                    }
+                } else{
+                    showDialog(data.msg);
+                }
+            }
+        });
+    }
+
+    //0元订单直接跳转到详情
+    function toOrderDetail(orderNo) {
+        showDialog("订单创建成功");//javascript:window.location.href = order/orderDetail?orderNo=
+        setTimeout("javascript:window.location.href = 'order/orderDetail?orderNo=" + orderNo + "'", 1000);
+    }
+
+    //生成支付中心参数
+    function submitPayCenterData(payWay,payOrderNo) {
+        console.log("payWay:" + payWay)
+        console.log("payOrderNo:" + payOrderNo)
+        var data = {
+            "payWay": payWay,
+            "orderNo": payOrderNo
+        }
+        if (payWay == '' || payOrderNo == '') {
+            console.log("缺少支付中心必须参数")
+            return showDialog('支付失败');
+        }
+        $.ajax({
+            url: "order/createPayCenter",//生成支付中心必须参数
+            type: 'POST',
+            data: data,// 要提交的表单 ,
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                window.location.href = "http://lirf-shop.51vip.biz/pay-center/pay/payEnter?base64Str=" + data.values;
+            }
+        });
+    }
+</script>
+
+<script>
+    var html = $("#html").html();//收货地址div层1
     function toAddrDiv() {
         $("#html").html("");
         var pageii = layer.open({
@@ -234,12 +379,11 @@
         reloadUserAddr();
     }
 
-    // function closeToAddrDiv() {
-    //     layer.closeAll();
-    // }
+    function closeToAddrDiv() {
+        layer.closeAll();
+    }
 
-
-    var html2 = $("#addAddrDiv").html();
+    var html2 = $("#addAddrDiv").html();//收货地址div层2
     var layer2;
 
     function addUserAddr() {
@@ -252,12 +396,9 @@
             , style: 'position:fixed; bottom:0; left:0; width: 100%; border:none;z-index:200'
         });
     }
-
-
     function closeShowAddrDiv() {
         layer.close(layer2);
     }
-
     function showChoseAddrArea() {
         var $target = $('#J_Address');
         $target.citySelect();
@@ -287,29 +428,15 @@
         $(".order-addr").show();
         $(".no-addr").hide();
     }
+
+
+
+
+
+
 </script>
+
 </html>
-<script>
-    /**
-     * 默认调用
-     */
-
-    function initAddrYdui() {
-        var $target = $('#J_Address');
-
-        $target.citySelect();
-
-        $target.on('click', function (event) {
-            event.stopPropagation();
-            $target.citySelect('open');
-        });
-
-        $target.on('done.ydui.cityselect', function (ret) {
-            $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
-            $(".chose-addr").html(ret.provance + ret.city + ret.area);
-        });
-    }
-</script>
 <script>
     //设置默认
     function defaulAddr(obj) {
@@ -438,20 +565,18 @@
         var userPhone = $("#userPhone").val();
         var userName = $("#userName").val();
 
-        if (areaIds == '' || areaNames == '' || areaNames == '请选择所在地区') {
-            return showDialog("请选择所在地区")
-        }
-        if (userPhone == '') {
-            return showDialog("收货人电话不能为空")
-        }
-
         if (userName == '') {
             return showDialog("收货人姓名不能为空")
         }
         if (addrDetail == '') {
             return showDialog("详细地址不能为空")
         }
-
+        if (areaIds == '' || areaNames == '' || areaNames == '请选择所在地区') {
+            return showDialog("请选择所在地区")
+        }
+        if (userPhone == '') {
+            return showDialog("收货人电话不能为空")
+        }
         $.ajax({
             url: "center/saveUserAddr",
             type: 'POST',
@@ -461,6 +586,7 @@
                 "areaNames": areaNames,
                 "addrDetail": addrDetail,
                 "userPhone": userPhone,
+                "postWay":$("#postWay").val(),
                 "userName": userName,
                 "isDefault": 0
             },// 要提交的表单 ,
@@ -478,71 +604,6 @@
                 }
             }
         });
-    }
-
-    //提交订单
-    function createOrder(payWay) {
-        var shopId = $("#shopId").val();
-        var userAddrId = $("#userAddrId").val();
-        var timeGoodsId = $("#timeGoodsId").val();
-        var discountId = $("#discountId").val();
-        var orderPrice = $("#orderPrice").val();
-        var realPrice = $("#realPrice").val();
-        var goodsPriceAll = $("#goodsPriceAll").val();
-
-        if(userAddrId == '' || userAddrId == null){
-            return showDialog("请选择收货地址");
-        }
-
-        var goodsIds = "";
-        var goodsCounts = "";
-        var skuIds = "";
-        var shopCartIds = "";
-
-        var goodsIdsObj = $("input[name='goodsIds']");
-        goodsIdsObj.each(function () {
-            goodsIds = goodsIds + $(this).val() + "`";
-        })
-        var goodsCountsObj = $("input[name='goodsCounts']");
-        goodsCountsObj.each(function () {
-            goodsCounts = goodsCounts + $(this).val() + "`";
-        })
-        var skuIdsbj = $("input[name='skuIds']");
-        skuIdsbj.each(function () {
-            skuIds = skuIds + $(this).val() + "`";
-        })
-        var shopCartIdsObj = $("input[name='shopCartIds']");
-        shopCartIdsObj.each(function () {
-            shopCartIds = shopCartIds + $(this).val() + "`";
-        })
-        $.ajax({
-            url: "order/createOrder",
-            type: 'POST',
-            data: {
-                "shopId": shopId,
-                "userAddrId": userAddrId,
-                "timeGoodsId": timeGoodsId,
-                "discountId": discountId,
-                "orderPrice": orderPrice,
-                "realPrice": realPrice,
-                "goodsPriceAll": goodsPriceAll,
-                "goodsIds": goodsIds,
-                "goodsCounts": goodsCounts,
-                "skuIds": skuIds,
-                "shopCartIds": shopCartIds
-            },// 要提交的表单 ,
-            async: false,
-            cache: false,
-            dataType: "json",
-            success: function (data) {
-                if (data.code == 1) {
-                    submitPayCenterData(payWay,data.orderNo);
-                } else{
-                    showDialog(data.msg);
-                }
-            }
-        });
-
     }
 </script>
 <script th:inline="javascript">
@@ -568,17 +629,32 @@
     }
 </script>
 <script th:inline="javascript">
+    /**
+     * 默认调用
+     */
+    function initAddrYdui() {
+        var $target = $('#J_Address');
+
+        $target.citySelect();
+
+        $target.on('click', function (event) {
+            event.stopPropagation();
+            $target.citySelect('open');
+        });
+
+        $target.on('done.ydui.cityselect', function (ret) {
+            $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+            $(".chose-addr").html(ret.provance + ret.city + ret.area);
+        });
+    }
 
 
     var YDUI_CITYS = [[${list}]];//省
-
     //层级0:国家1:省/自治区/直辖市/特别行政区2:市/省(自治区)直辖县/省直辖区/自治州3:市辖区/县/自治县4:乡/镇/街道5:村
-
     //市
     var city;
     //县
     var area;
-
     //选中的值
     var regionLevel = "";
     var regionCode = "";
@@ -616,7 +692,6 @@
         regionLevel = r;
         regionCode = str[3];
     }
-
     /**
      * 默认调用
      */
@@ -658,46 +733,5 @@
         chose3 = c3;
         console.log("chose3=" + chose3);
         $(".chose-addr").attr("data-value", chose1 + "-" + chose2 + "-" + chose3)
-    }
-</script>
-<script>
-    //选择支付方式
-    function showPayWay() {
-        $("#html3").html("");
-        layer.open({
-            type: 1
-            , content: html3
-            , anim: 'up'
-            , shadeClose: false
-            //,style: 'position:fixed; bottom:0; left:0; width: 100%; height: 200px; padding:10px 0; border:none;line-height: 10px'
-            , style: 'position:fixed; bottom:0; left:0; width: 100%; border:none;'
-        });
-        $(".layui-m-layer *").css("-webkit-box-sizing", "inherit")
-        $(".layui-m-layer *").css("box-sizing", "inherit")
-    }
-
-    //生成支付中心参数
-    function submitPayCenterData(payWay,payOrderNo) {
-        console.log("payWay:" + payWay)
-        console.log("payOrderNo:" + payOrderNo)
-        var data = {
-            "payWay": payWay,
-            "orderNo": payOrderNo
-        }
-        if (payWay == '' || payOrderNo == '') {
-            console.log("缺少支付中心必须参数")
-            return showDialog('支付失败');
-        }
-        $.ajax({
-            url: "order/createPayCenter",//生成支付中心必须参数
-            type: 'POST',
-            data: data,// 要提交的表单 ,
-            async: false,
-            cache: false,
-            dataType: "json",
-            success: function (data) {
-                window.location.href = "http://lirf-shop.51vip.biz/pay-center/pay/payEnter?base64Str=" + data.values;
-            }
-        });
     }
 </script>

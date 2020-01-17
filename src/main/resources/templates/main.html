@@ -27,6 +27,7 @@
     </style>
 </head>
 <body>
+<input type="hidden" th:value="${session.version}" id="v">
 <section class="g-flexview">
     <a href="index/searchPage">
         <div class="btn-search">
@@ -44,12 +45,11 @@
             </div>
             <div class="slider-pagination"></div><!-- 分页标识 -->
         </div>
-        <!--<div class="store-msg">
-            <span><img src="img/vo.png"></span>
-            <span>【广州内衣服饰】跨年送福,送优惠券送优惠券送优惠券送优惠券送优惠券,试试你的新一年的手气好不好</span>
+        <div class="store-msg" th:if="${data.info_title != ''}">
+            <span><img th:src="${data.info_img}"></span>&nbsp;&nbsp;
+            <span th:text="${data.info_title}"></span>
             <span><i class="cell-arrow"></i></span>
-        </div>-->
-
+        </div>
         <div class="navigation">
             <div>
                 <div align="center"><a href="goods/goodsList?type=hot"><img src="img/catogrey1.png"></a></div>

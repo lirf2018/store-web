@@ -174,7 +174,8 @@ public class LoginController {
             JSONObject result = CommonMethod.infoResult(data, Constants.PHONE_CODE_LOGIN);
             if (null != result && result.getInteger("resp_code") == 1) {
                 LOG.info("---登录成功--");
-                setSession(request, result.getJSONObject("data"));
+                LoginUser user = JSONObject.toJavaObject(result.getJSONObject("data"), LoginUser.class);
+                request.getSession().setAttribute("user", user);
             }
             writer.println(result);
             writer.close();
@@ -202,7 +203,8 @@ public class LoginController {
             JSONObject result = CommonMethod.infoResult(data, Constants.PASSWD_LOGIN);
             if (null != result && result.getInteger("resp_code") == 1) {
                 LOG.info("---登录成功--");
-                setSession(request, result.getJSONObject("data"));
+                LoginUser user = JSONObject.toJavaObject(result.getJSONObject("data"), LoginUser.class);
+                request.getSession().setAttribute("user", user);
             }
             writer.println(result);
             writer.close();
@@ -210,22 +212,6 @@ public class LoginController {
             e.printStackTrace();
         }
     }
-
-    /**
-     * 设置登录信息
-     *
-     * @param request
-     * @param data
-     */
-    private void setSession(HttpServletRequest request, JSONObject data) {
-        try {
-            LoginUser user = JSONObject.toJavaObject(data, LoginUser.class);
-            request.getSession().setAttribute("user", user);
-        } catch (Exception e) {
-            LOG.error("---setSession--------", e);
-        }
-    }
-
 
     /**
      * 注销账号

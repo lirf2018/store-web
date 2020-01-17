@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>确认订单</title>
+		<base th:href="@{/}">
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		<link rel="stylesheet" href="./css/ydui.css?rev=@@hash" />
+		<script src="js/ydui.flexible.js"></script>
+		<link rel="stylesheet" href="css/commondemo.css" />
+		<link rel="stylesheet" href="css/ordersubmit2.css" />
+		<link rel="stylesheet" href="css/pay.css"/>
+	</head>
+	<body>
+	<input type="hidden" th:value="${session.version}" id="v">
+	<input type="hidden" th:value="${uuid}" id="uuid">
+		<section class="g-flexview">
+			<header class="m-navbar">
+				<a href="javascript:history.go(-1)" class="navbar-item"><i class="back-ico"></i></a>
+				<div class="navbar-center"><span class="navbar-title">提交订单</span></div>
+			</header>
+			<div class="header-height"></div>
+
+			<section class="g-scrollview">
+				<input type="hidden" value="0" id="userAddrId" name="userAddrId">
+				<input type="hidden" value="4" id="postWay" name="postWay">
+				<input type="hidden" th:value="${freight}" id="freight" name="freight">
+				<input type="hidden" name="timeGoodsId" th:value="${timeGoodsId}">
+				<input type="hidden" value="0" id="discountId" name="discountId">
+				<input type="hidden" th:value="${shopId}" id="shopId">
+				<input type="hidden" value="0" id="orderPrice" name="orderPrice">
+				<input type="hidden" value="0" id="realPrice" name="realPrice">
+				<input type="hidden" th:value="${goodsPriceAll}" id="goodsPriceAll" name="goodsPriceAll">
+
+				<div class="order-addr">
+					<div></div>
+					<div class="order-addr-detail" align="center">
+						<div>
+							<span>收货人姓名:</span><span><input class="user-info" id="userName" value=""></span><br><br>
+							<span>收货人电话:</span><span><input class="user-info" id="userPhone" th:value="${userPhone}"></span>
+						</div>
+					</div>
+					<div></div>
+				</div>
+				<!-- <div class="order-addr no-addr" onclick="toAddrDiv()">
+					<div><i class="icon-addr"></i></div>
+					<div class="order-addr-detail" style="text-align: left;font-size: .25rem;letter-spacing:2px;line-height:18px">
+						深圳市龙岗区坂田街道南坑广度百中可转硒鼓 地电路板需要城，东奔西跑国 惹轴无奇不有28楼
+					</div>
+					<div><i class="icon-turnnext"></i></div>
+				</div> -->
+				<div class="order-addr no-addr" onclick="toAddrDiv()">
+					<div><i class="icon-addr"></i></div>
+					<div class="order-addr-detail order-addr-detail-chose">
+						添加收货地址
+					</div>
+					<div><i class="icon-turnnext"></i></div>
+				</div>
+				<div style="clear: both;"></div>
+				<div class="addr-detail" style="display: none">
+					<span>详细地址:</span>
+					<span><input type="text" value="" id="peisongAddrDetail" placeholder="如:道路、门牌号、小区、楼栋号、单元室等"></span>
+				</div>
+				<div class="shop-list">
+					<div class="shop-name">
+						<div>
+							<label class="cell-right cell-right-shop-name">
+								<i class="icon-home-outline"></i>
+								<span th:text="${shopName}"></span>
+							</label>
+						</div>
+						<div>&nbsp;</div>
+						<div></div>
+						<div style="clear: both;"></div>
+					</div>
+					<div class="goods-list" th:each="item:${goodsList}">
+						<!-- 订单数据 -->
+						<input type="hidden" name="goodsIds" th:value="${item.goodsId}">
+						<input type="hidden" name="goodsCounts" th:value="${item.goodsCount}">
+						<input type="hidden" name="skuIds" th:value="${item.skuId}">
+						<input type="hidden" name="shopCartIds" th:value="${item.shopCartId}">
+
+						<div class="goods-item">
+							<div class="goods-img">
+								<div align="center"><img th:src="${item.goodsImg}"></div>
+							</div>
+							<div class="goods-mes">
+								<h3 class="goods-title" th:text="${item.goodsName}"></h3>
+								<div class="goods-spec" th:text="${item.skuSpecName}"></div>
+								<div class="goods-mes-item">
+									<div>
+										<span class="goods-price"><em>¥</em><span th:text="${item.goodsNowPrice}"></span></span>
+										<span class="goods-del-price">¥<span th:text="${item.goodsTruePrice}"></span></span>
+									</div>
+									<div class="demo-spinner demo-small-pitch">
+										X <span style="font-size: .35rem;" th:text="${item.goodsCount}"></span>
+									</div>
+								</div>
+							</div>
+							<div style="clear: both;"></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="other-item-cell">
+					<a class="other-item">
+						<div>配送方式</div>
+						<div><span id="mendianGetWay"></span><i class="icon-turnnext"></i></div>
+					</a>
+					<a class="other-item">
+						<div>取货时间</div>
+						<div><span class="get-time">16点前付款(当天),16点后付款(次日)</span><i class="icon-turnnext"></i></div>
+					</a>
+					<a class="other-item other-item-card hide-discount">
+						<div>优惠券</div>
+						<div><span class="card">0张可用</span><i class="icon-turnnext"></i></div>
+					</a>
+					<a class="other-item other-item-card">
+						<div>买家留言</div>
+						<div><input style="border-bottom: 1px solid grey" type="text" placeholder="选填,可填写你与卖家协商一致的要求"></div>
+					</a>
+				</div>
+				<div class="order-detail-price">
+					<div>
+						<span>商品总价:</span>
+						<span class="detail-price"><em>¥ </em><span id="goodsPriceAllStr"  th:text="${goodsPriceAll}"></span></span>
+					</div>
+					<div>
+						<span>运费(快递):</span>
+						<span class="post-price"><em>¥ </em><span id="freightStr" th:text="${freight}"></span></span>
+					</div>
+					<div>
+						<span>优惠:</span>
+						<span class="discount-price">- <em>¥ </em><span id="discountPriceStr">0.00</span></span>
+					</div>
+					<div>
+						<span>订单总价:</span>
+						<span class="order-price"><em>¥ </em><span id="realPriceStr"></span></span>
+					</div>
+				</div>
+				<div style="height: 1.26rem;width: 100%;"></div>
+				<div class="item-count">
+					<div class="item-count-money">
+						<span style="font-size: 14px">实付<span style="font-size: 10px">(含运费)</span>:</span>
+						<span>￥</span>
+						<span id="orderPriceStr">0.00</span>
+					</div>
+					<div class="tem-count-topay" onclick="chosePayWay()">
+						<span>立即支付</span>
+					</div>
+				</div>
+			</section>
+		</section>
+		<div id="html" style="display: none;">
+			<div class="addrDiv">
+				<div class="addr-header">
+					<header class="m-navbar addr-head">
+						<a href="javascript:closeToAddrDiv()" class="navbar-item"><i class="back-ico"></i></a>
+						<div class="navbar-center"><span class="navbar-title">收货地址</span></div>
+					</header>
+					<div class="header-height"></div>
+					<div class="choose-way">
+						<span onclick="addrTypeOnclick(4)"  ><input type="radio" name="addrType" value="4" /> 自取</span>
+						<span onclick="addrTypeOnclick(5)" ><input type="radio" name="addrType" value="5" /> 配送</span>
+					</div>
+					<div align="center" class="search-addr-div">
+						<span>搜索</span>
+						<input class="search-addr" value="" id="searchWord" onkeyup="initAddrDiv()" onkeydown="initAddrDiv()"/>
+					</div>
+				</div>
+				<div class="item-addr" id="addrList">
+					<!--<div class="item-addr-list" onclick="choseAddr()" data-post-price="" data-post-detail="" data-mendian="">
+						<div class="item-addr-detail-heand">
+							<span>A</span>
+							<span>安塘村</span>
+							<span>￥20.00</span>
+							<div style="clear: both;"></div>
+						</div>
+						<div class="item-addr-detail-content">
+							<span>深圳市龙岗区坂田街道南坑广度百中可转硒鼓 地电路板需要城，东奔西跑国 惹轴无奇不有28楼</span>
+						</div>
+					</div>-->
+				</div>
+			</div>
+		</div>
+
+	<div id="html3" style="display: none;">
+		<div class="pay-items">
+			<div class="pay-title">
+				<div>支付方式</div>
+				<div><a href="javascript:closeToAddrDiv()"><i class="icon-x"></i></a></span></div>
+			</div>
+			<div style="clear: both;"></div>
+			<div class="pay-item-detail">
+				<a href="javascript:createOrder(1)">
+					<div class="pay-name"><span><i class="icon-pay-wx"></i></span><span>微信支付</span></div>
+					<div class="pay-name-next"><i class="icon-turnnext"></i></div>
+				</a>
+				<a href="javascript:createOrder(2)">
+					<div class="pay-name"><span><i class="icon-pay-alipy"></i></span><span>支付宝支付</span></div>
+					<div class="pay-name-next"><i class="icon-turnnext"></i></div>
+				</a>
+			</div>
+		</div>
+	</div>
+	</body>
+	<script type="text/javascript" src="js/layer.js"></script>
+	<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+	<script type="text/javascript" src="js/ydui.my.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script th:inline="javascript">
+		var html = $("#html").html();
+		function toAddrDiv() {
+			$("#html").html("");
+			var pageii = layer.open({
+				type: 1,
+				content: html,
+				anim: 'up',
+				shadeClose: false,
+				style: 'overflow-y: scroll;position:fixed; left:0; top:0; width:100%; height:100%; border: none; -webkit-animation-duration: .5s; animation-duration: .5s;background-color: #EEEDF3;'
+			});
+			setHeight();
+		}
+
+		function closeToAddrDiv() {
+			layer.closeAll();
+		}
+	</script>
+	<script th:inline="javascript">
+		var addrTypeChose = '4';
+		//选择取货地址
+		function addrTypeOnclick(postType) {
+			// addrTypeChose = $("input[type='radio']:checked").val();
+			var obj = $("input[name='addrType']");
+			addrTypeChose = postType;
+			obj.each(function () {
+				var value = $(this).val();
+				if(value == postType){
+					$(this).prop("checked","checked");
+				}else{
+					$(this).removeAttr("checked");
+				}
+			})
+			initAddrDiv();
+		}
+		//初始化取货地址 平台地址类型4.自取 5配送 6 还货
+		function initAddrDiv() {
+			var searchWord = $("#searchWord").val().trim();//搜索词
+			var addrList = [[${list}]];
+			var htmls = "";
+			for (var i = 0; i < addrList.length; i++) {
+				var addrName = addrList[i].addr_name;
+				var addrType = addrList[i].addr_type;
+				var sortChar = addrList[i].sort_char;
+				var freight = addrList[i].freight;
+				var storeName = addrList[i].store_name;
+				var detailAddr = addrList[i].detail_addr;
+				var detailAddr_ = addrList[i].detail_addr;
+				var id = addrList[i].id;
+				if (addrType == addrTypeChose) {
+					var style = "";//选中的地址样式
+					if ($("#userAddrId").val() == id) {
+						style = "border: 1px solid #cd1144;";
+					}
+					console.log("searchWord="+searchWord)
+					if (searchWord != '' ) {
+						if(detailAddr.indexOf(searchWord) > -1){
+							var searchWordCss = "<span style='color: #cd1144'>" + searchWord + "</span>";
+							detailAddr = detailAddr.replace(searchWord, searchWordCss);
+						}else{
+							continue;
+						}
+					}
+					console.log(detailAddr)
+					if (storeName != '') {
+						detailAddr = detailAddr + "(" + storeName + ")";
+					}
+					var html = "<div id='" + id + "' class='item-addr-list' style='" + style + "' onclick='choseAddr(this)' data-id='" + id + "' data-post-price='" + freight + "' data-post-detail='" + detailAddr_ + "' data-mendian='" + storeName + "'>"
+							+ "<div class='item-addr-detail-heand'>"
+							+ "<span>" + sortChar + "</span>"
+							+ "<span>" + addrName + "</span>"
+							+ "<span>￥" + freight + "</span>"
+							+ "<div style='clear: both;'></div>"
+							+ "</div>"
+							+ "<div class='item-addr-detail-content'>"
+							+ "<span>" + detailAddr + "</span>"
+							+ "</div>"
+							+ "</div>";
+					htmls += html;
+				}
+			}
+			$("#addrList").html("");
+			$("#addrList").html(htmls);
+		}
+
+		//选中的地址
+		function choseAddr(obj) {
+			var id = $(obj).attr("data-id");
+			var freight = $(obj).attr("data-post-price");
+			var detailAddr = $(obj).attr("data-post-detail");
+			var storeName = $(obj).attr("data-mendian");
+			if (storeName != '') {
+				detailAddr = detailAddr + "(" + storeName + ")";
+			}
+			$("#userAddrId").val(id);
+			$("#postWay").val(addrTypeChose);
+			$("#freight").val(freight);
+
+			//平台地址类型4.自取 5配送 6 还货
+			if(addrTypeChose == '5'){
+				$("#mendianGetWay").html("平台配送");
+			}else{
+				$("#mendianGetWay").html("门店自提");
+			}
+
+			var ad = $(".order-addr-detail-chose");
+			ad.html(detailAddr);
+			ad.css("text-align","left");
+			ad.css("font-size",".25rem");
+			ad.css("letter-spacing","2px");
+			ad.css("line-height","18px");
+			closeToAddrDiv();
+			initPrice();
+			if(addrTypeChose == '5'){//配送
+				$(".addr-detail").show();
+			}else{
+				$(".addr-detail").hide();
+			}
+		}
+		//设置高度
+		function setHeight() {
+			var height = document.body.offsetHeight;
+			var h = $(".addr-header").outerHeight(true);
+			var addrHeight = height - h - 10;
+			$(".item-addr").css("height", addrHeight + "px");
+			initAddrDiv();addrTypeChose
+			$("input:radio[value=\""+addrTypeChose+"\"]").attr('checked','true');
+		}
+	</script>
+	<script th:inline="javascript">
+		//初始化价格
+		initPrice();
+		function initPrice() {
+			//商品总价
+			var goodsPriceAll = [[${goodsPriceAll}]];
+			//邮费
+			var freight = $("#freight").val();
+			$("#freightStr").html(freight);
+			//优惠券id
+			var discountId = $("#discountId").val();
+
+			//订单总价
+			var realPrice = Number(goodsPriceAll) + Number(freight);
+			$("#realPriceStr").html(parsePrice(realPrice));
+			$("#realPrice").val(parsePrice(realPrice));
+			//订单支付价格
+			var orderPrice = Number(realPrice) - Number(0);
+			$("#orderPriceStr").html(parsePrice(orderPrice));
+			$("#orderPrice").val(parsePrice(orderPrice));
+		}
+	</script>
+	<script th:inline="javascript">
+		var html3 = $("#html3").html();//支付html
+		var payOrderNo = "";//订单号
+		//去付款(选择支付方式)
+		function chosePayWay(orderNo) {
+			payOrderNo = orderNo;
+			if(!checkParam()){
+				return;
+			}
+			showPayWay();
+		}
+
+		//校验订单参数
+		function checkParam() {
+			var userAddrId = $("#userAddrId").val();
+			if(userAddrId == '' || userAddrId == 0){
+				showDialog("请选择收货地址");
+				toAddrDiv();
+				return false;
+			}
+			var userName = $("#userName").val();
+			if(userName == ''){
+				showDialog("请选填写收货人姓名");
+				$("#userName").focus();
+				return false;
+			}
+			var userPhone = $("#userPhone").val();
+			if(userPhone == ''){
+				showDialog("请选填写收货人电话");
+				$("#userPhone").focus();
+				return false;
+			}
+			var peisongAddrDetail = $("#peisongAddrDetail").val();
+			if(addrTypeChose == '5' && peisongAddrDetail == ""){//平台地址类型4.自取 5配送 6 还货
+				showDialog("请选填写详细地址");
+				$("#peisongAddrDetail").focus();
+				return false;
+			}
+			return true;
+		}
+
+		//选择支付方式
+		function showPayWay() {
+			$("#html3").html("");
+			layer.open({
+				type: 1
+				, content: html3
+				, anim: 'up'
+				, shadeClose: false
+				//,style: 'position:fixed; bottom:0; left:0; width: 100%; height: 200px; padding:10px 0; border:none;line-height: 10px'
+				, style: 'position:fixed; bottom:0; left:0; width: 100%; border:none;'
+			});
+			$(".layui-m-layer *").css("-webkit-box-sizing", "inherit")
+			$(".layui-m-layer *").css("box-sizing", "inherit")
+		}
+
+		//提交订单
+		function createOrder(payWay) {
+			var uuid = $("#uuid").val();
+			if (uuid == "") {
+				return showDialog("网络异常,请稍后重试");
+			} else {
+				$("#uuid").val("");
+			}
+
+			var shopId = $("#shopId").val();
+			var userAddrId = $("#userAddrId").val();
+			var timeGoodsId = $("#timeGoodsId").val();
+			var discountId = $("#discountId").val();
+			var orderPrice = $("#orderPrice").val();
+			var realPrice = $("#realPrice").val();
+			var goodsPriceAll = $("#goodsPriceAll").val();
+
+			if(userAddrId == '' || userAddrId == null){
+				return showDialog("请选择收货地址");
+			}
+
+			var goodsIds = "";
+			var goodsCounts = "";
+			var skuIds = "";
+			var shopCartIds = "";
+
+			var goodsIdsObj = $("input[name='goodsIds']");
+			goodsIdsObj.each(function () {
+				goodsIds = goodsIds + $(this).val() + "`";
+			})
+			var goodsCountsObj = $("input[name='goodsCounts']");
+			goodsCountsObj.each(function () {
+				goodsCounts = goodsCounts + $(this).val() + "`";
+			})
+			var skuIdsbj = $("input[name='skuIds']");
+			skuIdsbj.each(function () {
+				skuIds = skuIds + $(this).val() + "`";
+			})
+			var shopCartIdsObj = $("input[name='shopCartIds']");
+			shopCartIdsObj.each(function () {
+				shopCartIds = shopCartIds + $(this).val() + "`";
+			});
+			var peisongAddrDetail = $("#peisongAddrDetail").val();
+			if(addrTypeChose == '4'){//平台地址类型4.自取 5配送 6 还货
+				peisongAddrDetail = "";
+			}
+			$.ajax({
+				url: "order/createOrder",
+				type: 'POST',
+				data: {
+					"shopId": shopId,
+					"userAddrId": userAddrId,
+					"peisongAddrDetail": peisongAddrDetail.trim(),
+					"timeGoodsId": timeGoodsId,
+					"discountId": discountId,
+					"orderPrice": orderPrice,
+					"realPrice": realPrice,
+					"postWay":$("#postWay").val(),
+					"userName":$("#userName").val().trim(),
+					"userPhone":$("#userPhone").val().trim(),
+					"goodsPriceAll": goodsPriceAll,
+					"goodsIds": goodsIds,
+					"goodsCounts": goodsCounts,
+					"skuIds": skuIds,
+					"shopCartIds": shopCartIds
+				},// 要提交的表单 ,
+				async: false,
+				cache: false,
+				dataType: "json",
+				success: function (data) {
+					if (data.code == 1) {
+						if(Number(orderPrice) != 0){
+							submitPayCenterData(payWay,data.orderNo);
+						}else{
+							toOrderDetail(data.orderNo);
+						}
+					} else{
+						showDialog(data.msg);
+					}
+				}
+			});
+		}
+
+		//0元订单直接跳转到详情
+		function toOrderDetail(orderNo) {
+			showDialog("订单创建成功");//javascript:window.location.href = order/orderDetail?orderNo=
+			setTimeout("javascript:window.location.href = 'order/orderDetail?orderNo=" + orderNo + "'", 1000);
+		}
+
+		//生成支付中心参数
+		function submitPayCenterData(payWay,payOrderNo) {
+			console.log("payWay:" + payWay)
+			console.log("payOrderNo:" + payOrderNo)
+			var data = {
+				"payWay": payWay,
+				"orderNo": payOrderNo
+			}
+			if (payWay == '' || payOrderNo == '') {
+				console.log("缺少支付中心必须参数")
+				return showDialog('支付失败');
+			}
+			$.ajax({
+				url: "order/createPayCenter",//生成支付中心必须参数
+				type: 'POST',
+				data: data,// 要提交的表单 ,
+				async: false,
+				cache: false,
+				dataType: "json",
+				success: function (data) {
+					window.location.href = "http://lirf-shop.51vip.biz/pay-center/pay/payEnter?base64Str=" + data.values;
+				}
+			});
+		}
+	</script>
+</html>

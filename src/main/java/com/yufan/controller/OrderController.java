@@ -13,15 +13,13 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import sun.plugin.util.UIUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 创建人: lirf
@@ -179,9 +177,10 @@ public class OrderController {
     /**
      * 订单提交创建
      */
-    @RequestMapping("toSubmitPage")
+    @RequestMapping("toSubmitPage") //自取配置版
     public ModelAndView toSubmitPage(HttpServletRequest request, HttpServletResponse response) {
-
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        //自取配置地址版
         ModelAndView modelAndView = new ModelAndView();
         //店铺信息
         String shopId = request.getParameter("shopId");
@@ -219,50 +218,14 @@ public class OrderController {
 
         //查询用户收货地址
         String userAddrId = "";
-        String userName = "";
-        String userPhone = "";
-        String addrName = "";
         LoginUser user = (LoginUser) request.getSession().getAttribute("user");
+        String userPhone = user.getUserMobile();
+        //查询自取配送地址
+        JSONArray list = new JSONArray();
         JSONObject data = new JSONObject();
-        data.put("user_id", user.getUserId());
-        data.put("addr_type", 1);
-        data.put("parent_code", "000000000000");
-        JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_USER_ADDR);
-        JSONArray list = new JSONArray();//省列表
+        JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_PLATFORM_LIST);
         if (null != result && result.getInteger("resp_code") == 1) {
-            modelAndView.addObject("data", result.getJSONObject("data"));
-            //用户地址(默认地址)is_default
-            JSONArray userAddrList = result.getJSONObject("data").getJSONArray("user_addr_list");
-            if (null != userAddrList && userAddrList.size() > 0) {
-                for (int i = 0; i < userAddrList.size(); i++) {
-                    JSONObject obj = userAddrList.getJSONObject(i);
-                    int isDefault = obj.getInteger("is_default");
-                    if (isDefault == 1) {
-                        userAddrId = obj.getString("id");
-                        userName = obj.getString("user_name");
-                        userPhone = obj.getString("user_phone");
-                        addrName = obj.getString("addr_name");
-                        freight = obj.getBigDecimal("freight");
-                        break;
-                    }
-                }
-            }
-
-            //处理地址
-            JSONArray array = result.getJSONObject("data").getJSONArray("country_addr_list");
-            for (int i = 0; i < array.size(); i++) {
-                JSONObject o = array.getJSONObject(i);
-                String regionId = o.getString("region_id");
-                String regionName = o.getString("region_name");
-                String freight_ = o.getString("freight");
-                String regionCode = o.getString("region_code");
-                String word = regionId + "`" + regionName + "`" + freight_ + "`" + regionCode;
-                Map<String, Object> map1 = new HashMap<>();
-                map1.put("n", word);
-                map1.put("c", new JSONArray());
-                list.add(map1);
-            }
-            modelAndView.addObject("list", list);
+            list = result.getJSONObject("data").getJSONArray("platform_addr_list");
         }
 
         //商品总价
@@ -303,6 +266,7 @@ public class OrderController {
             goodsList.add(map);
         }
 
+        modelAndView.addObject("uuid", uuid);
         //设置订单提交页面参数
         modelAndView.addObject("shopId", shopId);
         modelAndView.addObject("shopName", shopName);
@@ -311,15 +275,157 @@ public class OrderController {
         modelAndView.addObject("goodsList", goodsList);
         modelAndView.addObject("timeGoodsId", timeGoodsId);
         //用户收货信息
+        modelAndView.addObject("list", list);
         modelAndView.addObject("userAddrId", userAddrId);
-        modelAndView.addObject("userName", userName);
         modelAndView.addObject("userPhone", userPhone);
-        modelAndView.addObject("addrName", addrName);
         modelAndView.addObject("freight", freight.setScale(2, BigDecimal.ROUND_HALF_UP));
         //
-        modelAndView.setViewName("order-submit");
+        modelAndView.setViewName("order-submit1");
         return modelAndView;
     }
+
+//    @RequestMapping("toSubmitPage") //邮寄版本
+//    public ModelAndView toSubmitPage1(HttpServletRequest request, HttpServletResponse response) {
+// String uuid = UUID.randomUUID().toString().replace("-", "");
+//        ModelAndView modelAndView = new ModelAndView();
+//        //店铺信息
+//        String shopId = request.getParameter("shopId");
+//        String shopName = request.getParameter("shopName");
+//        //商品通用信息
+//        String[] goodsIdsArray = request.getParameterValues("goodsIds");
+//        String[] goodsIdNamesArray = request.getParameterValues("goodsIdNames");
+//        String[] goodsImgsArray = request.getParameterValues("goodsImgs");
+//        String[] goodsCountsArray = request.getParameterValues("goodsCounts");
+//        String[] goodsNowPricesArray = request.getParameterValues("goodsNowPrices");//现价
+//        String[] goodsTurePricesArray = request.getParameterValues("goodsTurePrices");//原价
+//        //sku商品信息
+//        String[] skuIdsArray = request.getParameterValues("skuIds");//商品skuIds
+//        String[] skuSpecNamesArray = request.getParameterValues("skuSpecNames");//商品sku规格名称
+//        //购物车Ids
+//        String[] shopCartIdsArray = request.getParameterValues("shopCartIds");
+//
+//        //选中的购物车
+//        String shopCartIdsCheck = request.getParameter("shopCartIdsCheck");
+//        Map<String, String> shopCartIdsCheckMap = new HashMap<>();//选中的购物车
+//        if (StringUtils.isNotEmpty(shopCartIdsCheck)) {
+//            String[] shopCartIdsCheckStrArray = shopCartIdsCheck.split("`");
+//            for (int i = 0; i < shopCartIdsCheckStrArray.length; i++) {
+//                if (StringUtils.isEmpty(shopCartIdsCheckStrArray[i])) {
+//                    continue;
+//                }
+//                shopCartIdsCheckMap.put(shopCartIdsCheckStrArray[i], shopCartIdsCheckStrArray[i]);
+//            }
+//        }
+//
+//        //抢购商品信息
+//        Integer timeGoodsId = Integer.parseInt(request.getParameter("timeGoodsId"));//抢购商品标识
+//        //邮费
+//        BigDecimal freight = new BigDecimal("0.00");
+//
+//        //查询用户收货地址
+//        String userAddrId = "";
+//        String userName = "";
+//        String userPhone = "";
+//        String addrName = "";
+//        LoginUser user = (LoginUser) request.getSession().getAttribute("user");
+//        JSONObject data = new JSONObject();
+//        data.put("user_id", user.getUserId());
+//        data.put("addr_type", 1);
+//        data.put("parent_code", "000000000000");
+//        JSONObject result = CommonMethod.infoResult(data, Constants.QUERY_USER_ADDR);
+//        JSONArray list = new JSONArray();//省列表
+//        if (null != result && result.getInteger("resp_code") == 1) {
+//            modelAndView.addObject("data", result.getJSONObject("data"));
+//            //用户地址(默认地址)is_default
+//            JSONArray userAddrList = result.getJSONObject("data").getJSONArray("user_addr_list");
+//            if (null != userAddrList && userAddrList.size() > 0) {
+//                for (int i = 0; i < userAddrList.size(); i++) {
+//                    JSONObject obj = userAddrList.getJSONObject(i);
+//                    int isDefault = obj.getInteger("is_default");
+//                    if (isDefault == 1) {
+//                        userAddrId = obj.getString("id");
+//                        userName = obj.getString("user_name");
+//                        userPhone = obj.getString("user_phone");
+//                        addrName = obj.getString("addr_name");
+//                        freight = obj.getBigDecimal("freight");
+//                        break;
+//                    }
+//                }
+//            }
+//
+//            //处理地址
+//            JSONArray array = result.getJSONObject("data").getJSONArray("country_addr_list");
+//            for (int i = 0; i < array.size(); i++) {
+//                JSONObject o = array.getJSONObject(i);
+//                String regionId = o.getString("region_id");
+//                String regionName = o.getString("region_name");
+//                String freight_ = o.getString("freight");
+//                String regionCode = o.getString("region_code");
+//                String word = regionId + "`" + regionName + "`" + freight_ + "`" + regionCode;
+//                Map<String, Object> map1 = new HashMap<>();
+//                map1.put("n", word);
+//                map1.put("c", new JSONArray());
+//                list.add(map1);
+//            }
+//            modelAndView.addObject("list", list);
+//        }
+//
+//        //商品总价
+//        BigDecimal goodsPriceAll = new BigDecimal("0.00");
+//
+//        //处理商品
+//        List<Map<String, Object>> goodsList = new ArrayList<>();
+//        for (int i = 0; i < goodsIdsArray.length; i++) {
+//            Map<String, Object> map = new HashMap<>();
+//            map.put("goodsId", goodsIdsArray[i]);
+//            map.put("goodsName", goodsIdNamesArray[i]);
+//            map.put("goodsImg", goodsImgsArray[i]);
+//            BigDecimal goodsCount = new BigDecimal(goodsCountsArray[i]);
+//            BigDecimal goodsNowPrice = new BigDecimal(goodsNowPricesArray[i]);
+//            BigDecimal goodsPriceCount = goodsNowPrice.multiply(goodsCount);
+//            //sku商品信息
+//            if (null != skuIdsArray && skuIdsArray.length > 0) {
+//                map.put("skuId", skuIdsArray[i]);
+//                map.put("skuSpecName", StringUtils.isEmpty(skuSpecNamesArray[i]) ? "" : "规格:" + skuSpecNamesArray[i]);
+//            } else {
+//                map.put("skuId", "0");
+//                map.put("skuName", "");
+//            }
+//            //购物车Ids
+//            if (StringUtils.isNotEmpty(shopCartIdsCheck)) {
+//                //来自购物车   判断购物车是否是选中的
+//                if (shopCartIdsCheckMap.get(shopCartIdsArray[i]) == null) {
+//                    continue;
+//                }
+//                map.put("shopCartId", shopCartIdsArray[i]);
+//            } else {
+//                map.put("shopCartId", 0);
+//            }
+//            goodsPriceAll = goodsPriceAll.add(goodsPriceCount);
+//            map.put("goodsNowPrice", goodsNowPrice.toString());
+//            map.put("goodsTruePrice", goodsTurePricesArray[i]);
+//            map.put("goodsCount", goodsCount);
+//            goodsList.add(map);
+//        }
+//
+//        modelAndView.addObject("uuid", uuid);
+//        //设置订单提交页面参数
+//        modelAndView.addObject("shopId", shopId);
+//        modelAndView.addObject("shopName", shopName);
+//        modelAndView.addObject("goodsList", goodsList);
+//        modelAndView.addObject("goodsPriceAll", goodsPriceAll);
+//        modelAndView.addObject("goodsList", goodsList);
+//        modelAndView.addObject("timeGoodsId", timeGoodsId);
+//        //用户收货信息
+//        modelAndView.addObject("userAddrId", userAddrId);
+//        modelAndView.addObject("userName", userName);
+//        modelAndView.addObject("userPhone", userPhone);
+//        modelAndView.addObject("addrName", addrName);
+//        modelAndView.addObject("freight", freight.setScale(2, BigDecimal.ROUND_HALF_UP));
+//        //
+//        modelAndView.setViewName("order-submit");
+//        return modelAndView;
+//    }
 
     /**
      * 创建订单
@@ -346,7 +452,7 @@ public class OrderController {
      *
      * @return
      */
-    @RequestMapping("createOrder")
+    @RequestMapping("createOrder")//自取配送版本
     public void createOrder(HttpServletRequest request, HttpServletResponse response) {
         JSONObject outParam = new JSONObject();
         PrintWriter writer = null;
@@ -356,6 +462,10 @@ public class OrderController {
 
             String shopId = request.getParameter("shopId");
             String userAddrId = request.getParameter("userAddrId");
+            String peisongAddrDetail = request.getParameter("peisongAddrDetail");
+            String userName = request.getParameter("userName");
+            String userPhone = request.getParameter("userPhone");
+            String postWay = request.getParameter("postWay");
             String timeGoodsId = request.getParameter("timeGoodsId");
             String discountId = request.getParameter("discountId");
             String orderPrice = request.getParameter("orderPrice");
@@ -372,6 +482,10 @@ public class OrderController {
             data.put("user_id", user.getUserId());
             data.put("time_goods_id", timeGoodsId);
             data.put("user_addr_id", userAddrId);
+            data.put("peisong_addr_detail", peisongAddrDetail);
+            data.put("user_name", userName);
+            data.put("user_phone", userPhone);
+            data.put("post_way", postWay);
             data.put("shop_id", shopId);
             data.put("discounts_id", discountId);
             data.put("order_price", orderPrice);
@@ -497,7 +611,6 @@ public class OrderController {
             if (null != result && result.getInteger("resp_code") == 1) {
                 modelAndView.addObject("data", result.getJSONObject("data"));
             }
-
             modelAndView.setViewName("order-detail");
         } catch (Exception e) {
             e.printStackTrace();
@@ -564,13 +677,14 @@ public class OrderController {
         PrintWriter writer;
         try {
             writer = response.getWriter();
+            LoginUser user = (LoginUser) request.getSession().getAttribute("user");
+            String base64LoginInfoStr = Base64Coder.encodeString(JSONObject.toJSONString(user));
             String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
             JSONObject paramData = new JSONObject();
             paramData.put("business_code", Constants.PAY_BUSINESS_CODE);
             paramData.put("order_no", orderNo);
             paramData.put("pay_way", payWay);//交易方式 1 微信2 支付宝
             paramData.put("record_type", 4);//事项 1 订单退押金 2 订单退款 3 提现 4 订单支付
-
             String sign = VerifySign.getSign(paramData, Constants.PAY_SID, Constants.PAY_SECRET_KEY, timestamp);
 
             paramData.put("sid", Constants.PAY_SID);

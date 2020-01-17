@@ -22,9 +22,10 @@
     </style>
 </head>
 <body>
+<input type="hidden" th:value="${session.version}" id="v">
 <section class="g-flexview">
 	<header class="m-navbar">
-        <a class="navbar-item"><i class="back-ico" onclick="javascript:window.location.href='order/orderListPage?status=0'"></i></a>
+        <a class="navbar-item"><i class="back-ico" onclick="javascript:window.location.href='order/orderListPage?status=-1'"></i></a>
         <div class="navbar-center"><span class="navbar-title">订单详情</span></div>
 		<div class="navbar-item navbar-right"><a href="index/mainPage"><i class="icon-home-outline"></i></a></div>
 	</header>
@@ -109,45 +110,15 @@
     			<span>实付款:<b style="font-size: 8px;font-weight: normal">(含运费)</b></span>
     			<span class="goods-price-count"><em>¥</em><span th:text="${data.order_price}"></span></span>
     		</div>
-    		<div class="shop-order-count-btn" th:if="${data.order_status == 0}">
-    			<a th:href="'javascript:updateOrderStatus(\''+${data.order_id}+'\',7);'" class="btn btn-mybtn3">取消订单</a>
-    			<a th:href="'javascript:chosePayWay(\''+${data.order_no}+'\');'" class="btn btn-mybtn3">去付款</a>
-    		</div>
-			<div class="shop-order-count-btn" th:if="${data.order_status == 1 && (data.order_price == 0 || data.order_price == '0.00')}">
-				<a th:href="'javascript:updateOrderStatus(\''+${data.order_id}+'\',7);'" class="btn btn-mybtn3">取消订单</a>
-			</div>
-    		<div class="shop-order-count-btn" th:if="${data.order_status == 1}">
-				<a th:href="'javascript:orderRefund(\''+${data.order_id}+'\');'" class="btn btn-mybtn3">申请退款</a>
-    		</div>
-    		<div class="shop-order-count-btn" th:if="${data.order_status == 2}">
-
-    		</div>
-    		<div class="shop-order-count-btn" th:if="${data.order_status == 3}">
-
-    		</div>
-    		<div class="shop-order-count-btn" th:if="${data.order_status == 4}">
-				<a th:href="'javascript:orderRefund(\''+${data.order_id}+'\');'" class="btn btn-mybtn3">申请退款</a>
-    		</div>
-    		<div class="shop-order-count-btn" th:if="${data.order_status == 5}">
-				<a th:href="'javascript:updateOrderStatus(\''+${data.order_id}+'\',6);'" class="btn btn-mybtn3">确认收货</a>
-    		</div>
-    		<div class="shop-order-count-btn" th:if="${data.order_status == 6}">
-				<a href="javascript:;" class="btn btn-mybtn3">申请售后</a>
-    		</div>
-    		<div class="shop-order-count-btn" th:if="${data.order_status == 7}">
-				<a th:href="'javascript:updateOrderStatus(\''+${data.order_id}+'\',8);'" class="btn btn-mybtn3">删除订单</a>
-    		</div>
-    		<div class="shop-order-count-btn" th:if="${data.order_status == 8}">
-    		</div>
-    		<div class="shop-order-count-btn" th:if="${data.order_status == 9}">
-    		</div>
-    		<div class="shop-order-count-btn" th:if="${data.order_status == 10}">
-    		</div>
-    		<div class="shop-order-count-btn" th:if="${data.order_status == 11}">
-    		</div>
-    		<div class="shop-order-count-btn" th:if="${data.order_status == 12}">
-    		</div>
-    		<div class="shop-order-count-btn" th:if="${data.order_status == 13}">
+    		<div class="shop-order-count-btn">
+    			<a th:if="${data.order_status == 0}" th:href="'javascript:updateOrderStatus(\''+${data.order_id}+'\',7);'" class="btn btn-mybtn3">取消订单</a>
+    			<a th:if="${data.order_status == 0}" th:href="'javascript:chosePayWay(\''+${data.order_no}+'\');'" class="btn btn-mybtn3">去付款</a>
+				<a th:if="${data.order_status == 1 && (data.order_price == 0 || data.order_price == '0.00')}" th:href="'javascript:updateOrderStatus(\''+${data.order_id}+'\',7);'" class="btn btn-mybtn3">取消订单</a>
+				<a th:if="${data.order_status == 1}" th:href="'javascript:orderRefund(\''+${data.order_id}+'\');'" class="btn btn-mybtn3">申请退款</a>
+				<a th:if="${data.order_status == 4}" th:href="'javascript:orderRefund(\''+${data.order_id}+'\');'" class="btn btn-mybtn3">申请退款</a>
+				<a th:if="${data.order_status == 5}" th:href="'javascript:updateOrderStatus(\''+${data.order_id}+'\',6);'" class="btn btn-mybtn3">确认收货</a>
+				<a th:if="${data.order_status == 6}" href="javascript:;" class="btn btn-mybtn3">申请售后</a>
+				<a th:if="${data.order_status == 7}" th:href="'javascript:updateOrderStatus(\''+${data.order_id}+'\',8);'" class="btn btn-mybtn3">删除订单</a>
     		</div>
     	</div>
     </section>

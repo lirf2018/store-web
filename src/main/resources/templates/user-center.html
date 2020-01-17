@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/usercenter.css" />
 </head>
 <body>
+<input type="hidden" th:value="${session.version}" id="v">
 <section class="g-flexview">
     <section class="g-scrollview">
     	<div class="user-info">
@@ -26,12 +27,12 @@
     	<div class="user-msg">
     		<div>
     			<span th:text="${data.user_money}"></span>
-    			<!--<span>零钱</span>-->
+<!--    			<span>零钱</span>-->
     			<span>持续开放中</span>
     		</div>
     		<div>
 				<span th:text="${data.user_jifen}"></span>
-    			<!--<span>积分</span>-->
+<!--    			<span>积分</span>-->
 				<span>持续开放中</span>
     		</div>
     		<div>

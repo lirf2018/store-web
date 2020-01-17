@@ -139,6 +139,7 @@ public class Constants {
     public static String CANCEL_ACCOUNT = "cancel_account";//注销账号
     public static String UPDATE_ORDER_STATUS = "update_order_status";//更新订单状态
     public static String APPLY_ORDER_REFUND = "apply_order_refund";//订单退款
+    public static String QUERY_PLATFORM_LIST = "query_platform_list";//查询配送地址
 
 
     /**

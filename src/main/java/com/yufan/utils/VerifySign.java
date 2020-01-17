@@ -53,4 +53,43 @@ public class VerifySign {
 
         return null;
     }
+
+    /**
+     * 签名校验
+     *
+     * @param json       签名必要参数
+     * @param sid        客户端sid或者code
+     * @param timestamp  时间戳
+     * @param secretKey  客户端秘钥
+     * @param clientSign 客户端签名
+     * @return
+     */
+    public static boolean checkSign(JSONObject json, String sid, String secretKey, String timestamp, String clientSign) {
+        LOG.info("---------json:" + json);
+        LOG.info("---------secretKey:" + secretKey);
+        LOG.info("---------clientSign:" + clientSign);
+        //传过来的sign
+        try {
+            MyMap map = new MyMap();
+            map.put("sid", sid);
+            map.put("secretKey", secretKey);
+            map.put("timestamp", timestamp);
+
+            for (Object k : json.keySet()) {
+                Object v = json.get(k);
+                //只取data第一层数据
+//                if (null != v && !(v instanceof JSONArray) && v.toString().indexOf("{") == -1 && v.toString().indexOf("[") == -1) {
+                map.put(k.toString(), v);
+//                }
+            }
+            String sign = MD5.enCodeStandard(HelpCommon.getSign(map) + secretKey);
+            if (null != clientSign && clientSign.equals(sign)) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }
