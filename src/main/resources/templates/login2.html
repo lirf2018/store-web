@@ -29,7 +29,7 @@
 		<div class="div-top">
 			<i class="icon-ucenter"></i>
 		</div>
-		<div class="div-foot">
+		<div class="div-middle">
 			<section class="g-scrollview">
 				<div class="user-info">
 					<div class="cell-item">
@@ -60,10 +60,13 @@
         			<span>使用第三方登录</span>
      			</h5>
      			<div style="clear: both;"></div>
-				<div class="other-login-detail" align="center">
-					<div>
-						<img src="img/wx.png">
-					</div>
+			</div>
+		</div>
+		<div class="div-foot">
+			<div class="other-login-detail" align="center">
+				<div align="center">
+					<img src="img/wx.png">
+<!--					<img src="img/wx.png">-->
 				</div>
 			</div>
 			<div class="register">
@@ -164,5 +167,14 @@
 		}
 	}
 	var inter ;
+</script>
+<script>
+	var height= document.body.offsetHeight;
+
+	var h1 = $(".div-top").outerHeight(true);
+	var h3_1 = $(".other-login-detail").outerHeight(true);
+	var h3_2 = $(".register").outerHeight(true);
+	var h2 = height - h1 - h3_1 - h3_2 - 50;
+	$(".div-middle").css("height", h2 + "px");
 </script>
 </html>

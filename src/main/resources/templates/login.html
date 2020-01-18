@@ -27,15 +27,15 @@
         <div class="div-top">
             <i class="icon-ucenter"></i>
         </div>
-        <div class="div-foot">
+        <div class="div-middle">
             <div class="user-info">
                 <div class="cell-item">
                     <div class="cell-left">手机号：</div>
-                    <div class="cell-right"><input type="number" pattern="[0-9]*" class="cell-input" placeholder="请输入手机号码" autocomplete="off" id="phone" name="phone"/></div>
+                    <div class="cell-right"><input onkeyup="inputOnclick()" type="number" pattern="[0-9]*" class="cell-input" placeholder="请输入手机号码" autocomplete="off" id="phone" name="phone"/></div>
                 </div>
                 <div class="cell-item">
                     <div class="cell-left">密&nbsp;&nbsp;&nbsp;码：</div>
-                    <div class="cell-right"><input type="password" class="cell-input" placeholder="请输入密码" autocomplete="off" id="passwd" name="passwd" /></div>
+                    <div class="cell-right"><input onkeyup="inputOnclick()" type="password" class="cell-input" placeholder="请输入密码" autocomplete="off" id="passwd" name="passwd" /></div>
                 </div>
                 <div class="password-get">
                     <div class="password"><a href="login/resetPasswd">忘记密码</a></div>
@@ -51,11 +51,13 @@
                     <span>使用第三方登录</span>
                 </h5>
                 <div style="clear: both;"></div>
-                <div class="other-login-detail" align="center">
-                    <div>
-                        <img src="img/wx.png">
-<!--                        <img src="img/wx.png">-->
-                    </div>
+            </div>
+        </div>
+        <div class="div-foot">
+            <div class="other-login-detail" align="center">
+                <div align="center">
+                    <img src="img/wx.png">
+<!--                    <img src="img/wx.png">-->
                 </div>
             </div>
             <div class="register">
@@ -104,5 +106,20 @@
             }
         });
     }
+
+    document.addEventListener('touchmove',input_blur,false);
+
+    function input_blur(event) {
+        $('input').blur();
+    }
+</script>
+<script>
+    var height= document.body.offsetHeight;
+
+    var h1 = $(".div-top").outerHeight(true);
+    var h3_1 = $(".other-login-detail").outerHeight(true);
+    var h3_2 = $(".register").outerHeight(true);
+    var h2 = height - h1 - h3_1 - h3_2 - 50;
+    $(".div-middle").css("height", h2 + "px");
 </script>
 </html>
