@@ -6,7 +6,7 @@
 
 .pay-title{
     background-color: #EEEDF3;
-    font-size: .35rem;
+    font-size: 15px;
 }
 .pay-title>div{
     float: left;
@@ -22,7 +22,7 @@
     text-align: right;
 }
 
-.pay-item-detail{
+/*.pay-item-detail{
     font-size: .3rem;
 }
 .pay-item-detail>a{
@@ -53,5 +53,41 @@
 .pay-name>span:first-child{
     font-size: .6rem;
     padding-right: 5px;
-    /*color: #cd1144;*/
+    !*color: #cd1144;*!
+}*/
+
+.pay-item-detail{
+   /* border: 1px solid red;*/
+    padding: 0px 10px;
+}
+
+.pay-item-detail>a{
+    display: block;
+    width: 100%;
+    height: 60px;
+}
+
+.pay-item-detail>a:not(:last-child){
+    border-bottom: 1px solid #EEEDF3;
+}
+
+.pay-item-detail>a>div:first-child{
+    float: left;
+    width: 80%;
+    line-height: 60px;
+}
+.pay-item-detail>a>div:last-child{
+    float: right;
+    width: 20%;
+    line-height: 60px;
+}
+
+.pay-name>span:first-child{
+    font-size: .6rem;
+    margin-right: 5px;
+}
+
+.pay-name>span{
+    display: block;
+    float: left;
 }
