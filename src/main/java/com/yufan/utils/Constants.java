@@ -140,6 +140,8 @@ public class Constants {
     public static String UPDATE_ORDER_STATUS = "update_order_status";//更新订单状态
     public static String APPLY_ORDER_REFUND = "apply_order_refund";//订单退款
     public static String QUERY_PLATFORM_LIST = "query_platform_list";//查询配送地址
+    public static String QUERY_INFO_LIST = "query_info_list";//资讯列表
+    public static String QUERY_INFO_DETAIL = "query_info_detail";//资讯详情
 
 
     /**

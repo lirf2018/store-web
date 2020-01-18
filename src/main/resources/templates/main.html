@@ -45,7 +45,7 @@
             </div>
             <div class="slider-pagination"></div><!-- 分页标识 -->
         </div>
-        <div class="store-msg" th:if="${data.info_title != ''}">
+        <div onclick="javascript:window.location.href='info/infoList'" class="store-msg" th:if="${data.info_title != ''}">
             <span><img th:src="${data.info_img}"></span>&nbsp;&nbsp;
             <span th:text="${data.info_title}"></span>
             <span><i class="cell-arrow"></i></span>

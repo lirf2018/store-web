@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>资讯列表</title>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+	<meta content="yes" name="apple-mobile-web-app-capable"/>
+	<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+	<meta content="telephone=no" name="format-detection"/>
+	<base th:href="@{/}">
+    <link rel="stylesheet" href="css/ydui.css?rev=@@hash"/>
+    <script src="js/ydui.flexible.js"></script>
+    <link rel="stylesheet" href="css/demo.css" />
+    <link rel="stylesheet" href="css/commondemo.css"/>
+    <link rel="stylesheet" href="css/info.css" />
+</head>
+<body>
+<section class="g-flexview">
+	<header class="m-navbar">
+        <a href="javascript:history.go(-1)" class="navbar-item"><i class="back-ico"></i></a>
+        <div class="navbar-center"><span class="navbar-title">资讯列表</span></div>
+		<div class="navbar-item navbar-right"><a href="index/mainPage"><i class="icon-home-outline"></i></a></div>
+	</header>
+	<div class="header-height"></div>
+    <section class="g-scrollview">
+		<div class="info-items" th:onclick="'javascript:infoDetail(\'' + ${item.info_id} + '\');'"   th:each="item:${data.info_list}">
+    		<div class="info-img"><img th:src="${item.info_img}"></div>
+    		<div class="info-contents">
+    			<span class="info-time" th:text="${item.show_time}"></span>
+    			<span class="info-title" th:text="${item.info_title}"></span>
+    			<span class="info-read">阅读&nbsp;&nbsp;<span th:text="${item.read_count}"></span></span>
+    		</div>
+    		<div style="clear: both;"></div>
+    	</div>
+    </section>
+</section>
+</body>
+ <script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+<script type="text/javascript" src="js/layer.js" ></script>
+ <script type="text/javascript" src="js/ydui.js" ></script>
+<script>
+	function infoDetail(id) {
+		window.location.href = 'info/infoDetail?id=' + id;
+	}
+</script>
+</html>
