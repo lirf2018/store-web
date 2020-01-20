@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 public class GoodsCondition {
 
-    @JSONField(name = "page")
+    @JSONField(name = "curre_page")
     private Integer currePage;
 
     @JSONField(name = "page_size")
